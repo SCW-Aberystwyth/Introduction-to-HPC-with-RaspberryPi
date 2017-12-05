@@ -1,24 +1,22 @@
-# cloud-genomics
-Lessons on HPC for genomics lessons
+---
+layout: lesson
+root: .
+---
 
-Adapted from cloud-genomics repository
+# Introduction to Super Computing Wales
 
-Where possible, HPC concepts and exercises are merged into the appropriate lesson.
-This includes:
-* variant calling workflow (wrangling-genomics)
+This lesson introduces using the Super Computing Wales HPC system. 
 
-Assumptions:
-* First round, I will try to be as generic where possible, so that these lessons can work for multiple schedulers. We will, however, include site-specific info (login, filesystems, etc) to be removed later
-* Where needed, commands will be specific to SLURM
+> ## Prerequisites
+>
+> Some basic experience of the Unix command line is expected. The material covered in the Software Carpentry Introduction to Unix Shell (http://swcarpentry.github.io/shell-novice/) is more than enough to cover this. 
+{: .prereq}
 
 
-To-do:
-* Abstract materials where it makes sense. This can include using shell variables for places like SCRATCH, TEMP, WORKING_DIR, etc.
-* Mark callouts for site-specific information (e.g. login hosts & filesystem names)
-* Include similar commands for other schedulers
 
--Bob Freeman
 
+
+This lesson has been (heavily) adapted from the Data Carpentry Cloud Genomics lesson and in particular the Harvard University Faculty of Arts & Sciences Research Computing HPC version of it (https://github.com/fasrc/DataC-HPC-genomics). 
 
 Original contributors:
 * [Chris Fields](http://www.bioperl.org/wiki/User:Cjfields)
