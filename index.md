@@ -16,12 +16,3 @@ This lesson introduces using the Super Computing Wales HPC system.
 
 
 
-This lesson has been (heavily) adapted from the Data Carpentry Cloud Genomics lesson and in particular the Harvard University Faculty of Arts & Sciences Research Computing HPC version of it (https://github.com/fasrc/DataC-HPC-genomics). 
-
-Original contributors:
-* [Chris Fields](http://www.bioperl.org/wiki/User:Cjfields)
-* [Bob Freeman] (http://twitter.com/devbioinfoguy)
-* Adina Howe
-* Andréa Matsunaga
-* [Stephen Turner](https://twitter.com/genetics_blog)
-* Jason Williams
