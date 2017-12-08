@@ -4,6 +4,16 @@ title: "Instructor Notes"
 permalink: /guide/
 ---
 
+# Intro
+
+
+ * introduce everyone
+ * get attendees to introduce themselves
+ * etherpad link http://board.net/p/scwaber-2017-12-01
+ * pre-workshop questionnaire
+ * introduce SCW
+
+
 # Logging in
 
 `ssh username@login.hpcwales.co.uk`
