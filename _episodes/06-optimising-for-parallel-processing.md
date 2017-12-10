@@ -2,8 +2,10 @@
 title: "Optimising for Parallel Processing"
 author: "Colin Sauze"
 date: "December 2017"
+teaching: 15
+exercises: 0
 questions: 
- - ""
+ - "How can I run several tasks from a single Slurm job."
 objectives: 
  - "Understand how to use GNU Parallel to run multiple programs from one job"
 keypoints:
