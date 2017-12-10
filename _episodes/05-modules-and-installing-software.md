@@ -185,6 +185,6 @@ python3 plot.py
 > > jobid=str(os.environ.get('SLURM_JOBID'))
 > > plt.title('Job id '+jobid)
 > > plt.savefig('temp.png')
-> {: solution}
-{: challenge}
+> {: .solution}
+{: .challenge}
 
