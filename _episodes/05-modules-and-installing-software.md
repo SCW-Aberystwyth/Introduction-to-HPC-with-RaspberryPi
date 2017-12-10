@@ -28,12 +28,12 @@ One common piece of software that isn't installed on HPCW (without a module) is 
 ~~~
 [jane.doe@cwl001 ~]$ python3
 ~~~
-{: bash}
+{: .bash}
 
 ~~~
 -bash: python3: command not found
 ~~~
-{: output}
+{: .output}
 
 **Note that the head node and the compute nodes have identical configurations in terms of what software is available, so you can discover if your program will run from the head node**
 
@@ -49,7 +49,7 @@ Type "help", "copyright", "credits" or "license" for more information.
 >>> exit()
 [jane.doe@cwl001 ~]$
 ~~~
-{: bash}
+{: .bash}
 
 
 ## Installing Python modules
@@ -59,14 +59,14 @@ Python is a popular language for researchers to use and has modules (aka librari
 ~~~
 [jane.doe@cwl001 ~]$  module load http-proxy
 ~~~
-{: bash}
+{: .bash}
 
 We also don't have permissions to install pip modules for the whole system, so we need to give pip the `--user` argument which tells us to install in our home directory. Note that this install will only be for the HPC Wales system you're logged into, so if you install a module in Cardiff it won't be available on the Swansea systems but will work on other Cardiff systems.
 
 ~~~
 [jane.doe@cwl001 ~]$  pip3 install --user <modulename>
 ~~~
-{: bash}
+{: .bash}
 
 Lets install the Sci Kit Learn (sklearn)  module, this is a module which is useful for machine learning tasks but isn't installed on HPCW by default. 
 
@@ -84,7 +84,7 @@ You are using pip version 8.1.2, however version 9.0.1 is available.
 You should consider upgrading via the 'pip install --upgrade pip' command.
 [jane.doe@cwl001 ~]$
 ~~~
-{: bash}
+{: .bash}
 
 Lets test the sklearn has been installed by loading its example digits dataset:
 
@@ -106,7 +106,7 @@ digits = datasets.load_digits()
  [  0.   0.   2. ...,  12.   0.   0.]
  [  0.   0.  10. ...,  12.   1.   0.]]
 ~~~
-{: bash}
+{: .bash}
 
 The outputted data is part of the contents from sklearn. 
 
@@ -162,7 +162,7 @@ plot.sh script used in the exercises.
 module load python/3.5.1
 python3 plot.py
 ~~~
-{: bash}
+{: .bash}
 
 
 > ## Running a python script. 

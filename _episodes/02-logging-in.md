@@ -4,6 +4,8 @@ author: "Colin Sauze"
 date: "December 2017"
 teaching: 20
 exercises: 15
+questions:
+ - "How can do I login to SCW?"
 objectives: 
  - "Understand how to login to SCW"
  - "Understand the difference between the login node and each cluster's head node."

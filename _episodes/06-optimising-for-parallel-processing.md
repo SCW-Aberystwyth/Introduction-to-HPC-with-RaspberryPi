@@ -35,7 +35,7 @@ command1 &
 command2 &
 command3 &
 ~~~
-{: bash}
+{: .bash}
 
 This will run command1,2 and 3 simultaneously. It also requests 3 cores with the ntasks option.
 
@@ -83,7 +83,7 @@ $parallel "$srun /bin/bash ./runtask.sh arg1:{1}" ::: {1..32}
 # as an example, the first job will be run like this:
 #    srun -N1 -n1 --exclusive ./runtask arg1:1
 ~~~
-{: bash}
+{: .bash}
 
 
 Now lets define a sciprt called `runtask.sh`, this is the script we want parallel to actually run. All it does is wait a random amount of time and output some information about the job on screen. 
@@ -103,7 +103,7 @@ echo task $1 seq:$PARALLEL_SEQ sleep:$sleepsecs host:$(hostname) date:$(date)
 # sleep a random amount of time
 sleep $sleepsecs
 ~~~
-{: bash}
+{: .bash}
 
 
 Now lets go ahead and run the job by using `sbatch` to submit `parallel.sh`. 
@@ -111,7 +111,7 @@ Now lets go ahead and run the job by using `sbatch` to submit `parallel.sh`.
 ~~~
 sbatch parallel.sh
 ~~~
-{: bash}
+{: .bash}
 
 This will take a minute or so to run, it will vary depending on the random numbers. If we watch the output of `sacct` we should see 32 subjobs being created.
 
@@ -150,7 +150,7 @@ This will take a minute or so to run, it will vary depending on the random numbe
 8324120.30         bash              hpcw0318          1  COMPLETED      0:0 
 8324120.31         bash              hpcw0318          1  COMPLETED      0:0 
 ~~~
-{: output}
+{: .output}
 
 The file `parallel_joblog` will contain a list of when each job ran and how long it took. 
 
@@ -189,5 +189,5 @@ Seq     Host    Starttime       JobRuntime      Send    Receive Exitval Signal  
 29      :       1512606524.611      18.110      0       75      0       0       srun -n1 -N1 --exclusive /bin/bash ./runtask arg1:29
 31      :       1512606525.037      19.107      0       75      0       0       srun -n1 -N1 --exclusive /bin/bash ./runtask arg1:31
 ~~~
-{: output}
+{: .output}
 

@@ -48,7 +48,7 @@ The salloc command will respond now with a job ID number.
 ~~~
 salloc: Granted job allocation 3739432
 ~~~
-{: output}
+{: .output}
 
 We have now allocated ourselves a host to run a program on. The `-n 1` tells slurm how many copies of the task we will be running. The `--ntasks-per-node=1` tells slurm that we will just be running one task for every node we are allocated. We could increase either of these numbers if we want to run multiple copies of a task and if we want to run more than one copy per node. 
 
@@ -66,7 +66,7 @@ If you run command above you will see the hostname in the prompt change to the n
 [jane.doe@cwl001 ~]$ srun -n 1 --pty /bin/bash
 [jane.doe@cwc001 ~]$ 
 ~~~
-{: output}
+{: .output}
 
 We are now logged into a compute node and can run any commands we wish and these will run on the compute node instead of the login node. You can also confirm the name of the host that you are connected to by running the `hostname` command.
 
@@ -78,7 +78,7 @@ hostname
 ~~~
 cwc001
 ~~~
-{: output}
+{: .output}
 
 
 Once we are done working with the compute node we need to disconnect from it. The `exit` command will exit the bash program on the compute node causing us to disconnect. After this command is issued the hostname prompt should change back to the login node's name (e.g. cwl001). 
@@ -88,27 +88,27 @@ Once we are done working with the compute node we need to disconnect from it. Th
 exit
 [jane.doe@cwl001 ~]$ 
 ~~~
-{: output}
+{: .output}
 
 At this point we still hold an allocation for a node and could run another job if we wish. We can confirm this by examining the queue of our jobs with the `squeue` command.
 
 ~~~
 squeue
 ~~~
-{: bash}
+{: .bash}
 
 ~~~
              JOBID PARTITION     NAME     USER ST       TIME  NODES NODELIST(REASON)
            3739432      work     bash jane.doe  R       3:58      1 cwc001
 ~~~
-{: output}
+{: .output}
 
 To relinquish the node allocation we need to issue another exit command. 
 
 ~~~
 [jane.doe@cwl001 ~]$ exit
 ~~~
-{: bash}
+{: .bash}
 
 This will display a message that the job allocation is being relinquished and show us the same job ID number again.
 
@@ -116,19 +116,19 @@ This will display a message that the job allocation is being relinquished and sh
 exit
 salloc: Relinquishing job allocation 3739432
 ~~~
-{: output}
+{: .output}
 
 At this point our job is complete and we no longer hold any allocations. We can confirm this again with the `squeue` command.
 
 ~~~
 [jane.doe@cwl001 ~]$ squeue
 ~~~
-{: bash}
+{: .bash}
 
 ~~~
              JOBID PARTITION     NAME     USER ST       TIME  NODES NODELIST(REASON)
 ~~~
-{: output}
+{: .output}
 
 
 
@@ -140,7 +140,7 @@ For most situations we won't want to run a job interactively, instead we will wa
 ~~~
 nano batchjob.sh
 ~~~
-{: bash}
+{: .bash}
 
 ~~~
 #!/bin/bash --login
@@ -163,7 +163,7 @@ nano batchjob.sh
 /bin/hostname
 
 ~~~
-{: bash}
+{: .bash}
 
 This is actually a bash script file containing all the commands that will be run. Lines beginning with a `#` are comments which bash will ignore. However lines that begin `#SBATCH` are instructions for the `sbatch` program. The first of these (`#SBATCH --job-name=hostname`) tells sbatch the name of the job, in this case we will call the job hostname. The `--output` line tells sbatch where output from the program should be sent, the `%J` in its name means the job number. The same applies for the `--error` line, except here it is for error messages that the program might generate, in most cases this file will be blank. The `--time` line limits how long the job can run for, this is specified in days, hours and minutes. The `--mem-per-cpu` tells Slurm how much memory to allow the job to use on each CPU it runs on, if the job exceeds this limit Slurm will automatically stop it. You can set this to zero for no limits. However by putting in a sensible number you can help allow other jobs to run on the same node. The final line specifies the actual commands which will be executed, in this case its the `hostname` command which will tell us the name of the compute node which ran our job.
 
@@ -172,7 +172,7 @@ Lets go ahead and submit this job with the `sbatch` command.
 ~~~
 [jane.doe@cwl001 ~]$ sbatch batchjob.sh
 ~~~
-{: bash}
+{: .bash}
 
 
 sbatch will respond with the number of the job.
@@ -180,43 +180,43 @@ sbatch will respond with the number of the job.
 ~~~
 Submitted batch job 3739464
 ~~~
-{: output}
+{: .output}
 
 Our job should only take a couple of seconds to run, but if we are fast we might see it in the `squeue` list.
 
 ~~~
 [jane.doe@cwl001 ~]$ squeue
 ~~~
-{: bash}
+{: .bash}
 
 ~~~
              JOBID PARTITION     NAME     USER ST       TIME  NODES NODELIST(REASON)
            3739464      work hostname jane.doe  R       0:01      1 cwc001
 ~~~
-{:output}
+{: .output}
 
 Once the job is completed two new files should be created, one called `hostname.out.3739464` and one called `hostname.err.3739464`. The `.out` file is the output from the command we ran and the `.err` is the errors from that command. Your job files will have different names as they will contain the job ID you were allocated and not `3739464`. Lets go ahead and look at the `.out` file:
 
 ~~~
 [jane.doe@cwl001 ~]$ cat hostname.out.373464
 ~~~
-{: bash}
+{: .bash}
 
 ~~~
 cwc001
 ~~~
-{: output}
+{: .output}
 
 If we check the `.err` file it should be blank:
 
 ~~~
 [jane.doe@cwl001 ~]$ cat hostname.err.373464
 ~~~
-{: bash}
+{: .bash}
 
 ~~~
 ~~~
-{: output}
+{: .output}
 
 
 ### Over-riding the sbatch options from the command line
@@ -228,7 +228,7 @@ Lets edit our batch file to run the command `/bin/sleep 70` before `/bin/hostnam
 ~~~
 [jane.doe@cwl001 ~]$ nano batchjob.sh
 ~~~
-{: bash}
+{: .bash}
 
 
 Edit the script to have the command `/bin/sleep 70` before the `hostname` command. 
@@ -253,7 +253,7 @@ Edit the script to have the command `/bin/sleep 70` before the `hostname` comman
 /bin/sleep 70
 /bin/hostname
 ~~~
-{: bash}
+{: .bash}
 
 
 Now lets resubmit the job.
@@ -261,35 +261,35 @@ Now lets resubmit the job.
 ~~~
 [jane.doe@cwl001 ~]$  sbatch batchjob.sh
 ~~~
-{: bash}
+{: .bash}
 
 ~~~
 Submitted batch job 3739465
 ~~~
-{: output}
+{: .output}
 
 After approximately one minute the job will disappear from the `squeue` output, but this time the `.out` file should be empty and the `.err` file will contain an error message saying the job was cancelled:
 
 ~~~
 [jane.doe@cwl001 ~]$  cat hostname.err.3739465
 ~~~
-{: bash}
+{: .bash}
 
 
 ~~~
 slurmstepd: error: *** JOB 3739465 ON cwc001 CANCELLED AT 2017-12-06T16:45:38 DUE TO TIME LIMIT ***
 ~~~
-{: output}
+{: .output}
 
 ~~~
 [jane.doe@cwl001 ~]$ cat hostname.out.3739465
 ~~~
-{: bash}
+{: .bash}
 
 
 ~~~
 ~~~
-{: output}
+{: .output}
 
 
 
@@ -298,34 +298,34 @@ Now lets override the time limit by giving the parameter `--time 0-0:2` to sbatc
 ~~~
 [jane.doe@cwl001 ~]$ sbatch --time 0-0:2 batchjob.sh
 ~~~
-{: bash}
+{: .bash}
 
 ~~~
  Submitted batch job 3739466
 ~~~
-{: output}
+{: .output}
 
 After approximately 70 seconds the job will disappear from the squeue list and this we should have nothing in the `.err` file and a hostname in the `.out` file. 
 
 ~~~
 [jane.doe@cwl001 ~]$ cat hostname.err.3739466
 ~~~
-{: bash}
+{: .bash}
 
 ~~~
 ~~~
-{: output}
+{: .output}
 
 
 ~~~
 [jane.doe@cwl001 ~]$ cat hostname.out.3739466
 ~~~
-{: bash}
+{: .bash}
 
 ~~~
 cwc001
 ~~~
-{: output}
+{: .output}
 
 
 ### Cancelling jobs
@@ -335,12 +335,12 @@ The `scancel` command can be used to cancel a job after its submitted. Lets go a
 ~~~
 [jane.doe@cwl001 ~]$  sbatch batchjob.sh
 ~~~
-{: bash}
+{: .bash}
 
 ~~~
 Submitted batch job 3739467
 ~~~
-{: output}
+{: .output}
 
 
 Now (within 60 seconds) lets cancel the job.
@@ -349,7 +349,7 @@ Now (within 60 seconds) lets cancel the job.
 ~~~
 [jane.doe@cwl001 ~]$  scancel 3739467
 ~~~
-{: bash}
+{: .bash}
 
 This will cancel the job, `squeue` will now show no record of it and there won't be a `.out` or `.err` file for it. 
 
@@ -361,7 +361,7 @@ The `sacct` command lists all the jobs you have run. By default this shows the J
 ~~~
 [jane.doe@cwl001 ~]$  sacct
 ~~~
-{: bash}
+{: .bash}
 
 
 ~~~
@@ -376,7 +376,7 @@ The `sacct` command lists all the jobs you have run. By default this shows the J
 3739473        hostname       work   hpcw0318          1 CANCELLED+      0:0 
 3739473.bat+      batch              hpcw0318          1  CANCELLED     0:15 
 ~~~
-{: output}
+{: .output}
 
 
 
@@ -387,7 +387,7 @@ Job Arrays are a method for running multiple copies of the same job. The `--arra
 ~~~
 [jane.doe@cwll001 ~]$ sbatch --array=0-2 batchjob.sh
 ~~~
-{: bash}
+{: .bash}
 
 The above command will submit **three** copies of the batchjob.sh command. 
 
@@ -398,7 +398,7 @@ The above command will submit **three** copies of the batchjob.sh command.
          3739590_1      work hostname colin.sa  R       0:01      1 cwc001
          3739590_2      work hostname colin.sa  R       0:01      1 cwc096
 ~~~
-{: bash}
+{: .bash}
 
 Running `squeue` as this is happening will show three distinct jobs, each with an _ followed by a number on the end of their job ID. When the jobs are complete there will be three output and three err files all with the job ID and the job array number.
 
@@ -411,7 +411,7 @@ hostname.err.3739590.cwc096
 hostname.err.3739592.cwc001
 hostname.err.3739591.cwc001
 ~~~
-{: bash}
+{: .bash}
 
 Its possible for programs to get hold of their array number from the `$SLURM_ARRAY_JOB_ID` environment variable. If we add the command `echo $SLURM_ARRAY_JOB_ID` to our batch script then it will be possible to see this in the output file. 
 
@@ -449,7 +449,7 @@ Once the job has finished, ask the scheduler how much RAM was used by using the 
 ~~~
 sacct -j JOBID --format=JobID,JobName,ReqMem,MaxRSS,Elapsed # RAM requested/used!!
 ~~~
-{: bash}
+{: .bash}
 
 The `ReqMem` field is how much you asked for and `MaxRSS` is how much was actually used. Now go back and adjust your RAM request in your sbatch command or submission script.
 
@@ -476,7 +476,7 @@ large        up   infinite      2  alloc cwc[165-166]
 large        up   infinite      2   idle cwc[163-164]
 vlarge       up   infinite      1   idle cwc167
 ~~~
-{: output}
+{: .output}
 
 The partition name is listed in the first column. The `*` next to the work partition denotes that it is the default. We can see that in total it contains 162 nodes. Each of these has 36GB of RAM and 12 Westmere cores. The `Large` partition only contains four nodes but each of these have 128GB of RAM and the older Nehalem processors. Finally the `vlarge` partition only contains one node, but this has 512GB of RAM and a Nehalem processor. 
 
@@ -485,14 +485,14 @@ We can specify which partition a job runs in with the `-p` or `--partition` argu
 ~~~
 sbatch -p work batchjob.sh
 ~~~
-{: bash}
+{: .bash}
 
 We could also add the following line to the batch submission script.
 
 ~~~
 #SBATCH -p work
 ~~~
-{:  bash}
+{:  .bash}
 
 
 ### Email Alerts from Slurm
@@ -503,7 +503,7 @@ You can receive email alerts when your job begins and ends by adding the followi
 #SBATCH --mail-user=abc1@aber.ac.uk
 #SBATCH --mail-type=ALL
 ~~~
-{: bash}
+{: .bash}
 
 
 
