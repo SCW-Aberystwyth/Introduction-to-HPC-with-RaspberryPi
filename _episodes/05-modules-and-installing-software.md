@@ -178,6 +178,7 @@ python3 plot.py
 > > ## Solution
 > > 3. You will get errors about the amount of memory being used. For some reason this script can be very slow to run sometimes, so increasing the timeout can help too. But only do this if you are getting timeout errors. Around 50MB of memory and 5 minutes should be enough.
 > > 6. Your python code should now read:
+> > ~~~
 > > import matplotlib as mpl
 > > mpl.use('Agg') #set the backend to Agg to make a png file instead of displaying on screen
 > > import matplotlib.pyplot as plt
@@ -185,6 +186,8 @@ python3 plot.py
 > > jobid=str(os.environ.get('SLURM_JOBID'))
 > > plt.title('Job id '+jobid)
 > > plt.savefig('temp.png')
+> > ~~~
+> > {: .bash}
 > {: .solution}
 {: .challenge}
 
