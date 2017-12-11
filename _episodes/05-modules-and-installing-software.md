@@ -172,7 +172,7 @@ python3 plot.py
 > 4. Fix the cause of the errors by adjusting (or removing) the appropriate parameter. 
 > 5. Copy back the resulting file, temp.png using SCP or SFTP and view it on your computer. 
 > 6. Add the following lines to the Python script (between the plt.plot line and the plt.savefig line) to make it embed the job ID into the title of the image:
-> `jobid=str(os.environ.get('SLURM_JOBID'))` and  `plt.title('Job id '+jobid)`
+> `import os`, `jobid=str(os.environ.get('SLURM_JOBID'))` and  `plt.title('Job id '+jobid)`
 > run the job again and look at the output image. A list of other environment variables can be found at https://www.glue.umd.edu/hpcc/help/slurmenv.html, try some of these instead.
 >
 > > ## Solution
@@ -181,6 +181,7 @@ python3 plot.py
 > >
 > > ~~~
 > > import matplotlib as mpl
+> > import os
 > > mpl.use('Agg') #set the backend to Agg to make a png file instead of displaying on screen
 > > import matplotlib.pyplot as plt
 > > plt.plot(range(10))
