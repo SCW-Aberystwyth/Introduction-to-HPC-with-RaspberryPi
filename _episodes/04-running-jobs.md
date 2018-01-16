@@ -378,11 +378,26 @@ The `sacct` command lists all the jobs you have run. By default this shows the J
 ~~~
 {: .output}
 
+In the output above the account is the project you are associated with. hpcw0318 is the Aberystwyth University training project. If you have registered with another project you'll see a different project account here.
+
+
+> ## Using the `sbatch` command. 
+> 1. Write a submission script to run the hostname command on one node, with one core using one megabyte of RAM and a maximum run time of one minute. Have it save its output to hostname.out.%J and errors to hostname.err.%J.
+> 2. Run your script using `sbatch`
+> 3. Examine the output file, which host did it run on?
+> 4. Try running it again, did your command run on the same host? 
+> 5. Now add the command `/bin/sleep 70` before the line running hostname in the script. Run the job again and examine the output of `squeue` as it runs. How many seconds does the job run for before it ends? Hint: the command `watch -n 1 squeue` will run squeue every second and show you the output. Press CTRL+C to stop it. 
+> 6. What is in the .err file, why did you script exit? Hint: if it wasn't due to the time expiring try altering another parameter so it is due a time expiration. 
+{: .challenge}
+
+## Running multiple copies of a job with Srun
+
+
 
 
 ## Job Arrays
 
-Job Arrays are a method for running multiple copies of the same job. The `--array` parameter to sbatch allows us to make use of this feature.
+Job Arrays are another method for running multiple copies of the same job. The `--array` parameter to sbatch allows us to make use of this feature.
 
 ~~~
 [jane.doe@cwll001 ~]$ sbatch --array=0-2 batchjob.sh
@@ -508,15 +523,6 @@ You can receive email alerts when your job begins and ends by adding the followi
 
 
 # Exercises
-
-> ## Using the `sbatch` command. 
-> 1. Write a submission script to run the hostname command on one node, with one core using one megabyte of RAM and a maximum run time of one minute. Have it save its output to hostname.out.%J and errors to hostname.err.%J.
-> 2. Run your script using `sbatch`
-> 3. Examine the output file, which host did it run on?
-> 4. Try running it again, did your command run on the same host? 
-> 5. Now add the command `/bin/sleep 70` before the line running hostname in the script. Run the job again and examine the output of `squeue` as it runs. How many seconds does the job run for before it ends? Hint: the command `watch -n 1 squeue` will run squeue every second and show you the output. Press CTRL+C to stop it. 
-> 6. What is in the .err file, why did you script exit? Hint: if it wasn't due to the time expiring try altering another parameter so it is due a time expiration. 
-{: .challenge}
 
 > ## Getting email output from `sbatch` 
 > 1. Add the following lines to your script from the previous exercise: 
