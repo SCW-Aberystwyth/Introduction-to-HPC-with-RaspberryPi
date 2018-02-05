@@ -17,7 +17,7 @@ objectives:
 # Prior Knowledge/Pre-requesites 
 
 * Basic use of the Linux command line, as covered in the Software Carpentry Introduction to the Unix Shell Lesson.
-* An account on HPC Wales.
+* An account on Super Computing Wales.
 
 # Cluster basics
 
@@ -51,7 +51,7 @@ HPC Wales ran from 2010 to 2015 and provided clusters in Aberystwyth, Bangor, Ca
 
 ### SCW
 
-Super Computing Wales (SCW) is a new project to replace HPC Wales. It started in 2017 and runs until 2020. It will include new systems in Cardiff and Swansea, but these haven't been installed yet. They are due in February 2018.
+Super Computing Wales (SCW) is a new project to replace HPC Wales. It started in 2015 and runs until 2020. It will include new systems in Cardiff and Swansea, but these haven't been installed yet. They are due in February 2018.
 
 
 ### How to get access?
