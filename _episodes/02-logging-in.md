@@ -1,7 +1,7 @@
 ---
 title: "Logging in to SCW"
 author: "Colin Sauze"
-date: "December 2017"
+date: "April 2018"
 teaching: 20
 exercises: 15
 questions:
@@ -34,6 +34,8 @@ If you haven't already changed your password from the one that was emailed to yo
 
 ## What's available?
 
+### HPC Wales
+
 The `hpcwhosts` command will list the available clusters. 
 
 ~~~
@@ -56,24 +58,30 @@ Phase    System Location & Type             Login Node(s)
 
 |Cluster|Number of Nodes|Cores per node|Architecture|RAM|Other|
 |---|---|---|---|---|---|
-|Cardiff High Throughput|162|12|Westmere|36GB||
+|Cardiff High Throughput|~~162~~ 54|12|Westmere|36GB||
 |Cardiff High Throughput|4|2|Nehalem|128GB||
 |Cardiff High Throughput|1|8|Nehalem|512GB||
-|Cardiff Capacity|384|16|Sandy Bridge|64GB||
-|Cardiff GPU|16|16|Sandy Bridge|64GB|Nvidia Tesla M GPU|
+|Cardiff Capacity|~~384~~ 116|16|Sandy Bridge|64GB||
+|Cardiff GPU|~~16~~ 4|16|Sandy Bridge|64GB|Nvidia Tesla M GPU|
 |Swansea Capability|16|16|Sandy Bridge|128GB||
 |Swansea Capability|240|16|Sandy Bridge|64GB||
 |Swansea Capacity|128|16|Sandy Bridge|64GB||
 |Swansea GPU|16|16|Sandy Bridge|64GB|Nvidia Tesla M2090 (512 core, 6GB RAM)|
 |Bangor|54|12|Westmere|36GB||
 
-Total: 15520 cores, 304.7 Trillion Floating Point Operations Per Second (TFlops)
+### Super Computing Wales
 
+|Cluster|Number of Nodes|Cores per node|Architecture|RAM|Other|
+|---|---|---|---|---|---|
+|Swansea|118|40|Skylake|376GB||
+|Swansea GPU|4|40|Skylake|376GB|Nvidia V100|
+|Swansea Data Lake|?|?||?|?|?|?|
+|Cardiff|4|2|Sylake|128GB||
+|Cardiff Data Lake|?|?|?|?|?|
 
-## SCW vs HPCW
+Aberystwyth users are expected to use the Swansea system and will need to make a case for why they would need to use the Cardiff system. Bangor users are expected to use Cardiff.
 
-SCW is still in the process of being purchased. We are probably getting Intel Sandybridge Xeon processors. Approximately double the speed of a Sandybridge processor. Expect total speed around 700 TFLOPs. The top500 list compiles a list of the world's 500 fastest computers. The November 2017 (https://www.top500.org/list/2017/11/?page=4) list has a 700 FLOP system at position 383.
-
+SCW is still in the process of being installed. The SkyLake processors are approximately double the speed of a Sandybridge processor. Full service expected from around July 2018. Cardiff should begin to come online in May.
 
 ### Slurm
 
