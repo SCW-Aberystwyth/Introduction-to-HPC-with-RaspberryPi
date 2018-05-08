@@ -1,7 +1,6 @@
 ---
 title: "Optimising for Parallel Processing"
 author: "Colin Sauze"
-date: "December 2017"
 teaching: 15
 exercises: 0
 questions: 

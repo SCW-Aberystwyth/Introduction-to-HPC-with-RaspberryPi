@@ -1,11 +1,10 @@
 ---
 title: "Running Jobs with Slurm"
 author: "Colin Sauze"
-date: "December 2017"
 teaching: 25
 exercises: 30
 questions: 
- - "What is the difference between scratch and home?"
+ - "How do I run a job with the Slurm scheduler?"
 objectives: 
  - "Understand how to submit an interactive job using Slurm"
  - "Understand how to submit a batch job using Slurm"

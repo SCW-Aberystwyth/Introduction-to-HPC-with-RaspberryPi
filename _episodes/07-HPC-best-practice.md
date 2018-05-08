@@ -1,7 +1,8 @@
 ---
 title: "HPC Best Practice"
 author: "Colin Sauze"
-date: "December 2017"
+questions:
+ - "What are the best practices for using an HPC system?"
 objectives: 
  - "Understand HPC best practice"
 ---

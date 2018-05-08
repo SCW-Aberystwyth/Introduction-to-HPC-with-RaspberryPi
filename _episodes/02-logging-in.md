@@ -1,7 +1,6 @@
 ---
 title: "Logging in to SCW"
 author: "Colin Sauze"
-date: "April 2018"
 teaching: 20
 exercises: 15
 questions:

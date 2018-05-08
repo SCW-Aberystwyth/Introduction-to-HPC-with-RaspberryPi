@@ -1,9 +1,10 @@
 ---
 title: "SCW Introduction"
 author: "Colin Sauze"
-date: "December 2017"
 teaching: 10
 exercises: 0
+questions:
+ - "What is Super Computing Wales and how do I get access to it?"
 keypoints: 
  - "A cluster is a group of computers connected together to act as one."
  - "Clusters are formed of nodes, each usually has several processors and 10s or hundreds of gigabytes of RAM."

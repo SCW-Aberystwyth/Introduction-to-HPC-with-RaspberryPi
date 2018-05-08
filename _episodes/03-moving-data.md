@@ -1,11 +1,11 @@
 ---
 title: "Filesystems and Storage"
 author: "Colin Sauze"
-date: "December 2017"
 teaching: 15
 exercises: 30
 questions: 
- - "What is the difference between scratch and home?"
+ - "Where can I store my data?"
+ - "What is the difference between scratch and home filestore?"
 objectives: 
  - "Understand the difference between home and scratch directories"
  - "Understand how to copy files between your computer and your SCW home/scratch directories"

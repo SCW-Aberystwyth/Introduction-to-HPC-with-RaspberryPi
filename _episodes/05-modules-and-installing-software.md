@@ -1,11 +1,10 @@
 ---
 title: "Working with Modules and Installing Software"
 author: "Colin Sauze"
-date: "December 2017"
 teaching: 15
 exercises: 30
 questions: 
- - ""
+ - "How do I get access to additional software?"
 objectives: 
  - "Understand how to load a module"
  - "Understand how to install pip packages for Python"
