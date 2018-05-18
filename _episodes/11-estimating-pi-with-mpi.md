@@ -25,7 +25,7 @@ One of her more experienced colleagues has suggested to her, to use the _Message
 > However, scientific problems back than were equally demanding more and more memory than today. 
 > To overcome the lack of available hardware memory, [specialists from academia and industry](https://en.wikipedia.org/wiki/Message_Passing_Interface#History) came about with the idea to consider the memory of several interconnected compute nodes as one. Given a standardized software that synchronizes the various states of memory between the client/slave nodes during the execution of driver application through the network interfaces. With this performing large calculations that required more memory than each individual cluster node can offer was possible. Moreover, this technique by passing messages (hence _Message Passing Interface_ or _MPI_) on memory updates in a controlled fashion allowed to write parallel programs that were capable of running on a diverse set of cluster architectures.
 
-![Schematic View of a Compute Cluster with 4 nodes (12 cores each)]({{ page.root }}/tikz/cluster_schematic.svg)
+![Schematic View of a Compute Cluster with 4 nodes (12 cores each)]({{ page.root }}/fig/cluster_schematic.svg)
 
 Lola becomes curious. She wants to experiment with this parallelization technique a bit. For this, she would like to print the name of the node where a specific driver application is run. 
 
@@ -71,7 +71,7 @@ n02
 ~~~
 {: .output}
 
-![Execution of `mpirun hostname` on a Compute Cluster with 4 nodes (12 cores each)]({{ page.root }}/tikz/mpirunhostname_on_clusterschematic.svg)
+![Execution of `mpirun hostname` on a Compute Cluster with 4 nodes (12 cores each)]({{ page.root }}/fig/mpirunhostname_on_clusterschematic.svg)
 
 As the figure above shows, 12 instances of `hostname` were called on `n01` and 4 more on `n02`. Strange though, that the last 5 lines are not ordered correctly. Upon showing this result to her colleague, the latter explains: even though, the `hostname` command is run in parallel across the 2 nodes that are used here, the output of her 16 `hostname` calls need to be merged into one output file (that she called `call_hostname.out`) at the end. This synchronization performed by the `mpirun` application is not guaranteed to happen in an ordered fashion (how could it be as the commands were issued in parallel). Her colleague explains, that the `hostname` application itself is not aware of _MPI_ in a way that it is not parallelized with it. Thus, the `mpirun` driver simply accesses the nodes that it is allowed to run on by the batch system and launches the `hostname` app. After that, `mpirun` collects the output of the executed commands at completion and writes it to the defined output file `call_hostname.out`.
 
@@ -187,7 +187,10 @@ if rank == 0:
 And that's it. Now, Lola can submit her first MPI job.
 
 ~~~
-{% include /snippets/03/submit_48_mpirun_python3_mpi_numpi.{{ site.workshop_scheduler }} %}
+#!/bin/bash
+
+mpirun python3 mpi_numpi.py 1000000000
+$ sbatch -n 48 -o mpi_numpi.out -e mpi_numpi.err < submit_mpi_numpi.sh
 ~~~
 {: .bash}
 
