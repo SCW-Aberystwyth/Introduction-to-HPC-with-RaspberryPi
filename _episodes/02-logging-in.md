@@ -124,7 +124,8 @@ long         up   infinite     38  alloc bwc[003-009,013-015,017-021,023-030,037
 # Exercises
 
 > ## Logging into HPC Wales
-> 1. Login to login.hpcwales.co.uk using your SSH client. Your username is usually firstname.surname and has been emailed to you.
+> 1. Login to login.hpcwales.co.uk using your SSH client. Your username is usually firstname.surname and has been emailed to you. 
+> 2. On your first login you will have to change your password. The new password must contain some letters, some numbers and at least one punctuation character. 
 > 2. Run the `hpcwhosts` and pick a system to login to.
 > 3. Login to that host by running `ssh <hostname>`
 > 4. Run the `sinfo` command to see how busy things are.
