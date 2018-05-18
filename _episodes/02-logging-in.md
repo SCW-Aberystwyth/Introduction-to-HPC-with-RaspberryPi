@@ -70,17 +70,22 @@ Phase    System Location & Type             Login Node(s)
 
 ### Super Computing Wales
 
+These figures may still be subject to some change and might have been sourced from out of date documents. 
+
 |Cluster|Number of Nodes|Cores per node|Architecture|RAM|Other|
 |---|---|---|---|---|---|
-|Swansea|118|40|Skylake|376GB||
-|Swansea GPU|4|40|Skylake|376GB|Nvidia V100|
-|Swansea Data Lake|?|?||?|?|?|?|
-|Cardiff|4|2|Sylake|128GB||
-|Cardiff Data Lake|?|?|?|?|?|
+|Swansea|118|20|Skylake|384GB||
+|Swansea GPU|4|20|Skylake|384GB|Nvidia V100 (5120 core, 16GB RAM)|
+|Swansea Data Lake|?|?||?|?|?|Installed with Swansea system|
+|Cardiff MPI|136|20|Sylake|196GB||
+|Cardiff HTC|25|20|Sylake|196GB||
+|Cardiff High Memory|26|20|Sylake|382GB||
+|Cardiff GPU|13|20?|Skylake|?|Nvidia P100 (3584 core, 16GB RAM)|
+|Cardiff Data Lake|2|22|Skylake|512GB|Will be installed later|
 
 Aberystwyth users are expected to use the Swansea system and will need to make a case for why they would need to use the Cardiff system. Bangor users are expected to use Cardiff.
 
-SCW is still in the process of being installed. The SkyLake processors are approximately double the speed of a Sandybridge processor. Full service expected from around July 2018. Cardiff should begin to come online in May.
+SCW is still in the process of being installed. A single SkyLake core is approximately double the speed of a Sandybridge core. 
 
 ### Slurm
 
