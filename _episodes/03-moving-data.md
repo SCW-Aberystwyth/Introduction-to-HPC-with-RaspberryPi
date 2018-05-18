@@ -20,14 +20,24 @@ keypoints:
 ## What is a filesystem?
 Storage on most compute systems is not what and where you think they are! Physical disks are bundled together into a virtual volume; this virtual volume may represent one filesystem, or may be divided up, or partitioned, into multiple filesystems. And your directories then reside within one of these fileystems. Filesystems are accessed over the network through mount points.
 
-![Filesystem definition diagram](../fig/filesystems-generic.png)
 There are multiple storage/filesystems options available for you to do your work. The most common are:
 * home: where you land when you first login. 50 GB per user. Slower access, backed up. Used to store your work long term. 
 * scratch: temporary working space. Faster access, not backed up. No quota, but old files might get deleted. DON'T STORE RESULTS HERE!
 
 Here's a synopsis of filesystems on HPC Wales:
 
-![Odyssey filesystems](../fig/filesystems-odyssey.jpg)
+|Name|Path|Default Quota|Disk Size|Backed Up|Access Speed|
+|---|---|---|---|---|---|
+|Bangor Home|/home/user.name|N/A|8TB|Yes|~250 Mbyte/sec|
+|Bangor Scratch|/scratch/user.name|N/A|1TB|No|~280 MByte/sec|
+|Cardiff Home|/home/user.name|50GB|195TB|Yes|~350 Mbyte/sec|
+|Cardiff Scratch|/scratch/user.name|N/A|170TB|No|~800 Mbyte/sec|
+|Cardiff Group|/space0[0-9]/HPCWXXX|Negotiable|195TB (same disk as home)|Yes|~350 Mbyte/sec|
+|Swansea Home|50GB|/home/user.name|N/A|195TB|Yes|~350 Mbyte/sec|
+|Swansea Grooup|/space0[0-9]/HPCWXXX|Negotiable|N/A|195TB (same disk as home)|No|~350 Mbyte/sec|
+|Swansea Scratch|/scratch/user.name|N/A|336TB|No|336TB|~800 Mbyte/sec|
+
+New filesystems will be delivered on Super Computing Wales. Swansea home directories on SCW WILL NOT BE BACKED UP!!!!
 
 **Important!! Ensure that you don't store anything longer than necessary on scratch, this can negatively affect other people’s jobs on the system.**
 
@@ -40,7 +50,7 @@ Both scratch and home filestore is on a per site basis. There are file servers i
 
 ## How much quota do I have left on my home directory?
 
-Login to a head node (e.g. cwl001, bwl001, sssl001 or csl001) and run the ```myquota``` command. This will tell you how much space is left in your home directory. 
+Login to a head node (e.g. cwl001, sssl001 or csl001) and run the ```myquota``` command. This will tell you how much space is left in your home directory. Note that this does not work on the Bangor system.
 
 ~~~
 $ myquota
