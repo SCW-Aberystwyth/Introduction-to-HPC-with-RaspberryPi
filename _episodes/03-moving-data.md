@@ -27,7 +27,7 @@ There are multiple storage/filesystems options available for you to do your work
 Here's a synopsis of filesystems on HPC Wales:
 
 |Name|Path|Default Quota|Disk Size|Backed Up|Access Speed|
-|---|---|---|---|---|---|
+|------|---|----|-----|---|-----|
 |Bangor Home|/home/user.name|N/A|8TB|Yes|~250 Mbyte/sec|
 |Bangor Scratch|/scratch/user.name|N/A|1TB|No|~280 MByte/sec|
 |Cardiff Home|/home/user.name|50GB|195TB|Yes|~350 Mbyte/sec|
@@ -36,6 +36,7 @@ Here's a synopsis of filesystems on HPC Wales:
 |Swansea Home|50GB|/home/user.name|N/A|195TB|Yes|~350 Mbyte/sec|
 |Swansea Grooup|/space0[0-9]/HPCWXXX|Negotiable|N/A|195TB (same disk as home)|No|~350 Mbyte/sec|
 |Swansea Scratch|/scratch/user.name|N/A|336TB|No|336TB|~800 Mbyte/sec|
+
 
 New filesystems will be delivered on Super Computing Wales. Swansea home directories on SCW WILL NOT BE BACKED UP!!!!
 
@@ -87,7 +88,7 @@ mds001.hpcwales.local@tcp:mds002.hpcwales.local@tcp:/scratch
 You can copy files to/from your HPCW/SCW home and scratch drives using the secure copy protocol (SCP) or secure file transfer protocol (SFTP) and connecting to the host ```scp.hpcwales.co.uk``` or ```sftp.hpcwales.co.uk```. You will find your home and scratch directories in the following locations:
 
 |Directory|Description|
-|---|---|
+|-------|-------|
 |/hpcw/cf/firstname.surname/|Cardiff Home Directory|
 |/hpcw/sw/firstname.surname/|Swansea Home Directory|
 |/hpcw/ba/firstname.surname/|Bangor Home Directory|
@@ -163,7 +164,7 @@ You can change directory on the remote host by typing a path into the "Remote si
 {: .challenge}
 
 > ## Using the `myquota` command.
-> 1. Login to a system of your choice (try cwl001, bwl001 or ssl001)
+> 1. Login to a system of your choice (try cwl001 or ssl001, bwl00X doesn't use quotas)
 > 2. Run the `myquota` command. 
 > 3. How much space have you used and how much do you have left? 
 > 4. If you had a job that resulted in 60GB of files would you have enough space to store them?
