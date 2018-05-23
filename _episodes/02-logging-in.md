@@ -56,7 +56,7 @@ Phase    System Location & Type             Login Node(s)
 
 
 |Cluster|Number of Nodes|Cores per node|Architecture|RAM|Other|
-|---|---|---|---|---|---|
+|-------|----|----|------|----|------|
 |Cardiff High Throughput|~~162~~ 54|12|Westmere|36GB||
 |Cardiff High Throughput|4|2|Nehalem|128GB||
 |Cardiff High Throughput|1|8|Nehalem|512GB||
@@ -73,7 +73,7 @@ Phase    System Location & Type             Login Node(s)
 These figures may still be subject to some change and might have been sourced from out of date documents. 
 
 |Cluster|Number of Nodes|Cores per node|Architecture|RAM|Other|
-|---|---|---|---|---|---|
+|-------|----|----|------|----|------|
 |Swansea|118|20|Skylake|384GB||
 |Swansea GPU|4|20|Skylake|384GB|Nvidia V100 (5120 core, 16GB RAM)|
 |Swansea Data Lake|?|?||?|?|?|Installed with Swansea system|
