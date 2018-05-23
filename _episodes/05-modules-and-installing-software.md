@@ -171,8 +171,8 @@ Commercial software will require the appropriate licenses.
 > run the job again and look at the output image. A list of other environment variables can be found at https://www.glue.umd.edu/hpcc/help/slurmenv.html, try some of these instead.
 >
 > > ## Solution
-> > 3. You will get errors about the amount of memory being used. For some reason this script can be very slow to run sometimes, so increasing the timeout can help too. But only do this if you are getting timeout errors. Around 50MB of memory and 5 minutes should be enough.
-> > 6. Your python code should now read:
+> > 1. You will get errors about the amount of memory being used. These might show up as a segmentation fault rather than a memory error. For some reason this script can be very slow to run sometimes, so increasing the timeout can help too. But only do this if you are getting timeout errors. Around 50MB of memory and 5 minutes should be enough.
+> > 2. Your python code should now read:
 > >
 > > ~~~
 > > import matplotlib as mpl
