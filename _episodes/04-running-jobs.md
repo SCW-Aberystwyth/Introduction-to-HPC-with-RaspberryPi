@@ -554,9 +554,4 @@ You can receive email alerts when your job begins and ends by adding the followi
 * Harvard University's list of common Slurm commands - https://rc.fas.harvard.edu/resources/documentation/convenient-slurm-commands/
 * For those coming from another cluster/scheduler, check out Slurm's scheduler Rosetta stone: http://slurm.schedmd.com/rosetta.pdf
 
-## MPI References 
 
-Please refer to the following for other examples of SLURM scripts:
-* [multicore job script](https://rc.fas.harvard.edu/wp-content/uploads/2015/05/Intro-to-Odyssey-v2-09.pdf#page=34)
-* [multicore openMP job script](https://rc.fas.harvard.edu/wp-content/uploads/2015/05/Intro-to-Odyssey-v2-09.pdf#page=35)
-* [multinode/MPI job script](https://rc.fas.harvard.edu/wp-content/uploads/2015/05/Intro-to-Odyssey-v2-09.pdf#page=36)
