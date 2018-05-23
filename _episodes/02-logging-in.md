@@ -56,7 +56,7 @@ Phase    System Location & Type             Login Node(s)
 
 
 |Cluster|Number of Nodes|Cores per node|Architecture|RAM|Other|
-|-------|----|----|------|----|------|
+|---------------------------|----|----|------|----|------|
 |Cardiff High Throughput|~~162~~ 54|12|Westmere|36GB||
 |Cardiff High Throughput|4|2|Nehalem|128GB||
 |Cardiff High Throughput|1|8|Nehalem|512GB||
