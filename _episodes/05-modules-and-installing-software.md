@@ -94,8 +94,6 @@ Python 3.5.1 (default, Jun 22 2016, 13:43:55)
 Type "help", "copyright", "credits" or "license" for more information.
 >>> from sklearn import datasets
 >>> digits = datasets.load_digits()
-digits = datasets.load_digits()
->>> digits = datasets.load_digits()
 >>> print(digits.data)
 [[  0.   0.   5. ...,   0.   0.   0.]
  [  0.   0.   0. ...,  10.   0.   0.]
