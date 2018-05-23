@@ -550,8 +550,6 @@ You can receive email alerts when your job begins and ends by adding the followi
 
 # More information about Slurm 
 
-* HPC Wales Documentation - http://portal.hpcwales.co.uk/wordpress/index.php/index/slurm/
-* Harvard University's list of common Slurm commands - https://rc.fas.harvard.edu/resources/documentation/convenient-slurm-commands/
-* For those coming from another cluster/scheduler, check out Slurm's scheduler Rosetta stone: http://slurm.schedmd.com/rosetta.pdf
-
-
+* [HPC Wales Documentation](http://portal.hpcwales.co.uk/wordpress/index.php/index/slurm/)
+* [Harvard University's list of common Slurm commands](https://rc.fas.harvard.edu/resources/documentation/convenient-slurm-commands/)
+* [For those coming from another cluster/scheduler, check out Slurm's scheduler Rosetta stone](http://slurm.schedmd.com/rosetta.pdf)
