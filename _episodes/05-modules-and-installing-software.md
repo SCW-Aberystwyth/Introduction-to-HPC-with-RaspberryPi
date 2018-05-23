@@ -118,7 +118,7 @@ home and/or lab folders for installing your own copies locally.
 or lab folder for bleeding-edge releases, software you are testing, or software used
 only by your lab. For programs that are commonly used by your domain, field, 
 or department, please submit a 
-[software install request](email support@hpcwales.co.uk).
+[software install request](email:support@hpcwales.co.uk).
 Note that due to demand and the complex nature of software installs, it may take a while for us to complete these requests. 
 
 Commercial software will require the appropriate licenses. 
