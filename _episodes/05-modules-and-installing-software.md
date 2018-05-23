@@ -126,43 +126,41 @@ Commercial software will require the appropriate licenses.
 
 # Exercises
 
-plot.py script used in the exercises.
-~~~
-import matplotlib as mpl
-mpl.use('Agg') #set the backend to Agg to make a png file instead of displaying on screen
-import matplotlib.pyplot as plt
-plt.plot(range(10))
-plt.savefig('temp.png')
-~~~
-{: python}
-
-plot.sh script used in the exercises.
-
-~~~
-#!/bin/bash --login
-###
-#job name
-#SBATCH --job-name=hostname
-#job stdout file
-#SBATCH --output=hostname.out.%J
-#job stderr file
-#SBATCH --error=hostname.err.%J
-#maximum job time in D-HH:MM
-#SBATCH --time=0-00:01
-#number of parallel processes (tasks) you are requesting - maps to MPI processes
-#SBATCH --ntasks=1
-#memory per process in MB 
-#SBATCH --mem=2
-#SBATCH --ntasks-per-node=1
-#SBATCH --nodes=1
-###
-module load python/3.5.1
-python3 plot.py
-~~~
-{: .bash}
-
-
 > ## Running a python script. 
+> plot.py script used in the exercises.
+> ~~~
+> import matplotlib as mpl
+> import matplotlib.pyplot as plt
+> mpl.use('Agg') #set the backend to Agg to make a png file instead of displaying on screen
+> plt.plot(range(10))
+> plt.savefig('temp.png')
+> ~~~
+> {: python}
+> 
+> plot.sh script used in the exercises.
+> 
+> ~~~
+> #!/bin/bash --login
+> ###
+> #job name
+> #SBATCH --job-name=hostname
+> #job stdout file
+> #SBATCH --output=hostname.out.%J
+> #job stderr file
+> #SBATCH --error=hostname.err.%J
+> #maximum job time in D-HH:MM
+> #SBATCH --time=0-00:01
+> #number of parallel processes (tasks) you are requesting - maps to MPI processes
+> #SBATCH --ntasks=1
+> #memory per process in MB 
+> #SBATCH --mem=2
+> #SBATCH --ntasks-per-node=1
+> #SBATCH --nodes=1
+> ###
+> module load python/3.5.1
+> python3 plot.py
+> ~~~
+> {: .bash}
 > 1. Create a new file using nano and call it plot.py. It should contain the text from the Python script shown above.
 > 2. Create a new job submission script containing the text from the Bash script shown above, call it plot.sh. 
 > 3. Run the job with `sbatch plot.sh`. Did the job complete successfully? Are there any errors in the error file? 
