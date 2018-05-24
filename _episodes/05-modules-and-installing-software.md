@@ -130,8 +130,8 @@ Commercial software will require the appropriate licenses.
 > plot.py script used in the exercises.
 > ~~~
 > import matplotlib as mpl
-> import matplotlib.pyplot as plt
 > mpl.use('Agg') #set the backend to Agg to make a png file instead of displaying on screen
+> import matplotlib.pyplot as plt
 > plt.plot(range(10))
 > plt.savefig('temp.png')
 > ~~~
