@@ -1,5 +1,5 @@
 ---
-title: "Estimation of Pi for Pedestrians"
+title: "Estimation of Pi on a single core"
 teaching: 40
 exercises: 10
 questions:
