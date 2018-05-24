@@ -36,13 +36,17 @@ These tools are becoming the <em>de facto</em> standard tools in most research d
 
 ## What does a cluster look like?
 
-High Performance Computing most generally refers to the practice of aggregating computing power in a way that delivers much higher performance than one could get out of a typical desktop computer or workstation in order to solve large problems in science, engineering, or business.â€ --http://insidehpc.com/hpc-basic-training/what-is-hpc/
+High Performance Computing most generally refers to the practice of aggregating computing power in a way that delivers much higher performance than one could get out of a typical desktop computer or workstation in order to solve large problems in science, engineering, or business. --http://insidehpc.com/hpc-basic-training/what-is-hpc/
 
 Clusters are simply a grouping of computers with the same components (RAM, disk, processors/cores, and networking cards) as those in your desktop or laptop, but with more umph! and are networked with high-speed interconnect that can be accessed (indirectly) through software, the scheduler, that manages simultaneous execution of jobs, or analyses, by multiple persons. 
 
 ![Overview of a compute cluster](../fig/cluster-generic.png)
 
 The user accesses the compute cluster through one or more login nodes, and submits jobs to the scheduler, which will dispatch to and collect the completed work from the compute nodes. Frequently, clusters have shared disks, or filesystems, of various flavors where you can store your data, programs, and use for in-job execution (working or scratch areas)
+
+## Nodes and Cores
+
+Each individual computer in a cluster is commonly referred to as a "node". Inside each node will be several processor chips that do the actual computation. Until around the mid 2000s most desktop/laptop computers had only a single processor, but since then most are multi-core meaning they effectively have multiple processors but all on one physical chip. A typical node in a cluster will have anything from 8 to 40 cores in total often across several physical processor chips. 
 
 ## HPC Wales and Super Computing Wales
 
@@ -52,7 +56,16 @@ HPC Wales ran from 2010 to 2015 and provided clusters in Aberystwyth, Bangor, Ca
 
 ### SCW
 
-Super Computing Wales (SCW) is a new project to replace HPC Wales. It started in 2015 and runs until 2020. It will include new systems in Cardiff and Swansea. At the time of writing in May 2018 Cardiff is midway through being configured and Swansea will be installed in June. Both systems will be available for use later in 2018.
+Super Computing Wales (SCW) is a new project to replace HPC Wales involving Aberystwyth, Bangor, Cardiff and Swansea universities. It started in 2015 and runs until 2020. It will include new systems in Cardiff and Swansea. At the time of writing in May 2018 Cardiff is midway through being configured and Swansea will be installed in June. Both systems will be available for use later in 2018.
+
+## Super Computing Wales Research Software Engineers
+
+Each university is employing research software engineers who will work with researchers to:
+
+* Convert existing software to run on the HPC system
+* Optimise code to run more efficiently on HPC systems
+* Write new software
+* Help with training, on-boarding and project development
 
 
 ### How to get access?

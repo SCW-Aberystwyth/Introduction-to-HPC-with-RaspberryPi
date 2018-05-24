@@ -9,9 +9,28 @@ permalink: /guide/
 
  * introduce everyone
  * get attendees to introduce themselves
- * etherpad link http://board.net/p/scwaber-2017-12-01
- * pre-workshop questionnaire
- * introduce SCW
+ * etherpad link http://board.net/p/scwaber-2018-05-24
+
+ 
+# HPC background
+
+What is a cluster
+
+why use one:
+* more memory
+* faster/more processors
+* specialist software
+* leave stuff running
+
+show cluster diagram
+
+explain nodes vs cores
+
+introduce SCW
+RSEs
+history with HPCW
+current state
+application process 
 
 
 # Logging in
