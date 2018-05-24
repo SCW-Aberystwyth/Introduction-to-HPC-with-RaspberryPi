@@ -391,7 +391,39 @@ In the output above the account is the project you are associated with. hpcw0318
 
 ## Running multiple copies of a job with Srun
 
+So far we've only run a single copy of a program. Often we'll need to run multiple copies of something. To do this we can combine the `sbatch` and `srun` commands. Instead of just placing the command at the end of the script we'll `srun` the command. 
+This will allow multiple copies of the command to run. In the example below two copies of the hostname command are run on two different nodes. 
 
+~~~
+#!/bin/bash --login
+###
+#job name
+#SBATCH --job-name=hostname
+#job stdout file
+#SBATCH --output=hostname.out.%J
+#job stderr file
+#SBATCH --error=hostname.err.%J
+#maximum job time in D-HH:MM
+#SBATCH --time=0-00:01
+#maximum memory of 10 megabytes
+#SBATCH --mem-per-cpu=10
+#SBATCH --ntasks=2
+#SBATCH --ntasks-per-node=1
+#SBATCH --nodes=2
+###
+
+srun /bin/hostname
+~~~
+{: .bash}
+
+Save this as job.sh and run it with sbatch
+
+~~~
+[jane.doe@cwl001 ~]$ sbatch job.sh
+~~~
+{: .bash}
+
+The output will now go into hostname.out.jobnumber and should contain two different hostnames. 
 
 
 ## Job Arrays
