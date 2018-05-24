@@ -176,8 +176,8 @@ Commercial software will require the appropriate licenses.
 > >
 > > ~~~
 > > import matplotlib as mpl
-> > import os
 > > mpl.use('Agg') #set the backend to Agg to make a png file instead of displaying on screen
+> > import os
 > > import matplotlib.pyplot as plt
 > > plt.plot(range(10))
 > > jobid=str(os.environ.get('SLURM_JOBID'))
