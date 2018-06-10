@@ -18,7 +18,7 @@ Lola is told that her predecessors all worked on the same project. A high perfor
 
 The algorithm was pioneered by _Georges-Louis Leclerc de Buffon_ in _1733_. 
 
-![Estimating Pi with Buffon's needle]({{ page.root }}/tikz/estimate_pi.svg)
+![Estimating Pi with Buffon's needle]({{ page.root }}/fig/estimate_pi.svg)
 
 Overlay a unit square over a quadrant of a circle. Throw `m` random number pairs and count how many of the pairs lie inside the circle (the number pairs inside the circle is denoted by `n`). `Pi` is then approximated by: 
 
