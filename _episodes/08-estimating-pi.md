@@ -257,7 +257,7 @@ So this is a prime candidate for acceleration.
 
 > ## Word count
 >
-> Download [this python script]({{ page.root }}/downloads/count_pylibs.py) to your current directory. Run it by executing:
+> Download [this python script]({{ page.root }}/code/count_pylibs.py) to your current directory. Run it by executing:
 > 
 > ~~~~~
 > $ python3 count_pylibs.py
@@ -296,7 +296,7 @@ So this is a prime candidate for acceleration.
 
 > ## Faster is always better, right?
 >
-> Download [this python script]({{ page.root }}/downloads/count_pylibs.py) to your current directory. Run it by executing:
+> Download [this python script]({{ page.root }}/code/count_pylibs.py) to your current directory. Run it by executing:
 > 
 > ~~~~~
 > $ python3 count_pylibs.py
