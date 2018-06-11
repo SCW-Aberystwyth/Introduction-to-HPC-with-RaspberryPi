@@ -76,13 +76,23 @@ She must admit that the application takes quite long to finish. Yet another reas
 
 Before venturing out and trying to accelerate a program, it is utterly important to find the hot spots of it by means of measurements. For the sake of this tutorial, we use the [line_profiler](https://github.com/rkern/line_profiler) of python. Your language of choice most likely has similar utilities.
 
-If need be, to install the profiler, please issue the following command:
+to install the profiler, please issue the following commands. The first two commands load the python module, enabling the pip3 command and load the http-proxy module enabling internet access.
+
 ~~~
-$ pip3 install line_profiler
+$ module load python/3.5.1
+$ module load http-proxy
+$ pip3 install --user line_profiler
 ~~~
 {: .bash }
 
-When this is done and your command line offers the `kernprof-3` executable, you are ready to go on. 
+The profiler can be started with the command 
+
+~~~
+$ ~/.local/bin/kernprof 
+~~~
+{: .bash}
+
+Note that on systems where pip can install to system directories the kernprof (or kernprof-3) command will be available without specifying a path.
 
 > ## Profilers
 >
@@ -133,7 +143,7 @@ def main():
 Let's save this to `serial_numpi_annotated.py`. After this is done, the profiler is run with a reduced input parameter that does take only about 2-3 seconds:
 
 ~~~
-$ kernprof-3 -l ./serial_numpi_annotated.py 50000000
+$ ~/.local/bin/kernprof -l ./serial_numpi.py 50000000
 [serial version] required memory 572.205 MB
 [serial version] pi is 3.141728 from 50000000 samples
 Wrote profile results to serial_numpi_annotated.py.lprof
@@ -295,16 +305,8 @@ So this is a prime candidate for acceleration.
 {: .challenge}
 
 > ## Faster is always better, right?
->
-> Download [this python script]({{ page.root }}/code/count_pylibs.py) to your current directory. Run it by executing:
 > 
-> ~~~~~
-> $ python3 count_pylibs.py
-> 4231827 characters and 418812 words found in standard python libs
-> ~~~~~
-> {: .bash}
-> 
-> After finding the hotspot, pair up and discuss the implementation. Discuss and answer the following points: 
+> Pair up and discuss the implementation of count_pylibs_annotated.py from the previous exercise. Discuss and answer the following points: 
 > 1. Find other ways to implement the word count without parallelizing the code! 
 > 2. For every alternative implementation found in 1., check the output of the program. Did the number of words change? Could such a check be automated?
 > 3. Compare the runtimes that you achieved throughout this exercise. Was your time worth it?
