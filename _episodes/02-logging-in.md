@@ -74,13 +74,13 @@ These figures may still be subject to some change and might have been sourced fr
 
 |Cluster|Number of Nodes|Cores per node|Architecture|RAM|Other|
 |-------|----|----|------|----|------|
-|Swansea|118|20|Skylake|384GB||
-|Swansea GPU|4|20|Skylake|384GB|Nvidia V100 (5120 core, 16GB RAM)|
+|Swansea|122|40|Skylake|376GB||
+|Swansea GPU|4|40|Skylake|376GB|Nvidia V100 (5120 core, 16GB RAM)|
 |Swansea Data Lake|?|?||?|?|?|Installed with Swansea system|
-|Cardiff MPI|136|20|Sylake|196GB||
-|Cardiff HTC|25|20|Sylake|196GB||
-|Cardiff High Memory|26|20|Sylake|382GB||
-|Cardiff GPU|13|20?|Skylake|?|Nvidia P100 (3584 core, 16GB RAM)|
+|Cardiff MPI|136|40|Sylake|196GB||
+|Cardiff HTC|25|40|Sylake|196GB||
+|Cardiff High Memory|26|40|Sylake|382GB||
+|Cardiff GPU|13|40?|Skylake|?|Nvidia P100 (3584 core, 16GB RAM)|
 |Cardiff Data Lake|2|22|Skylake|512GB|Will be installed later|
 
 Aberystwyth users are expected to use the Swansea system and will need to make a case for why they would need to use the Cardiff system. Bangor users are expected to use Cardiff.
