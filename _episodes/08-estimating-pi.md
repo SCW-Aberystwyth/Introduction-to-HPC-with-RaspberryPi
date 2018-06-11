@@ -1,5 +1,5 @@
 ---
-title: "Estimation of Pi on a single core"
+title: "Profiling Single Core Performance"
 teaching: 40
 exercises: 10
 questions:
