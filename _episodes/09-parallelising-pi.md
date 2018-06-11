@@ -23,7 +23,7 @@ keypoints:
 Having the profiling data, our estimate of pi is a valuable resource.
 
 ~~~~~
-$ kernprof-3 -l ./serial_numpi_annotated.py 50000000
+$ ~/.local/bin/kernprof -l ./serial_numpi.py 50000000
 [serial version] required memory 572.205 MB
 [serial version] pi is 3.141728 from 50000000 samples
 Wrote profile results to serial_numpi_annotated.py.lprof
@@ -54,7 +54,7 @@ The key points were, that `inside_circle` consumed the majority of the runtime (
 
 More over, the generation of random numbers in x and in y is independent (two seperate lines of code). So there is another way to expliot data independence:
 
-![Illustration of drawing random number pairs `x` and `y` and their dependency with respect to the dimension]({{ page.root }}/tikz/data_coords_parallel_estimate_pi.svg)
+![Illustration of drawing random number pairs `x` and `y` and their dependency with respect to the dimension]({{ page.root }}/fig/data_coords_parallel_estimate_pi.svg)
 
 
 > ## Numpy madness
