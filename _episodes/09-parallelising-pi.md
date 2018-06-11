@@ -103,7 +103,15 @@ This behavior is often referred to as _data parallelism_.
 > 
 > my_data = pi*my_data
 > ~~~~~
+> > ## Solution
+> > This code is data independent, we never need to know another value of my_data at any given stage.
+> {: .solution}
 {: .challenge}
+
+
+
+
+
 
 > ## Data Parallel Code 2
 >
@@ -127,6 +135,9 @@ This behavior is often referred to as _data parallelism_.
 > my_data[np.where(my_data % 2 == 0)] = 42
 > my_data[np.where(my_data % 2 != 0)] = 3*my_data[np.where(my_data % 2 != 0)]
 > ~~~~~
+> > ## Solution
+> > This code is data independent, we never need to know another value of my_data at any given stage.
+> {: .solution}
 {: .challenge}
 
 > ## Data Parallel Code 3
@@ -140,6 +151,9 @@ This behavior is often referred to as _data parallelism_.
 > for i in range(len(my_data)):
 >   my_data[i] = 42*my_data[randint(0,len(my_data))]
 > ~~~~~~
+> > ## Solution
+> > This code is not data independent, we need to know other values. As the access is random we don't even know which values in advance.
+> {: .solution}
 {: .challenge}
 
 Lola now wonders how to proceed. There are multiple options at her disposal. But given her limited time budget, she thinks that trying them all out is tedious. She discusses this with her office mate over lunch. Her colleaque mentions that this type of consideration was first discussed by Gene Amdahl in 1967 and goes by the name of [Amdahl's law](https://en.wikipedia.org/wiki/Amdahl%27s_law). This law provides a simple of mean of calculating how fast a program can get when parallelized for a fixed problem size. By profiling her code, Lola has all the ingredients to make this calculation. 
@@ -196,17 +210,21 @@ S = ---------------
 > 
 > For the sake of the example, we assume that the line profile looks identical to the original implementation above. Compute the theoretical speed-up S!
 > Which implementation should Lola choose now? 
+> > p = 0.73, s = 4, S = 2.21. Choose this implementation over just calculating X and Y independently.
+{: .solution}
 {: .challenge}
 
 > ## Always go parallel! Right?
 >
-> Profile this [python application]({{ page.root }}/downloads/volume_pylibs.py) which computes how much disk space your python standard library consumes.
+> Profile this [python application]({{ page.root }}/code/volume_pylibs.py) which computes how much disk space your python standard library consumes.
 > The algorithm works in 2 steps:
 > 1. create list of absolute paths of all `.py` files in your python's system folder
 > 2. loop over all paths from 1. and sum up the space on disk each file consumes
 >
 > Is this a task worth parallelizing? Make a guess!
 > Verify your answer using profiling and computing the theoretical speed-up possible.
+> > Around 95% of the time is spend running the statement std_files = glob.glob(path_of_ospy+"/*.py") 
+> > Almost all in a single call to a single function, so this can't be parallelised
 {: .challenge}
 
 
@@ -231,76 +249,92 @@ So the bottom line(s) of Amdahl's law are:
 > When a program wants to perform a computation, it most of the time reads in some data, stores it in memory (RAM) and performs computations on it using the CPU. Modern CPUs can do more than one thing at a time, mostly because they consist of more than one "device" than can perform a computation. This "device" is called a CPU core. When we want to perform some tasks in parallel to one another, the amout of work that can be done in parallel is limited by the amount of CPU cores that can perform computations. So, the number of CPU cores is the hard limit for parallelizing any computation. 
 {: .callout}
 
-Keeping this in mind, Lola decides to split up the work for multiple cores requires Lola to split up the number of total samples by the number of cores available and calling `count_inside` on each of these partitions:
+Keeping this in mind, Lola decides to split up the work for multiple cores requires Lola to split up the number of total samples by the number of cores available and calling `inside_circle` on each of these partitions:
 
 ![Partitioning `x` and `y`]({{ page.root }}/fig/partition_data_parallel_estimate_pi.svg)
 
-The number of partitions has to be limited by the number of CPU cores available. With this in mind, the `estimate_pi` method can be converted to run in parallel:
+The number of partitions has to be limited by the number of CPU cores available. With this in mind, the `estimate_pi` method can be converted to run in parallel. The `estimate_pi` function takes an argument `core_count` which tells it how many CPU cores and partitions to use. 
+
 
 ~~~
-from multiprocessing import Pool
+import numpy as np
 
-def estimate_pi(n_samples,n_cores):
+def estimate_pi(total_count,core_count):
 
-    partitions = [ ]
-    for i in range(n_cores):
-        partitions.append(int(n_samples/n_cores))
+    count = pymp.shared.array((core_count,), dtype='float32')
 
-    pool = Pool(processes=n_cores)
-    counts=pool.map(inside_circle, partitions)
+    with pymp.Parallel(core_count) as p:
+        for i in p.range(0,core_count):
+            local_count = inside_circle(total_count/core_count)
 
-    total_count = sum(partitions)
-    return (4.0 * sum(counts) / total_count)
+            with p.lock:
+                count[i] = local_count
 
+    return (4.0 * sum(count) / total_count)
 ~~~
 {: .python}
 
-We are using the `multiprocessing` module that comes with the python standard library. The first step is to create a list of numbers that contain the partitions. For this, `n_samples` is divided by the number of cores available on the machine, where this code is executed. The ratio has to be converted to an integer to ensure, that each partition is compatible to a length of an array. The construct used next is a process `Pool`. Due to technical details on how the python interpreter is built, we do not use a Pool of threads here. In other languages than python, `threads` are the more common idiom to represent independent strings of execution that share the same memory than the process they are created in. The process `Pool` creates `n_cores` processes and keeps them active as long as the `Pool` is active. Then `pool.map` will call `inside_circle` using an item of `partitions` as the argument. In other words, for each item in `partitions`, the `inside_circle` function is called once using the respective item as input argument. The result of these invocations of `inside_circle` are stored within the `counts` variable (which will have the same length as `partitions` eventually).
+PyMP is a Python module based on a popular program called OpenMP that's available in many languages (but not Python). OpenMP and PyMP let you create parallel loops where all or a number of the iterations of the loop are run at once. Another way to build parallel code is to split a program into multiple concurrent threads, but this normally requires more extra code than OpenMP/PyMP does. 
+
+Install the `pymp` module by running the command:
+
+~~~
+$ pip3 install --user pymp-pypi
+~~~
+{: .bash}
+
+One thing we must be cautious of when writing parallel code is what happens when two (or more) threads try to update the same variable at the same time. OpenMP and PyMP let us specify that a variable is private and each thread will get its own copy or shared where there is only one copy. The access to a shared variable can be locked so that any thread wanting to use it has to wait for the others to finish. In the above example we create a shared variable called `count` which is an array with an element for each thread. The access to this locked so that one one thread can write to it at a time. Each thread has its own private variable called `local_count`, this is so that we spend the minimum amount of time in the locked section. 
+
 
 ![Partitioning `x` and `y` and results of reach partition]({{ page.root }}/fig/partition_data_parallel_estimate_pi_with_results.svg)
 
-The last step required before calculating pi is to collect the individual results from the `partitions` and _reduce_ it to one `total_count` of those random number pairs that were inside of the circle. Here the `sum` function loops over `partitions` and does exactly that. So let's run our [parallel implementation](code/03_parallel_jobs/parallel_numpi.py) and see what it gives:
+The last step required before calculating pi is to collect the individual results from the `partitions` and _reduce_ it to one `total_count` of those random number pairs that were inside of the circle. Here the `sum` function loops over `partitions` and does exactly that. So let's run our [parallel implementation](code/pymp_numpi.py) and see what it gives:
 
 ~~~
-$ python3 ./parallel_numpi.py 1000000000
+$ python3 ./pymp_numpi.py 1000000000
 ~~~
 {: .bash}
 
 ~~~
-[parallel version] required memory 11444.092 MB
-[using  20 cores ] pi is 3.141631 from 1000000000 samples
+pymp_numpi.py:13: VisibleDeprecationWarning: using a non-integer number instead of an integer will result in an error in the future
+  x = np.float32(np.random.uniform(size=total_count))
+pymp_numpi.py:14: VisibleDeprecationWarning: using a non-integer number instead of an integer will result in an error in the future
+  y = np.float32(np.random.uniform(size=total_count))
+.
+.
+.
+[pymp version] [using 16 cores ] pi is 3.141840 from 100000000 samples
 ~~~
 {: .output}
 
 The good news is, the parallel implementation is correct. It estimates Pi to equally bad precision than our serial implementation. The question remains, did we gain anything? For this, Lola tries to the `time` system utility that can be found on all *nix installations and most certainly on compute clusters.
 
 ~~~
-$ time python3 ./serial_numpi.py 200000000
+$ time python3 ./serial_numpi.py 100000000
 ~~~
 {: .bash}
 
 ~~~
 [serial version] required memory 2288.818 MB
-[serial version] pi is 3.141604 from 200000000 samples
+[serial version] pi is 3.141604 from 100000000 samples
 
-real	0m12.766s
-user	0m10.543s
-sys		0m2.101s
+real    0m17.889s
+user    0m5.160s
+sys     0m13.989s
 ~~~
 {: .output}
 
 ~~~
-$ time python3 ./parallel_numpi.py 2000000000
+$ time python3 ./pymp_numpi.py 1000000000
 ~~~
 {: .bash}
 
 ~~~
-[parallel version] required memory 2288.818 MB
-[using  12 cores ] pi is 3.141642 from 200000000 samples
+[pymp version] [using 16 cores ] pi is 3.141840 from 100000000 samples
 
-real	0m1.942s
-user	0m12.097s
-sys		0m2.813s
+real    0m3.567s
+user    0m5.605s
+sys     0m43.845s
 ~~~
 {: .output}
 
@@ -310,10 +344,10 @@ If the snipped from above is compared to the snippets earlier, you can see that 
   - `user` this is accumulated amount of CPU seconds (so seconds that the CPU was active) spent in code by the user (you)
   - `sys`  this is accumulated amount of CPU seconds that the CPU spent while executing system code that was necessary to run your program (memory management, display drivers if needed, interactions with the disk, etc.)
     
-So from the above, Lola wants to compare the `real` time spent by her serial implementation (`0m12.766`) and compare it to the `real` time spent by her parallel implementation (`0m1.942s`). Apparently, her parallel program was `6.6` times faster than the serial implementation. 
+So from the above, Lola wants to compare the `real` time spent by her serial implementation (`0m17.889`) and compare it to the `real` time spent by her parallel implementation (`0m3.567s`). Apparently, her parallel program was `5` times faster than the serial implementation. 
 
 We can compare this to the maximum speed-up that is achievable: `S = 1/(1 - 0.99 + 0.99/12) = 10.8`
-That means, our parallel implementation does already a good job, but only achieves `100*6.6/10.8 = 61.1%` runtime improvement of what is possible. As achieving maximum speed-up is hardly ever possible, Lola leaves that as a good end of the day and leaves for home.
+That means, our parallel implementation does already a good job, but only achieves `100*5/10.8 = 46.3%` runtime improvement of what is possible. As achieving maximum speed-up is hardly ever possible, Lola leaves that as a good end of the day and leaves for home.
 
 > ## Adding up times
 > The output of the `time` command is very much bound to how a operating system works. In an ideal world, `user` and `sys` of serial programs should add up to `real`. Typically they never do. The reason is, that the operating systems used in HPC and on laptops or workstations are set up in a way, that the operating system decides which process receives time on the CPU (aka to perform computations). Once a process runs, it may however happen, that the system decides to intervene and have some other binary have a tiny slice of a CPU second while your application is executed. This is where the mismatch for `user+sys` and `real` comes from.

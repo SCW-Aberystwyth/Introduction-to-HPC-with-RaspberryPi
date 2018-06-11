@@ -333,6 +333,8 @@ we have to tell the profiler which function to profile with @profile tag
 put this before def main(): 
 refactor so there's a main function 
 
+try to find an empty head node to do this, ssl003 is a good bet
+
 run profiler:
 
 `~/.local/bin/kernprof -l ./serial_numpi.py 50000000`
@@ -362,4 +364,98 @@ generating random numbers takes about 60% of the time. this is our prime target 
 * profiling Exercises
 * pair/group exercise on optimisation
 
+## Summary
 
+* Profilers can analyse the runtime of your code.
+* The estimate of pi spends most of it's time while generating random numbers.
+* The estimation of pi with the Monte Carlo method is a compute bound problem because pseudo-random numbers are just algorithms. There's no major I/O going on.
+
+# Parallel estimation of Pi
+
+Showed previously random number generation was 60-70% of time.
+show profiler output again. 
+
+`python3 -m line_profiler serial_numpi.py.lprof`
+
+X and Y are indepedendent variables (see first figure in notes)
+can generate them in parallel
+
+random numbers genreated with numpy, similar to
+
+`a = np.random.uniform(size=10)`
+
+`b = np.random.uniform(size=10)`
+
+`c = a + b`
+
+a and b are lists, final line is concatenating the two lists
+
+`for i in range(len(a)):`
+`    c[i] = a[i] + b[i]`
+
+achieves same thing, but makes it clearer whats going on
+
+we could generate each pair of X/Y values in parallel (see second figure in notes)
+
+## Exercises
+
+Data independence 1,2,3
+
+## Amdahl's law
+
+What is the overall speedup of a program when some of it is done in paralle?
+
+           1
+S = ---------------
+    (1 - p) + (p/s)
+    
+p = portion of program sped up
+s = speedup achieved
+
+
+parallel calculation of x and y
+occupied 70% of time
+speedup of 2 in that time
+             1
+S = ----------------
+    (1 - 0.7) + (0.7/2) 
+
+S = 1.538
+
+
+## Exercises
+
+* Compute the speedup with 4 parts 
+* Always go parallel right?
+
+## More Amdhal's law
+
+Show Amdahl's law graph
+
+we can't infinitely parallelise, limit to number of cores etc
+additional limits from I/O and memory bottlenecks
+
+in the example Lola splits data into partitions, see figure
+
+PyMP and OpenMP, parallel loops
+simpler than threads 
+can also use the multiprocessing library in python
+
+explain shared vs private variables, locking
+
+run pymp version `python3 ./pymp_numpi.py 1000000000`
+
+time it `time python3 ./pymp_numpi.py 1000000000`
+compare to serial one `time python3 ./serial_numpi.py 1000000000`
+
+## Exercises
+
+* thought exercises on what can be parallelised (x2)
+
+## Summary
+
+* "Amdahl's law is a description of what you can expect of your parallelisation efforts."
+* "Use the profiling data to calculate the time consumption of hot spots in the code."
+* "The generation and processing of random numbers can be parallelized as it is a data parallel task."
+* "Time consumption of a single application can be measured using the `time` utility."
+* "The ratio of the run time of a parallel program divided by the time of the equivalent serial implementation, is called speed-up."
