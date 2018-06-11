@@ -294,3 +294,72 @@ sacct will show 32 subjobs.
 
 parallel_joblog shows how long each took to run.
 
+# Estimation of Pi on a single core
+
+## Buffon's Needle
+
+Monte carlo method for estimating Pi
+drop points randomly on a circle/quadrant
+
+draw a circle, take a quadrant
+drop m random points on a quadrant
+n is number inside the circle 
+
+     4*m
+Pi = ---
+      n
+      
+see python implementation of this
+
+x^2 + y^2 < 1 means inside the circle
+
+## profilers
+
+write code which works, measure performance, optimise
+
+profilers tell us how long each line of code takes
+
+python line_profiler is one of these
+
+install with 
+
+`module load python/3.5.1`
+
+`module load http-proxy`
+
+`pip3 install --user line_profiler`
+
+we have to tell the profiler which function to profile with @profile tag
+put this before def main(): 
+refactor so there's a main function 
+
+run profiler:
+
+`~/.local/bin/kernprof -l ./serial_numpi.py 50000000`
+
+output stored in 
+
+serial_numpi_profiled.py.lprof
+
+view it with
+
+`python3 -m line_profiler serial_numpi.py.lprof`
+
+estimate_pi function takes 100% of the time
+
+remove annotation from main and move it to estimate_pi
+
+repeat profiling
+
+inside_circle now shows 100%
+
+move profiling to there and repeat again
+
+generating random numbers takes about 60% of the time. this is our prime target for optimisation.
+
+## Exercises
+
+* profiling Exercises
+* pair/group exercise on optimisation
+
+
