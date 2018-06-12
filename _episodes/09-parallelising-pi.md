@@ -296,31 +296,26 @@ $ python3 ./pymp_numpi.py 1000000000
 {: .bash}
 
 ~~~
-pymp_numpi.py:13: VisibleDeprecationWarning: using a non-integer number instead of an integer will result in an error in the future
-  x = np.float32(np.random.uniform(size=total_count))
-pymp_numpi.py:14: VisibleDeprecationWarning: using a non-integer number instead of an integer will result in an error in the future
-  y = np.float32(np.random.uniform(size=total_count))
-.
-.
-.
-[pymp version] [using 16 cores ] pi is 3.141840 from 100000000 samples
+[pymp version] [using 8 cores ] pi is 3.141840 from 1000000000 samples
 ~~~
 {: .output}
 
 The good news is, the parallel implementation is correct. It estimates Pi to equally bad precision than our serial implementation. The question remains, did we gain anything? For this, Lola tries to the `time` system utility that can be found on all *nix installations and most certainly on compute clusters.
 
 ~~~
-$ time python3 ./serial_numpi.py 100000000
+$ time python3 ./serial_numpi.py 1000000000
+
 ~~~
 {: .bash}
 
 ~~~
-[serial version] required memory 2288.818 MB
-[serial version] pi is 3.141604 from 100000000 samples
+[serial version] required memory 11444.092 MB
+[serial version] pi is 3.141557 from 1000000000 samples
 
-real    0m17.889s
-user    0m5.160s
-sys     0m13.989s
+real    4m16.287s
+user    0m48.782s
+sys     3m28.885s
+
 ~~~
 {: .output}
 
@@ -330,11 +325,11 @@ $ time python3 ./pymp_numpi.py 1000000000
 {: .bash}
 
 ~~~
-[pymp version] [using 16 cores ] pi is 3.141840 from 100000000 samples
+[pymp version] [using 8 cores ] pi is 3.141840 from 1000000000 samples
 
-real    0m3.567s
-user    0m5.605s
-sys     0m43.845s
+real    0m56.505s
+user    0m5.252s
+sys     6m56.126s
 ~~~
 {: .output}
 
@@ -344,15 +339,22 @@ If the snipped from above is compared to the snippets earlier, you can see that 
   - `user` this is accumulated amount of CPU seconds (so seconds that the CPU was active) spent in code by the user (you)
   - `sys`  this is accumulated amount of CPU seconds that the CPU spent while executing system code that was necessary to run your program (memory management, display drivers if needed, interactions with the disk, etc.)
     
-So from the above, Lola wants to compare the `real` time spent by her serial implementation (`0m17.889`) and compare it to the `real` time spent by her parallel implementation (`0m3.567s`). Apparently, her parallel program was `5` times faster than the serial implementation. 
+So from the above, Lola wants to compare the `real` time spent by her serial implementation (`4m16`) and compare it to the `real` time spent by her parallel implementation (`0m56.505s`). Apparently, her parallel program was `4.57` times faster than the serial implementation. 
 
-We can compare this to the maximum speed-up that is achievable: `S = 1/(1 - 0.99 + 0.99/12) = 10.8`
-That means, our parallel implementation does already a good job, but only achieves `100*5/10.8 = 46.3%` runtime improvement of what is possible. As achieving maximum speed-up is hardly ever possible, Lola leaves that as a good end of the day and leaves for home.
+We can compare this to the maximum speed-up that is achievable: `S = 1/(1 - 0.99 + 0.99/8) = 7.48`
+That means, our parallel implementation does already a good job, but only achieves `100*4.57/7.48 = 61.1%` runtime improvement of what is possible. As achieving maximum speed-up is hardly ever possible, Lola leaves that as a good end of the day and leaves for home.
 
 > ## Adding up times
 > The output of the `time` command is very much bound to how a operating system works. In an ideal world, `user` and `sys` of serial programs should add up to `real`. Typically they never do. The reason is, that the operating systems used in HPC and on laptops or workstations are set up in a way, that the operating system decides which process receives time on the CPU (aka to perform computations). Once a process runs, it may however happen, that the system decides to intervene and have some other binary have a tiny slice of a CPU second while your application is executed. This is where the mismatch for `user+sys` and `real` comes from.
 > Note also how the `user` time of the parallel program is a lot larger than the time that was actually consumed. This is because, `time` reports accumulated timings i.e. it adds up CPU seconds that were consumed in parallel.
 {: .callout}
+
+> ## Hyperthreading
+> Hyperthreading is an extension found in some CPUs where some parts of the CPU core are duplicated. These appear to most programs as extra cores and can cause core counts to be reported as double what they really are. 
+> The performance boost of Hyperthreading varies between a small performance reduction and 15-30%. When performing identical simple tasks on every CPU as in our example there is unlikely to be any performance gain.
+> On Linux systems the `lscpu` command will display information about the CPU including the number of threads, cores and CPUs.
+{: .callout}
+
 
 
 > ## Parallel for real 1

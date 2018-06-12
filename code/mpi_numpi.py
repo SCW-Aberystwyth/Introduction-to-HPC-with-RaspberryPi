@@ -48,7 +48,7 @@ if __name__=='__main__':
 
     counts = comm.gather(count_item, root=0)
     if rank == 0:
-        my_pi = 4.0 * sum(counts) / sum(partitions)
+        my_pi = 4.0 * sum(counts) / n_samples
         sizeof = np.dtype(np.float32).itemsize
         print("[     mpi version] required memory %.3f MB" % (n_samples*sizeof*3/(1024*1024)))
         print("[using %3i cores ] pi is %f from %i samples" % (size,my_pi,n_samples))

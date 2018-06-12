@@ -459,3 +459,77 @@ compare to serial one `time python3 ./serial_numpi.py 1000000000`
 * "The generation and processing of random numbers can be parallelized as it is a data parallel task."
 * "Time consumption of a single application can be measured using the `time` utility."
 * "The ratio of the run time of a parallel program divided by the time of the equivalent serial implementation, is called speed-up."
+
+# MPI
+
+Message Passing Interface
+
+passes messages between cluster nodes
+
+useful when problem is too big for one node
+
+copy example to mpi_hostname.sh
+
+`sbatch -n 4 mpi_hostname.sh`
+
+repeat with more cores
+
+`sbatch -n 16 mpi_hostname.sh`
+
+order of output might be a bit random. Merging of the file done by synchronising on each line. 
+
+MPI libraries available for lots of languages including C/C++, Fortran and Python 
+
+Install mpi4py
+
+`module load http-proxy`
+
+`module load mpi`
+
+`module load python/3.5.1`
+
+`pip3 install --user mpi4py`
+
+create py_mpi_hostname.sh with example contents
+
+submit with `sbatch -n 16 py_mpi_hostname.sh`
+
+## Exercises 
+
+* run date with mpirun
+* upgrade print_hostname.py to include timestamps
+
+## MPI calculation of Pi
+
+MPI size tells us how many instances of the code are running
+
+rank tells us which instance we are. Usually the instance with rank 0 does the coordination.
+
+`comm = MPI.COMM_WORLD`
+
+code to get size/rank:
+
+`comm.Get_size()`
+
+`comm.Get_rank()`
+
+Every line of code running will be in parallel in a different MPI process, possibly on a different node
+
+Rank 0 will often do something different to other ranks. Show hello world and pi example in notes.
+
+MPI's scatter function will scatter an array in equal parts across all instances. 
+The gather function will gather data from all instances and merge them back together. 
+
+In example final computation of Pi done on rank 0 only.
+
+run it, make sbatch script with `time mpirun python3 mpi_numpi.py 1000000000`
+
+run with `sbatch -n 48 mpi_pi.sh`
+
+Investigate time output
+
+Show performance graphs
+
+MPI vs PyMP performance, different nodes. Try PyMP as an sbatch job.
+
+
