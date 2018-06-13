@@ -156,17 +156,17 @@ This behavior is often referred to as _data parallelism_.
 > {: .solution}
 {: .challenge}
 
-Lola now wonders how to proceed. There are multiple options at her disposal. But given her limited time budget, she thinks that trying them all out is tedious. She discusses this with her office mate over lunch. Her colleaque mentions that this type of consideration was first discussed by Gene Amdahl in 1967 and goes by the name of [Amdahl's law](https://en.wikipedia.org/wiki/Amdahl%27s_law). This law provides a simple of mean of calculating how fast a program can get when parallelized for a fixed problem size. By profiling her code, Lola has all the ingredients to make this calculation. 
+> ## Amdahl's Law 
+> Lola now wonders how to proceed. There are multiple options at her disposal. But given her limited time budget, she thinks that trying them all out is tedious. She discusses this > with her office mate over lunch. Her colleaque mentions that this type of consideration was first discussed by Gene Amdahl in 1967 and goes by the name of [Amdahl's law](https://en.wikipedia.org/wiki/Amdahl%27s_law). This law provides a simple of mean of calculating how fast a program can get when parallelized for a fixed problem size. By profiling her code, Lola has all the ingredients to make this calculation. 
+> The performance improvement of a program, given an original implementation and an improved one is referred as __speed-up S__. Given a program, we can measure the runtime portion of the code that can be benefit from use of more resources (in our case parallel computations), aka __parallel portion p__. For this __parallel portion__, we finally need how much this can be sped-up, which we will refer to as __serial speed-up s__. 
+> Given all these ingredients, the theoretical speed-up of the whole program is given by:
+> ~~~~~
+>           1
+> S = ---------------
+>    (1 - p) + (p/s)
+> ~~~~~
+{: .callout}
 
-The performance improvement of a program, given an original implementation and an improved one is referred as __speed-up S__. Given a program, we can measure the runtime portion of the code that can be benefit from use of more resources (in our case parallel computations), aka __parallel portion p__. For this __parallel portion__, we finally need how much this can be sped-up, which we will refer to as __serial speed-up s__. 
-
-Given all these ingredients, the theoretical speed-up of the whole program is given by:
-
-~~~~~
-           1
-S = ---------------
-    (1 - p) + (p/s)
-~~~~~
 
 > ## Independent Coordinates
 > 
@@ -225,6 +225,7 @@ S = ---------------
 > Verify your answer using profiling and computing the theoretical speed-up possible.
 > > Around 95% of the time is spend running the statement std_files = glob.glob(path_of_ospy+"/*.py") 
 > > Almost all in a single call to a single function, so this can't be parallelised
+> > {: .solution}
 {: .challenge}
 
 
