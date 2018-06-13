@@ -154,6 +154,7 @@ Again, the unordered output is visible. Now, the relation between the rank and t
 >
 > Launch the command `date` 16 times across your cluster. What do you observe? Play around with the precision of date through its flags (`+%N` for example) and study the distribution of the results.  
 > 
+> > ## Solution
 > > ~~~
 > > #!/bin/sh
 > > ###                                                                                                                                                                                      > > #SBATCH --job-name=mpi_date
