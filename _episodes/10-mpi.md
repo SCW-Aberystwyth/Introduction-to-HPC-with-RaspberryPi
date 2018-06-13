@@ -290,7 +290,29 @@ sys     0m0.165s
 ~~~
 {: .output}
 
-Note here, that we are now free to scale this application to hundreds of cores if we wanted to. We are only restricted by the size of our compute cluster and any limits the administrators apply (on HPC Wales we can only use 25 nodes at once). Before finishing the day, Lola looks at the run time that her MPI job consumed. `3.92` seconds for a job that ran on six times as much cores as here parallel implementation before (which took `56s` for the same configuration). That is quite an achievement of the day!
+Note here, that we are now free to scale this application to hundreds of cores if we wanted to. We are only restricted by Amdahl's law, the size of our compute cluster and any limits the administrators apply (on HPC Wales we can only use 25 nodes at once). Before finishing the day, Lola looks at the run time that her MPI job consumed. `3.92` seconds for a job that ran on six times as much cores as here parallel implementation before (which took `56s` for the same configuration). To test the performance and work out how many cores she should use she decided to write a small script which varied the number of cores being used. 
+
+~~~
+for i in {seq 1 48} ; do
+    sbatch -n $i mpi_numpi.sh 
+    sleep 2m
+done
+~~~
+{: .bash}
+
+She collects the results into a spreadsheet and graphs them. For comparison she also graphs the performance of the PyMP job running on a single node. These show that 
+
+That is quite an achievement of the day!
+
+![Performance vs Core Count MPI]({{ page.root }}/fig/mpi.png)
+
+![Performance vs Core Count PyMP]({{ page.root }}/fig/pymp.png)
+
+> ## Why isn't the graph smooth
+> The MPI graph shown above doesn't a smooth curve like the PyMP one does when the number of cores are increased. Why might this be the case?
+> > Some of the jobs will have run on the same nodes, others will have run across multiple nodes where data access is much slower. Exclusive use of the node wasn't requested either so other jobs may have impacted our performance.
+> > {: .solution}
+{: .challenge}
 
 > ## Use the batch system!
 >
@@ -300,7 +322,9 @@ Note here, that we are now free to scale this application to hundreds of cores i
 
 > ## Don't Stress the Network
 >
-> The MPI implementation given above transmits only the pi estimate per rank to the main program. Rewrite the program so that each rank generates the random numbers and sends them back to rank 0. 
+> The MPI implementation given above transmits only the number of points in the circle to the main program. Rewrite the program so that each rank generates the random numbers and sends them back to rank 0. 
 > 
 > Submit the job and look at the time it took. What do you observe? Why did the run time change?
+> > The performance gets significantly worse as a lot more data needs to be sent. When running on different nodes this will particularly bad as transferring data over the interconnect is much slower than locally.
+> > {: .solution}
 {: .challenge}
