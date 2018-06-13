@@ -172,6 +172,7 @@ Again, the unordered output is visible. Now, the relation between the rank and t
 >
 > Open the `print_hostname.py` script with your editor and use the python3 `datetime` module to print the time of day next to the host name and rank number.
 > 
+> > ## Solution
 > > There are lots of possibly variations on this. Here's a simple one:
 > > 
 > > from datetime import datetime
@@ -313,6 +314,7 @@ That is quite an achievement of the day!
 
 > ## Why isn't the graph smooth
 > The MPI graph shown above doesn't a smooth curve like the PyMP one does when the number of cores are increased. Why might this be the case?
+> > ## Solution
 > > Some of the jobs will have run on the same nodes, others will have run across multiple nodes where data access is much slower. Exclusive use of the node wasn't requested either so other jobs may have impacted our performance.
 > {: .solution}
 {: .challenge}
@@ -328,6 +330,7 @@ That is quite an achievement of the day!
 > The MPI implementation given above transmits only the number of points in the circle to the main program. Rewrite the program so that each rank generates the random numbers and sends them back to rank 0. 
 > 
 > Submit the job and look at the time it took. What do you observe? Why did the run time change?
+> > ## Solution
 > > The performance gets significantly worse as a lot more data needs to be sent. When running on different nodes this will particularly bad as transferring data over the interconnect is much slower than locally.
 > {: .solution}
 {: .challenge}
