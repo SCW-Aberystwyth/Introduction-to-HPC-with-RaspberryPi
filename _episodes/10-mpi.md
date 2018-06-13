@@ -98,8 +98,8 @@ $ module load http-proxy
 $ module load mpi
 $ module load python/3.5.1
 $ pip3 install --user mpi4py
-
 ~~~
+{: .bash}
 
 Now we can run the program by putting the following into py_mpi_hostname.sh
 
