@@ -289,7 +289,7 @@ One thing we must be cautious of when writing parallel code is what happens when
 
 ![Partitioning `x` and `y` and results of reach partition]({{ page.root }}/fig/partition_data_parallel_estimate_pi_with_results.svg)
 
-The last step required before calculating pi is to collect the individual results from the `partitions` and _reduce_ it to one `total_count` of those random number pairs that were inside of the circle. Here the `sum` function loops over `partitions` and does exactly that. So let's run our [parallel implementation](code/pymp_numpi.py) and see what it gives:
+The last step required before calculating pi is to collect the individual results from the `partitions` and _reduce_ it to one `total_count` of those random number pairs that were inside of the circle. Here the `sum` function loops over `partitions` and does exactly that. So let's run our [parallel implementation](/code/pymp_numpi.py) and see what it gives:
 
 ~~~
 $ python3 ./pymp_numpi.py 1000000000
@@ -353,7 +353,63 @@ That means, our parallel implementation does already a good job, but only achiev
 > ## Hyperthreading
 > Hyperthreading is an extension found in some CPUs where some parts of the CPU core are duplicated. These appear to most programs as extra cores and can cause core counts to be reported as double what they really are. 
 > The performance boost of Hyperthreading varies between a small performance reduction and 15-30%. When performing identical simple tasks on every CPU as in our example there is unlikely to be any performance gain.
-> On Linux systems the `lscpu` command will display information about the CPU including the number of threads, cores and CPUs.
+> On Linux systems the `lscpu` command will display information about the CPU including the number of threads, cores and CPUs. The line "Thread(s) per core" will be 1 if there's no Hyperthreading and 2 or more if there is.
+> System with Hyperthreading:
+> ~~~
+> $ lscpu
+> Architecture:          x86_64                                                                                                                                                              
+> CPU op-mode(s):        32-bit, 64-bit                                                                                                                                                      
+> Byte Order:            Little Endian                                                                                                                                                       
+> CPU(s):                4                                                                                                                                                                   
+> On-line CPU(s) list:   0-3                                                                                                                                                                 
+> Thread(s) per core:    2                                                                                                                                                                   
+> Core(s) per socket:    2                                                                                                                                                                   
+> Socket(s):             1                                                                                                                                                                   
+> NUMA node(s):          1                                                                                                                                                                   
+> Vendor ID:             GenuineIntel                                                                                                                                                        
+> CPU family:            6                                                                                                                                                                   
+> Model:                 142                                                                                                                                                                 
+> Model name:            Intel(R) Core(TM) i7-7500U CPU @ 2.70GHz                                                                                                                            
+> Stepping:              9                                                                                                                                                                   
+> CPU MHz:               3499.999                                                                                                                                                            
+> CPU max MHz:           3500.0000
+> CPU min MHz:           400.0000
+> BogoMIPS:              5808.00
+> Virtualisation:        VT-x
+> L1d cache:             32K
+> L1i cache:             32K
+> L2 cache:              256K
+> L3 cache:              4096K
+> NUMA node0 CPU(s):     0-3
+> ~~~
+> {: .bash}
+> System without Hyperthreading:
+> ~~~
+> $ lscpu
+> Architecture:          x86_64
+> CPU op-mode(s):        32-bit, 64-bit
+> Byte Order:            Little Endian
+> CPU(s):                16
+> On-line CPU(s) list:   0-15
+> Thread(s) per core:    1
+> Core(s) per socket:    8
+> Socket(s):             2
+> NUMA node(s):          2
+> Vendor ID:             GenuineIntel
+> CPU family:            6
+> Model:                 45
+> Stepping:              7
+> CPU MHz:               1200.000
+> BogoMIPS:              5199.26
+> Virtualization:        VT-x
+> L1d cache:             32K
+> L1i cache:             32K
+> L2 cache:              256K
+> L3 cache:              20480K
+> NUMA node0 CPU(s):     0-7
+> NUMA node1 CPU(s):     8-15
+> ~~~
+> {: .bash}
 {: .callout}
 
 
