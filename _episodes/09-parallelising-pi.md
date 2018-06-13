@@ -1,5 +1,5 @@
 ---
-title: "Parallel Estimation of Pi for Pedestrians"
+title: "Parallel Estimation of Pi"
 teaching: 30
 exercises: 15
 questions:

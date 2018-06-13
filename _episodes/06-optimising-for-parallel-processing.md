@@ -34,11 +34,13 @@ A crude way to achieve this is to have our job submission script just run multip
 
 command1 &
 command2 &
-command3 &
+command3 
 ~~~
 {: .bash}
 
 This will run command1,2 and 3 simultaneously. It also requests 3 cores with the ntasks option.
+
+When command3 finishes the job will end as backgrounded jobs won't keep the job running. An alternative to this is to put a long sleep command in as the last statement, but we need to get the timing accurate for this. If all the commands finish and the sleep is still running we'll be reserving resources we aren't using.
 
 This method has its limits if we want to run multiple tasks after the first ones have completed. Its possible, but scaling it will be harder.
 

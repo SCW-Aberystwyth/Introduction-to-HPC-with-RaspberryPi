@@ -212,59 +212,24 @@ parallel.sh:
 
 `#!/bin/bash --login`
 
+`###`
+
 `#SBATCH -n 12                     #Number of processors in our pool`
 
 `#SBATCH -o output.%J              #Job output`
 
 `#SBATCH -t 00:00:05               #Max wall time for entire job`
 
-`module load parallel`
+`###`
 
-`# Define srun arguments:`
+`module load parallel`
 
 `srun="srun -n1 -N1 --exclusive" `
 
-`# --exclusive     ensures srun uses distinct CPUs for each job step`
-
-`# -N1 -n1         allocates a single core to each task`
-
-`# Define parallel arguments:`
-
 `parallel="parallel -N 1 --delay .2 -j $SLURM_NTASKS --joblog parallel_joblog --resume"`
-
-`# -N 1              is number of arguments to pass to each job`
-
-`# --delay .2        prevents overloading the controlling node on short jobs`
-
-`# -j $SLURM_NTASKS  is the number of concurrent tasks parallel runs, so number of CPUs allocated`
-
-`# --joblog name     parallel's log file of tasks it has run`
-
-`# --resume          parallel can use a joblog and this to continue an interrupted run (job resubmitted)`
-
-`# Run the tasks:`
 
 `$parallel "$srun /bin/bash ./runtask.sh arg1:{1}" ::: {1..32}`
 
-`# in this case, we are running a script named runtask, and passing it a single argument`
-
-`# {1} is the first argument`
-
-`# parallel uses ::: to separate options. Here {1..32} is a shell expansion defining the values for`
-
-`#    the first argument, but could be any shell command`
-
-`#`
-
-`# so parallel will run the runtask script for the numbers 1 through 32, with a max of 12 running `
-
-`#    at any one time`
-
-`#`
-
-`# as an example, the first job will be run like this:`
-
-`#    srun -N1 -n1 --exclusive ./runtask arg1:1`
 
 task.sh, the script which will actually be run
 
@@ -294,6 +259,11 @@ sacct will show 32 subjobs.
 
 parallel_joblog shows how long each took to run.
 
+## Summary
+
+* GNU Parallel lets a single Slurm job start multiple subprocesses
+* This helps to use all the CPUs on a node effectively.
+
 # Estimation of Pi on a single core
 
 ## Buffon's Needle
@@ -313,7 +283,7 @@ see python implementation of this
 
 x^2 + y^2 < 1 means inside the circle
 
-## profilers
+## Profilers
 
 write code which works, measure performance, optimise
 
@@ -532,4 +502,9 @@ Show performance graphs
 
 MPI vs PyMP performance, different nodes. Try PyMP as an sbatch job.
 
+## Summary
 
+* "The MPI driver `mpirun` sends compute jobs to a set of allocated computers. It works with Slurm or the system scheduler to do this."
+* "The MPI software then executes these jobs on the remote hosts and synchronizes their state/memory."
+* "MPI assigns a rank to each process, usually the one with a rank of zero does the coordination"
+* "MPI can be used to split a task into components and have several nodes run them."

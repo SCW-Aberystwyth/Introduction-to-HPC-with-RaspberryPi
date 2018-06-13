@@ -1,5 +1,5 @@
 ---
-title: "Bonus session: Distributing computations among computers"
+title: Distributing computations among computers with MPI"
 teaching: 45
 exercises: 10
 questions:
@@ -12,8 +12,8 @@ objectives:
 keypoints:
 - "The MPI driver `mpirun` sends compute jobs to a set of allocated computers."
 - "The MPI software then executes these jobs on the remote hosts and synchronizes their state/memory."
-- "The `print_hostname.py` infers the hostname of the current machine. If run in parallel with `mpirun`, it prints several different host names."
-- "MPI can be used to split the random sampling into components and have several nodes generate random numbers and report back only the pi estimate of this partition."
+- "MPI assigns a rank to each process, usually the one with a rank of zero does the coordination"
+- "MPI can be used to split a task into components and have several nodes run them."
 ---
 
 Lola Lazy is now confident enough to work with the batch system of the cluster. She now turns her attention to the problem at hand, i.e. estimating the value of _Pi_ to very high precision. 
