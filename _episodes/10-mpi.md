@@ -175,18 +175,27 @@ Again, the unordered output is visible. Now, the relation between the rank and t
 > > ## Solution
 > > There are lots of possibly variations on this. Here's a simple one:
 > > 
+> > ~~~
 > > from datetime import datetime
 > > print(str(datetime.now()))
+> > ~~~
+> > {: .python}
 > > 
 > > or
 > > 
+> > ~~~
 > > import time
 > > print(time.strftime("%d/%m/%Y %H:%M:%S",time.gmtime()))
+> > ~~~
+> > {: .python}
 > > 
 > > or
 > > 
+> > ~~~
 > > import time
 > > print(time.time())
+> > ~~~
+> > {: .python}
 > > 
 > > this gives seconds and microseconds since January 1st 1970
 > {: .solution}
