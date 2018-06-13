@@ -47,7 +47,7 @@ if __name__=='__main__':
     n_samples = 10000
     
     #get the number of cores, assuming we have hyperthreading the real number is half the number that gets reported
-    core_count = int(cpu_count()/2)
+    core_count = int(cpu_count())
     
     #let the user specify the number of samples as the first command line argument
     if len(sys.argv) > 1:
