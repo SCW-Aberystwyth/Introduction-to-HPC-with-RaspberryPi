@@ -21,6 +21,6 @@ ax.set_ylabel('Time')
 ax.set_title('Time vs Cores PyMP')
 ax.grid()
 
-plt.savefig('pymp.png',dpi=200)
+plt.savefig('pymp.svg',dpi=200)
 
 print("saved")
