@@ -1,5 +1,5 @@
 ---
-title: Distributing computations among computers with MPI"
+title: Distributing computations among computers with MPI
 teaching: 45
 exercises: 10
 questions:
@@ -154,7 +154,7 @@ Again, the unordered output is visible. Now, the relation between the rank and t
 >
 > Launch the command `date` 16 times across your cluster. What do you observe? Play around with the precision of date through its flags (`+%N` for example) and study the distribution of the results.  
 > 
-> > 
+> > ~~~
 > > #!/bin/sh
 > > ###                                                                                                                                                                                      > > #SBATCH --job-name=mpi_date
 > > #SBATCH --output=mpi_date.out.%J.%N
@@ -162,6 +162,8 @@ Again, the unordered output is visible. Now, the relation between the rank and t
 > > ###
 > > module load mpi
 > > mpirun date +%M:%S.%N
+> > ~~~
+> > {: .bash}
 > {: .solution}
 {: .challenge}
 
