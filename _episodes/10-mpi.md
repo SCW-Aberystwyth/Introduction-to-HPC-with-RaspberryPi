@@ -187,7 +187,7 @@ Again, the unordered output is visible. Now, the relation between the rank and t
 > > print(time.time())
 > > 
 > > this gives seconds and microseconds since January 1st 1970
-
+> {: .solution}
 {: .challenge}
 
 To finalize this day's work, Lola wants to tackle distributed memory parallelization using the Message Passing Interface (MPI). For this, she uses the `mpi4py` library that is pre-installed on her cluster. She again starts from the [serial implementation]({{ page.root }}/code/serial_numpi.py). At first, she expands the include statements a bit. 
@@ -306,14 +306,14 @@ She collects the results into a spreadsheet and graphs them. For comparison she 
 
 That is quite an achievement of the day!
 
-![Performance vs Core Count MPI]({{ page.root }}/fig/mpi.png)
+![Performance vs Core Count MPI]({{ page.root }}/fig/mpi.svg)
 
-![Performance vs Core Count PyMP]({{ page.root }}/fig/pymp.png)
+![Performance vs Core Count PyMP]({{ page.root }}/fig/pymp.svg)
 
 > ## Why isn't the graph smooth
 > The MPI graph shown above doesn't a smooth curve like the PyMP one does when the number of cores are increased. Why might this be the case?
 > > Some of the jobs will have run on the same nodes, others will have run across multiple nodes where data access is much slower. Exclusive use of the node wasn't requested either so other jobs may have impacted our performance.
-> > {: .solution}
+> {: .solution}
 {: .challenge}
 
 > ## Use the batch system!
@@ -328,5 +328,5 @@ That is quite an achievement of the day!
 > 
 > Submit the job and look at the time it took. What do you observe? Why did the run time change?
 > > The performance gets significantly worse as a lot more data needs to be sent. When running on different nodes this will particularly bad as transferring data over the interconnect is much slower than locally.
-> > {: .solution}
+> {: .solution}
 {: .challenge}
