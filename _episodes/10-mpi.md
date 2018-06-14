@@ -171,6 +171,7 @@ Again, the unordered output is visible. Now, the relation between the rank and t
 
 > ## Upgrade `print_hostname.py` and print the time-of-day as well
 >
+> Download the [`print_hostname.py`]({{ page.root }}/code/print_hostname.py) script if you haven't already (module load http-proxy ; wget https://supercomputingwales.github.io/SCW-tutorial/code/print_hostname.py)
 > Open the `print_hostname.py` script with your editor and use the python3 `datetime` module to print the time of day next to the host name and rank number.
 > 
 > > ## Solution
