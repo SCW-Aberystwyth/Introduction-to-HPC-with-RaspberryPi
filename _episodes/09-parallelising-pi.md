@@ -223,6 +223,13 @@ This behavior is often referred to as _data parallelism_.
 >
 > Is this a task worth parallelizing? Make a guess!
 > Verify your answer using profiling and computing the theoretical speed-up possible.
+>
+> Hint: download it by doing the following:
+> ~~~
+> module load http-proxy
+> wget https://supercomputingwales.github.io/SCW-tutorial/code/volume_pylibs.py
+> ~~~
+> {: .bash}
 > > Around 95% of the time is spend running the statement std_files = glob.glob(path_of_ospy+"/*.py") 
 > > Almost all in a single call to a single function, so this can't be parallelised
 > > {: .solution}
