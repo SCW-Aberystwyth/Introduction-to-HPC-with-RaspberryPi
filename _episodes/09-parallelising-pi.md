@@ -299,6 +299,9 @@ One thing we must be cautious of when writing parallel code is what happens when
 The last step required before calculating pi is to collect the individual results from the `partitions` and _reduce_ it to one `total_count` of those random number pairs that were inside of the circle. Here the `sum` function loops over `partitions` and does exactly that. So let's run our [parallel implementation](/code/pymp_numpi.py) and see what it gives:
 
 ~~~
+$ module load http-proxy
+$ module load python/3.5.1
+$ wget https://supercomputingwales.github.io/SCW-tutorial/code/pymp_numpi.py
 $ python3 ./pymp_numpi.py 1000000000
 ~~~
 {: .bash}

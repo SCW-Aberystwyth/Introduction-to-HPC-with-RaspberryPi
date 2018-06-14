@@ -97,6 +97,7 @@ Before we can run Mpi4py programs we need to install the module through pip3. In
 $ module load http-proxy
 $ module load mpi
 $ module load python/3.5.1
+$ wget https://supercomputingwales.github.io/SCW-tutorial/code/print_hostname.py
 $ pip3 install --user mpi4py
 ~~~
 {: .bash}
@@ -270,6 +271,12 @@ if rank == 0:
 {: .python}
 
 And that's it. Now, Lola can submit her first MPI job. Download the [full code]({{ page.root }}/code/mpi_numpi.py) to try it yourself.
+
+You can download it on the HPC with the command:
+~~~
+wget https://supercomputingwales.github.io/SCW-tutorial/code/print_hostname.py
+~~~
+{:. bash}
 
 ~~~
 #!/bin/bash

@@ -1,7 +1,7 @@
 ---
 title: "Profiling Single Core Performance"
-teaching: 40
-exercises: 10
+teaching: 20
+exercises: 40
 questions:
 - "How do I find the portion of a code snipped that consumes the longest time?"
 objectives:
