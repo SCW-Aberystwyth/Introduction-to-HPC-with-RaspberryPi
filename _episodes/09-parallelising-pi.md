@@ -1,7 +1,7 @@
 ---
 title: "Parallel Estimation of Pi"
 teaching: 30
-exercises: 15
+exercises: 5 +
 questions:
 - "What are data parallel algorithms?"
 - "How can I estimate the yield of parallelization without writing one line of code?"
@@ -230,7 +230,7 @@ This behavior is often referred to as _data parallelism_.
 > wget https://supercomputingwales.github.io/SCW-tutorial/code/volume_pylibs.py
 > ~~~
 > {: .bash}
-> > ##Solution 
+> > ## Solution 
 > > Around 95% of the time is spend running the statement std_files = glob.glob(path_of_ospy+"/*.py") 
 > > Almost all in a single call to a single function, so this can't be parallelised
 > > {: .solution}
