@@ -230,6 +230,7 @@ This behavior is often referred to as _data parallelism_.
 > wget https://supercomputingwales.github.io/SCW-tutorial/code/volume_pylibs.py
 > ~~~
 > {: .bash}
+> > ##Solution 
 > > Around 95% of the time is spend running the statement std_files = glob.glob(path_of_ospy+"/*.py") 
 > > Almost all in a single call to a single function, so this can't be parallelised
 > > {: .solution}
