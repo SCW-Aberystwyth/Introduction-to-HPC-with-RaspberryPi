@@ -210,8 +210,9 @@ This behavior is often referred to as _data parallelism_.
 > 
 > For the sake of the example, we assume that the line profile looks identical to the original implementation above. Compute the theoretical speed-up S!
 > Which implementation should Lola choose now? 
+> > ## Solution
 > > p = 0.73, s = 4, S = 2.21. Choose this implementation over just calculating X and Y independently.
-{: .solution}
+> {: .solution}
 {: .challenge}
 
 > ## Always go parallel! Right?
@@ -233,7 +234,7 @@ This behavior is often referred to as _data parallelism_.
 > > ## Solution 
 > > Around 95% of the time is spend running the statement std_files = glob.glob(path_of_ospy+"/*.py") 
 > > Almost all in a single call to a single function, so this can't be parallelised
-> > {: .solution}
+> {: .solution}
 {: .challenge}
 
 
