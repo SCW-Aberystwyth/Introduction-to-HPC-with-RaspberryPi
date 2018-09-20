@@ -54,9 +54,11 @@ First lets create a job submission script and call it `parallel.sh`.
 
 ~~~
 #!/bin/bash --login
+###
 #SBATCH -n 12                     #Number of processors in our pool
 #SBATCH -o output.%J              #Job output
 #SBATCH -t 00:00:05               #Max wall time for entire job
+###
 
 module load parallel
 
