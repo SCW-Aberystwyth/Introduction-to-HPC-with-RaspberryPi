@@ -11,7 +11,7 @@ objectives:
 keypoints:
  - "A lot of software is only available by loading extra modules. This helps prevent problems where two packages are incompatible."
  - "Python3 is one such package."
- - "If you want to install pip packages use the --user option to store the packages in your home directory and load the http-proxy module first."
+ - "If you want to install pip packages use the --user option to store the packages in your home directory."
 ---
 
 # Using & installing software
@@ -25,7 +25,7 @@ You can get a list of available software with the `module avail` command. This s
 One common piece of software that isn't installed on HPCW (without a module) is Python version 3. If we attempt to run `python3` from the command line it will respond with an error:
 
 ~~~
-[jane.doe@cwl001 ~]$ python3
+[s.jane.doe@sl1 ~]$ python3
 ~~~
 {: .bash}
 
@@ -36,41 +36,36 @@ One common piece of software that isn't installed on HPCW (without a module) is 
 
 **Note that the head node and the compute nodes have identical configurations in terms of what software is available, so you can discover if your program will run from the head node**
 
-From the output of the `module avail` command there should have been an entry `python/3.5.1` in the `/app/modules-new/langauges` section near the top. Lets go ahead and load this using the 
-Lets load Python version 3.5.1 as a module and attempt to run the python3 command. This should start a Python3 interpreter, we can exit python by either pressing Ctrl+d or typing `exit()` and pressing enter. 
+From the output of the `module avail` command there should have been an entry `python/3.7.0` in the `/app/modules/langauges` section near the top. Lets go ahead and load this using the 
+Lets load Python version 3.7.0 as a module and attempt to run the python3 command. This should start a Python3 interpreter, we can exit python by either pressing Ctrl+d or typing `exit()` and pressing enter. 
 
 ~~~
-[jane.doe@cwl001 ~]$ module load python/3.5.1
-[jane.doe@cwl001 ~]$ python3
-Python 3.5.1 (default, Jun 22 2016, 13:43:55) 
-[GCC Intel(R) C++ gcc 4.4.7 mode] on linux
+[s.jane.doe@sl1 ~]$ module load python/3.7.0
+[s.jane.doe@sl1 ~]$ python3
+Python 3.7.0 (default, Jul 13 2018, 10:08:05) 
+[GCC Intel(R) C++ gcc 4.8.5 mode] on linux
 Type "help", "copyright", "credits" or "license" for more information.
 >>> exit()
-[jane.doe@cwl001 ~]$
+[s.jane.doe@sl1 ~]$
 ~~~
 {: .bash}
 
 
 ## Installing Python modules
 
-Python is a popular language for researchers to use and has modules (aka libraries) that do all kinds of useful things, but sometimes the module you need won't be installed. Many modules can be installed using the pip (or pip3 with python3) command. Before we can install modules we need to load the http-proxy module which allows the login node access to the internet via another computer (the proxy). 
+Python is a popular language for researchers to use and has modules (aka libraries) that do all kinds of useful things, but sometimes the module you need won't be installed. Many modules can be installed using the pip (or pip3 with python3) command. 
+
+We also don't have permissions to install pip modules for the whole system, so we need to give pip the `--user` argument which tells us to install in our home directory. 
 
 ~~~
-[jane.doe@cwl001 ~]$  module load http-proxy
-~~~
-{: .bash}
-
-We also don't have permissions to install pip modules for the whole system, so we need to give pip the `--user` argument which tells us to install in our home directory. Note that this install will only be for the HPC Wales system you're logged into, so if you install a module in Cardiff it won't be available on the Swansea systems but will work on other Cardiff systems.
-
-~~~
-[jane.doe@cwl001 ~]$  pip3 install --user <modulename>
+[s.jane.doe@sl1 ~]$  pip3 install --user <modulename>
 ~~~
 {: .bash}
 
 Lets install the Sci Kit Learn (sklearn)  module, this is a module which is useful for machine learning tasks but isn't installed on HPCW by default. 
 
 ~~~
-[jane.doe@cwl001 ~]$  pip3 install --user sklearn
+[s.jane.doe@sl1 ~]$  pip3 install --user sklearn
 Collecting sklearn
   Downloading sklearn-0.0.tar.gz
 Collecting scikit-learn (from sklearn)
@@ -79,16 +74,16 @@ Collecting scikit-learn (from sklearn)
 Installing collected packages: scikit-learn, sklearn
   Running setup.py install for sklearn ... done
 Successfully installed scikit-learn-0.19.1 sklearn-0.0
-You are using pip version 8.1.2, however version 9.0.1 is available.
+You are using pip version 10.0.1, however version 18.0 is available.
 You should consider upgrading via the 'pip install --upgrade pip' command.
-[jane.doe@cwl001 ~]$
+[s.jane.doe@sl1 ~]$
 ~~~
 {: .bash}
 
 Lets test the sklearn has been installed by loading its example digits dataset:
 
 ~~~
-[jane.doe@cwl001 ~]$ python3
+[s.jane.doe@sl1 ~]$ python3
 Python 3.5.1 (default, Jun 22 2016, 13:43:55) 
 [GCC Intel(R) C++ gcc 4.4.7 mode] on linux
 Type "help", "copyright", "credits" or "license" for more information.
@@ -118,7 +113,7 @@ home and/or lab folders for installing your own copies locally.
 or lab folder for bleeding-edge releases, software you are testing, or software used
 only by your lab. For programs that are commonly used by your domain, field, 
 or department, please submit a 
-[software install request](email:support@hpcwales.co.uk).
+[software install request](email:support@supercomputingwales.ac.uk).
 Note that due to demand and the complex nature of software installs, it may take a while for us to complete these requests. 
 
 Commercial software will require the appropriate licenses. 
@@ -150,14 +145,13 @@ Commercial software will require the appropriate licenses.
 > #SBATCH --error=hostname.err.%J
 > #maximum job time in D-HH:MM
 > #SBATCH --time=0-00:01
-> #number of parallel processes (tasks) you are requesting - maps to MPI processes
+> #number of tasks you are requesting 
 > #SBATCH --ntasks=1
 > #memory per process in MB 
 > #SBATCH --mem=2
-> #SBATCH --ntasks-per-node=1
 > #SBATCH --nodes=1
 > ###
-> module load python/3.5.1
+> module load python/3.7.0
 > python3 plot.py
 > ~~~
 > {: .bash}

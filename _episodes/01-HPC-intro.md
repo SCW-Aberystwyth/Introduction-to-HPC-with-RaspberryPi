@@ -56,7 +56,7 @@ HPC Wales ran from 2010 to 2015 and provided clusters in Aberystwyth, Bangor, Ca
 
 ### SCW
 
-Super Computing Wales (SCW) is a new project to replace HPC Wales involving Aberystwyth, Bangor, Cardiff and Swansea universities. It started in 2015 and runs until 2020. It will include new systems in Cardiff (known as Hawk) and Swansea (known as Sunbird). 
+Super Computing Wales (SCW) is a new project to replace HPC Wales involving Aberystwyth, Bangor, Cardiff and Swansea universities. It started in 2015 and runs until 2020. It includes new systems in Cardiff (known as Hawk) and Swansea (known as Sunbird). 
 
 ## Super Computing Wales Research Software Engineers
 
@@ -70,12 +70,13 @@ Each university is employing research software engineers who will work with rese
 
 ### How to get access?
 
-Complete a project application form via the (currently unavilable) web portal.
-Everyone on this course should have a training account already, these are time limited. If you would like to use SCW for your research then you will have to apply.
+Apply for an account via the "My Super Computing Wales" webpage at https://my.supercomputing.wales
 
-#### Application Process
+To login to the system you will have to apply for a project as well as a user account. Everyone on this course should have been added to a training project, this project is time limited. If you would like to use SCW for your research then you will have to apply for your own project or join an existing one.
 
-You will need to fill out two online forms. One for your individual account and one for a project that you will be associated with. The account form gets you an account to login with, the project form is used to assess whether SCW has enough resources for what you want. PhD students and RAs need to get your supervisor/PI to approve their projects. Projects are assessed by SCW. They are looking for two key targets:
+#### Project Application Process
+
+The project form is used to assess whether SCW has enough resources for what you want. PhD students and RAs need to get your supervisor/PI to approve their projects. Projects are assessed by SCW. They are looking for two key targets:
 
   * Grant income that can be attributed to Super Computing Wales.
   * Science Outputs (e.g. journal papers)

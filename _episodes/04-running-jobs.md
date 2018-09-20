@@ -38,14 +38,16 @@ If you want to experiment with some code and test it you should run it this way.
 To get an interactive session, you first need to issue a `salloc` command to reserve some resources. 
 
 ~~~
-salloc -n 1 --ntasks-per-node=1 
+salloc -n 1
 ~~~
 {: .bash}
 
 The salloc command will respond now with a job ID number. 
 
 ~~~
-salloc: Granted job allocation 3739432
+salloc: Granted job allocation 21712
+salloc: Waiting for resource configuration
+salloc: Nodes scs0018 are ready for job
 ~~~
 {: .output}
 
@@ -54,16 +56,16 @@ We have now allocated ourselves a host to run a program on. The `-n 1` tells slu
 To actually run a command we now need to issue the `srun` command. This also takes a `-n` parameter to tell Slurm how many copies of the job to run and it takes the name of the program to run. To run a job interactively we need another argument `--pty`. 
 
 ~~~
-srun --pty -n 1 /bin/bash
+srun --pty /bin/bash
 ~~~
 {: .bash}
 
 
-If you run command above you will see the hostname in the prompt change to the name of the compute node that slurm has allocated to you. In the example below the compute node is called `cwc001`. 
+If you run command above you will see the hostname in the prompt change to the name of the compute node that slurm has allocated to you. In the example below the compute node is called `scs0018`. 
  
 ~~~
-[jane.doe@cwl001 ~]$ srun -n 1 --pty /bin/bash
-[jane.doe@cwc001 ~]$ 
+[s.jane.doe@sl1 ~]$ srun --pty /bin/bash
+[s.jane.doe@scs0018 ~]$ 
 ~~~
 {: .output}
 
@@ -75,17 +77,17 @@ hostname
 {: .bash}
 
 ~~~
-cwc001
+scs0018
 ~~~
 {: .output}
 
 
-Once we are done working with the compute node we need to disconnect from it. The `exit` command will exit the bash program on the compute node causing us to disconnect. After this command is issued the hostname prompt should change back to the login node's name (e.g. cwl001). 
+Once we are done working with the compute node we need to disconnect from it. The `exit` command will exit the bash program on the compute node causing us to disconnect. After this command is issued the hostname prompt should change back to the login node's name (e.g. sl1 or cl1). 
 
 ~~~
-[jane.doe@cwc001 ~]$ exit
+[s.jane.doe@scs0018  ~]$ exit
 exit
-[jane.doe@cwl001 ~]$ 
+[s.jane.doe@sl1 ~]$ 
 ~~~
 {: .output}
 
@@ -98,14 +100,14 @@ squeue
 
 ~~~
              JOBID PARTITION     NAME     USER ST       TIME  NODES NODELIST(REASON)
-           3739432      work     bash jane.doe  R       3:58      1 cwc001
+           21712   compute     bash s.jane.doe  R       3:58      1 scs0018
 ~~~
 {: .output}
 
 To relinquish the node allocation we need to issue another exit command. 
 
 ~~~
-[jane.doe@cwl001 ~]$ exit
+[s.jane.doe@sl1 ~]$ exit
 ~~~
 {: .bash}
 
@@ -113,14 +115,14 @@ This will display a message that the job allocation is being relinquished and sh
 
 ~~~
 exit
-salloc: Relinquishing job allocation 3739432
+salloc: Relinquishing job allocation 21712
 ~~~
 {: .output}
 
 At this point our job is complete and we no longer hold any allocations. We can confirm this again with the `squeue` command.
 
 ~~~
-[jane.doe@cwl001 ~]$ squeue
+[s.jane.doe@sl1 ~]$ squeue
 ~~~
 {: .bash}
 
@@ -155,8 +157,6 @@ nano batchjob.sh
 #maximum memory of 10 megabytes
 #SBATCH --mem-per-cpu=10
 #SBATCH --ntasks=1
-#SBATCH --ntasks-per-node=1
-#SBATCH --nodes=1
 ###
 
 /bin/hostname
@@ -169,7 +169,7 @@ This is actually a bash script file containing all the commands that will be run
 Lets go ahead and submit this job with the `sbatch` command.
 
 ~~~
-[jane.doe@cwl001 ~]$ sbatch batchjob.sh
+[s.jane.doe@sl1 ~]$ sbatch batchjob.sh
 ~~~
 {: .bash}
 
@@ -184,32 +184,32 @@ Submitted batch job 3739464
 Our job should only take a couple of seconds to run, but if we are fast we might see it in the `squeue` list.
 
 ~~~
-[jane.doe@cwl001 ~]$ squeue
+[s.jane.doe@sl1 ~]$ squeue
 ~~~
 {: .bash}
 
 ~~~
              JOBID PARTITION     NAME     USER ST       TIME  NODES NODELIST(REASON)
-           3739464      work hostname jane.doe  R       0:01      1 cwc001
+           3739464      work hostname jane.doe  R       0:01      1 scs0018
 ~~~
 {: .output}
 
 Once the job is completed two new files should be created, one called `hostname.out.3739464` and one called `hostname.err.3739464`. The `.out` file is the output from the command we ran and the `.err` is the errors from that command. Your job files will have different names as they will contain the job ID you were allocated and not `3739464`. Lets go ahead and look at the `.out` file:
 
 ~~~
-[jane.doe@cwl001 ~]$ cat hostname.out.373464
+[s.jane.doe@sl1 ~]$ cat hostname.out.373464
 ~~~
 {: .bash}
 
 ~~~
-cwc001
+scs0018
 ~~~
 {: .output}
 
 If we check the `.err` file it should be blank:
 
 ~~~
-[jane.doe@cwl001 ~]$ cat hostname.err.373464
+[s.jane.doe@sl1 ~]$ cat hostname.err.373464
 ~~~
 {: .bash}
 
@@ -225,7 +225,7 @@ Lets edit our batch file to run the command `/bin/sleep 70` before `/bin/hostnam
 
 
 ~~~
-[jane.doe@cwl001 ~]$ nano batchjob.sh
+[s.jane.doe@sl1 ~]$ nano batchjob.sh
 ~~~
 {: .bash}
 
@@ -258,7 +258,7 @@ Edit the script to have the command `/bin/sleep 70` before the `hostname` comman
 Now lets resubmit the job.
 
 ~~~
-[jane.doe@cwl001 ~]$  sbatch batchjob.sh
+[s.jane.doe@sl1 ~]$  sbatch batchjob.sh
 ~~~
 {: .bash}
 
@@ -270,18 +270,18 @@ Submitted batch job 3739465
 After approximately one minute the job will disappear from the `squeue` output, but this time the `.out` file should be empty and the `.err` file will contain an error message saying the job was cancelled:
 
 ~~~
-[jane.doe@cwl001 ~]$  cat hostname.err.3739465
+[s.jane.doe@sl1 ~]$  cat hostname.err.3739465
 ~~~
 {: .bash}
 
 
 ~~~
-slurmstepd: error: *** JOB 3739465 ON cwc001 CANCELLED AT 2017-12-06T16:45:38 DUE TO TIME LIMIT ***
+slurmstepd: error: *** JOB 3739465 ON scs0018 CANCELLED AT 2017-12-06T16:45:38 DUE TO TIME LIMIT ***
 ~~~
 {: .output}
 
 ~~~
-[jane.doe@cwl001 ~]$ cat hostname.out.3739465
+[s.jane.doe@sl1 ~]$ cat hostname.out.3739465
 ~~~
 {: .bash}
 
@@ -295,7 +295,7 @@ slurmstepd: error: *** JOB 3739465 ON cwc001 CANCELLED AT 2017-12-06T16:45:38 DU
 Now lets override the time limit by giving the parameter `--time 0-0:2` to sbatch, this will set the time limit to two minutes and the job should complete.
 
 ~~~
-[jane.doe@cwl001 ~]$ sbatch --time 0-0:2 batchjob.sh
+[s.jane.doe@sl1 ~]$ sbatch --time 0-0:2 batchjob.sh
 ~~~
 {: .bash}
 
@@ -307,7 +307,7 @@ Now lets override the time limit by giving the parameter `--time 0-0:2` to sbatc
 After approximately 70 seconds the job will disappear from the squeue list and this we should have nothing in the `.err` file and a hostname in the `.out` file. 
 
 ~~~
-[jane.doe@cwl001 ~]$ cat hostname.err.3739466
+[s.jane.doe@sl1 ~]$ cat hostname.err.3739466
 ~~~
 {: .bash}
 
@@ -317,12 +317,12 @@ After approximately 70 seconds the job will disappear from the squeue list and t
 
 
 ~~~
-[jane.doe@cwl001 ~]$ cat hostname.out.3739466
+[s.jane.doe@sl1 ~]$ cat hostname.out.3739466
 ~~~
 {: .bash}
 
 ~~~
-cwc001
+scs0018
 ~~~
 {: .output}
 
@@ -332,7 +332,7 @@ cwc001
 The `scancel` command can be used to cancel a job after its submitted. Lets go ahead and resubmit the job we just used.
 
 ~~~
-[jane.doe@cwl001 ~]$  sbatch batchjob.sh
+[s.jane.doe@sl1 ~]$  sbatch batchjob.sh
 ~~~
 {: .bash}
 
@@ -346,7 +346,7 @@ Now (within 60 seconds) lets cancel the job.
 
 
 ~~~
-[jane.doe@cwl001 ~]$  scancel 3739467
+[s.jane.doe@sl1 ~]$  scancel 3739467
 ~~~
 {: .bash}
 
@@ -358,7 +358,7 @@ This will cancel the job, `squeue` will now show no record of it and there won't
 The `sacct` command lists all the jobs you have run. By default this shows the Job ID, the Job Name, partition, Account, number of CPUs used, the state of the job and how long it ran for.
 
 ~~~
-[jane.doe@cwl001 ~]$  sacct
+[s.jane.doe@sl1 ~]$  sacct
 ~~~
 {: .bash}
 
@@ -366,18 +366,19 @@ The `sacct` command lists all the jobs you have run. By default this shows the J
 ~~~
        JobID    JobName  Partition    Account  AllocCPUS      State ExitCode 
 ------------ ---------- ---------- ---------- ---------- ---------- -------- 
-3739467        hostname       work   hpcw0318          1    TIMEOUT      1:0 
-3739467.bat+      batch              hpcw0318          1  COMPLETED      0:0 
-3739468        hostname       work   hpcw0318          1    TIMEOUT      1:0 
-3739468.bat+      batch              hpcw0318          1  CANCELLED     0:15 
-3739472        hostname       work   hpcw0318          1  COMPLETED      0:0 
-3739472.bat+      batch              hpcw0318          1  COMPLETED      0:0 
-3739473        hostname       work   hpcw0318          1 CANCELLED+      0:0 
-3739473.bat+      batch              hpcw0318          1  CANCELLED     0:15 
+21713              bash    compute    scw1000          1  COMPLETED      0:0 
+21713.extern     extern               scw1000          1  COMPLETED      0:0 
+21713.0            bash               scw1000          1  COMPLETED      0:0 
+21714              bash    compute    scw1000          1  COMPLETED      0:0 
+21714.extern     extern               scw1000          1  COMPLETED      0:0 
+21714.0            bash               scw1000          1  COMPLETED      0:0 
+21716          hostname    compute    scw1000          1  COMPLETED      0:0 
+21716.batch       batch               scw1000          1  COMPLETED      0:0 
+21716.extern     extern               scw1000          1  COMPLETED      0:0 
 ~~~
 {: .output}
 
-In the output above the account is the project you are associated with. hpcw0318 is the Aberystwyth University training project. If you have registered with another project you'll see a different project account here.
+In the output above the account is the project you are associated with. scw1000 is the RSE project. You'll probably see a different project account here.
 
 
 > ## Using the `sbatch` command. 
@@ -408,7 +409,6 @@ This will allow multiple copies of the command to run. In the example below two 
 #maximum memory of 10 megabytes
 #SBATCH --mem-per-cpu=10
 #SBATCH --ntasks=2
-#SBATCH --ntasks-per-node=1
 #SBATCH --nodes=2
 ###
 
@@ -419,7 +419,7 @@ srun /bin/hostname
 Save this as job.sh and run it with sbatch
 
 ~~~
-[jane.doe@cwl001 ~]$ sbatch job.sh
+[s.jane.doe@sl1 ~]$ sbatch job.sh
 ~~~
 {: .bash}
 
@@ -431,31 +431,31 @@ The output will now go into hostname.out.jobnumber and should contain two differ
 Job Arrays are another method for running multiple copies of the same job. The `--array` parameter to sbatch allows us to make use of this feature.
 
 ~~~
-[jane.doe@cwll001 ~]$ sbatch --array=0-2 batchjob.sh
+[s.jane.doe@sl1 ~]$ sbatch --array=0-2 batchjob.sh
 ~~~
 {: .bash}
 
 The above command will submit **three** copies of the batchjob.sh command. 
 
 ~~~
-[jane.doe@cwll001 ~]$ squeue 
-             JOBID PARTITION     NAME     USER ST       TIME  NODES NODELIST(REASON)
-         3739590_0      work hostname colin.sa  R       0:01      1 cwc001
-         3739590_1      work hostname colin.sa  R       0:01      1 cwc001
-         3739590_2      work hostname colin.sa  R       0:01      1 cwc096
+[s.jane.doe@sl1 ~]$ squeue 
+             JOBID PARTITION     NAME     USER   ST       TIME  NODES NODELIST(REASON)
+         3739590_0   compute hostname s.jane.doe  R       0:01      1 scs0018
+         3739590_1   compute hostname s.jane.doe  R       0:01      1 scs0018
+         3739590_2   compute hostname s.jane.doe  R       0:01      1 scs0096
 ~~~
 {: .bash}
 
 Running `squeue` as this is happening will show three distinct jobs, each with an _ followed by a number on the end of their job ID. When the jobs are complete there will be three output and three err files all with the job ID and the job array number.
 
 ~~~
-[jane.doe@cwll001 ~]$ ls -rt | tail -6
-hostname.out.3739592.cwc001
-hostname.out.3739591.cwc001
-hostname.out.3739590.cwc096
-hostname.err.3739590.cwc096
-hostname.err.3739592.cwc001
-hostname.err.3739591.cwc001
+[s.jane.doe@sl1 ~]$ ls -rt | tail -6
+hostname.out.3739592.scs0018
+hostname.out.3739591.scs0018
+hostname.out.3739590.scs0096
+hostname.err.3739590.scs0096
+hostname.err.3739592.scs0018
+hostname.err.3739591.scs0018
 ~~~
 {: .bash}
 
@@ -483,7 +483,7 @@ Never use a piece of software for the first time without looking to see what com
 ### Time
 This is determined by test runs that you do on your code during an interactive session.
 Or, if you submit a batch job, over-ask first, check the amount of time actually needed,
-then reduce time on later runs. **HPCW has a limit of three days maximum to run a job**
+then reduce time on later runs. **SCW has a limit of three days maximum to run a job**
 
 **Please!** Due to scheduler overhead, bundle commands for minimum of 10 minutes / job
 
@@ -511,16 +511,16 @@ For most software, this choice is simple: 1. There are *very* few software packa
 
 Partitions, or queues, are a grouping of computers to run a certain profile of jobs. This could be maximum run time, # of cores used, amount of max RAM, etc. On HPCW each unique configuration of systems has its own partition. Earlier on we used the `sinfo` command to list the state of the cluster, one of the parameters this showed was the name of the parititons.
 
-Here is the output of `sinfo` on cwl001 in Cardiff.
+Here is the output of `sinfo` on Sunbird in Swansea.
 
 ~~~
 PARTITION AVAIL  TIMELIMIT  NODES  STATE NODELIST
-work*        up   infinite     30    mix cwc[001,014-024,062-065,067-069,099-102,104-105,119-123]
-work*        up   infinite    130  alloc cwc[002-013,025-061,066,070-098,103,106-118,125,127-162]
-work*        up   infinite      2   idle cwc[124,126]
-large        up   infinite      2  alloc cwc[165-166]
-large        up   infinite      2   idle cwc[163-164]
-vlarge       up   infinite      1   idle cwc167
+compute*     up 3-00:00:00      1   fail scs0042
+compute*     up 3-00:00:00      1 drain* scs0004
+compute*     up 3-00:00:00      2    mix scs[0018,0065]
+compute*     up 3-00:00:00     84  alloc scs[0001-0003,0005-0017,0020-0035,0043-0046,0049-0064,0066-0072,0097-0114,0116-0122]
+compute*     up 3-00:00:00     34   idle scs[0019,0036-0041,0047-0048,0073-0096,0115]
+gpu          up 2-00:00:00      4   idle scs[2001-2004]
 ~~~
 {: .output}
 
@@ -582,6 +582,6 @@ You can receive email alerts when your job begins and ends by adding the followi
 
 # More information about Slurm 
 
-* [HPC Wales Documentation](http://portal.hpcwales.co.uk/wordpress/index.php/index/slurm/)
+* [Super Computing Wales Documentation](http://portal.supercomputing.wales)
 * [Harvard University's list of common Slurm commands](https://rc.fas.harvard.edu/resources/documentation/convenient-slurm-commands/)
 * [For those coming from another cluster/scheduler, check out Slurm's scheduler Rosetta stone](http://slurm.schedmd.com/rosetta.pdf)

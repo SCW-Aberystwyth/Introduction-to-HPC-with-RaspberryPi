@@ -34,6 +34,7 @@ Bangor and Cariff Users should login to the Cardiff Hawk system by typing:
 ~~~
 $ ssh username@hawklogin.cf.ac.uk
 ~~~
+{: .bash}
 
 Windows PuTTY users should enter hawklogin.cf.ac.uk in the hostname box. 
 
@@ -83,18 +84,16 @@ Clusters are sometimes divided up into partitions. This might separate some node
 
 ~~~
 PARTITION AVAIL  TIMELIMIT  NODES  STATE NODELIST
-work*        up   infinite      2 drain* bwc[022,052]
-work*        up   infinite      1  down* bwc016
-work*        up   infinite     13    mix bwc[001-002,010-012,031-036,050-051]
-work*        up   infinite     38  alloc bwc[003-009,013-015,017-021,023-030,037-049,053-054]
-long         up   infinite      2 drain* bwc[022,052]
-long         up   infinite      1  down* bwc016
-long         up   infinite     13    mix bwc[001-002,010-012,031-036,050-051]
-long         up   infinite     38  alloc bwc[003-009,013-015,017-021,023-030,037-049,053-054]
+compute*     up 3-00:00:00      1   fail scs0042
+compute*     up 3-00:00:00      1 drain* scs0004
+compute*     up 3-00:00:00      2    mix scs[0018,0065]
+compute*     up 3-00:00:00     86  alloc scs[0001-0003,0005-0017,0019-0035,0043-0046,0049-0064,0066-0072,0097-0122]
+compute*     up 3-00:00:00     32   idle scs[0036-0041,0047-0048,0073-0096]
+gpu          up 2-00:00:00      4   idle scs[2001-2004]
 ~~~
 {: .output}
 
- * work* means this is the default partition. 
+ * compute* means this is the default partition. 
  * AVAIL tells us if the partition is available.
  * TIMELIMIT tells us if there's a time limit for jobs
  * NODES is the number of nodes in the this partition.
