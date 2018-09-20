@@ -17,14 +17,26 @@ keypoints:
 
 # Logging in 
 
-Your username is usually `firstname.surname`. You should have been emailed details of your login prior to this workshop.
+Your username is your institutional ID prefixed by 'a' for Aberystwyth users, 'b' for Bangor users, 'c' for Cardiff users and 's' for Swansea users.
+
+Aberystwyth and Swansea users should login to the Swansea Sunbird system by typing:
 
 ~~~
-$ ssh username@login.hpcwales.co.uk
+$ ssh username@sunbird.swansea.ac.uk
 ~~~
 {: .bash}
 
-Windows users should use PuTTY and enter login.hpcwales.co.uk in the hostname box. 
+Windows users should use PuTTY and enter sunbird.swansea.ac.uk in the hostname box. 
+
+
+Bangor and Cariff Users should login to the Cardiff Hawk system by typing:
+
+~~~
+$ ssh username@hawklogin.cf.ac.uk
+~~~
+
+Windows PuTTY users should enter hawklogin.cf.ac.uk in the hostname box. 
+
 
 ## Change your password
 
@@ -33,63 +45,32 @@ If you haven't already changed your password from the one that was emailed to yo
 
 ## What's available?
 
-### HPC Wales
-
-The `hpcwhosts` command will list the available clusters. 
-
-~~~
-$ hpcwhosts
-~~~
-{: .bash}
-
-~~~
-HPC Wales Clusters Available
-
-Phase    System Location & Type             Login Node(s)
-------------------------------------------------------------------
-1        Cardiff High Throughput            cwl001   cwl002   cwl003
-1        Bangor Medium Processing           bwl001   bwl002
-2        Swansea Capability/Capacity/GPU    ssl001   ssl002   ssl003
-2        Cardiff Capacity/GPU               csl001   csl002
-~~~
-{: .output}
-
-
-|Cluster|Number of Nodes|Cores per node|Architecture|RAM|Other|
-|---------------------------|----|----|------|----|------|
-|Cardiff High Throughput|~~162~~ 54|12|Westmere|36GB||
-|Cardiff High Throughput|4|2|Nehalem|128GB||
-|Cardiff High Throughput|1|8|Nehalem|512GB||
-|Cardiff Capacity|~~384~~ 116|16|Sandy Bridge|64GB||
-|Cardiff GPU|~~16~~ 4|16|Sandy Bridge|64GB|Nvidia Tesla M GPU|
-|Swansea Capability|16|16|Sandy Bridge|128GB||
-|Swansea Capability|240|16|Sandy Bridge|64GB||
-|Swansea Capacity|128|16|Sandy Bridge|64GB||
-|Swansea GPU|16|16|Sandy Bridge|64GB|Nvidia Tesla M2090 (512 core, 6GB RAM)|
-|Bangor|54|12|Westmere|36GB||
-
 ### Super Computing Wales
 
 These figures may still be subject to some change and might have been sourced from out of date documents. 
 
-|Cluster|Number of Nodes|Cores per node|Architecture|RAM|Other|
+|Partition|Number of Nodes|Cores per node|Architecture|RAM|Other|
 |-------|----|----|------|----|------|
-|Swansea|122|40|Skylake|376GB||
+|Swansea Compute|122|40|Skylake|376GB||
 |Swansea GPU|4|40|Skylake|376GB|Nvidia V100 (5120 core, 16GB RAM)|
 |Swansea Data Lake|?|?||?|?|?|Installed with Swansea system|
-|Cardiff MPI|136|40|Sylake|196GB||
-|Cardiff HTC|25|40|Sylake|196GB||
-|Cardiff High Memory|26|40|Sylake|382GB||
-|Cardiff GPU|13|40?|Skylake|?|Nvidia P100 (3584 core, 16GB RAM)|
+
+
+|Cluster|Number of Nodes|Cores per node|Architecture|RAM|Other|
+|-------|----|----|------|----|------|
+|Cardiff Compute|136|40|Sylake|196GB||
+|Cardiff HTC|26|40|Sylake|196GB||
+|Cardiff High Memory|26|40|Sylake|376GB||
+|Cardiff GPU|13|40|Skylake|376GB|2x Nvidia P100 (3584 core, 16GB RAM)|
+|Cardiff Dev|2|40|Skylake|
 |Cardiff Data Lake|2|22|Skylake|512GB|Will be installed later|
 
 Aberystwyth users are expected to use the Swansea system and will need to make a case for why they would need to use the Cardiff system. Bangor users are expected to use Cardiff.
 
-SCW is still in the process of being installed. A single SkyLake core is approximately double the speed of a Sandybridge core. 
 
 ### Slurm
 
-Slurm is the management software used on HPC Wales. It lets you submit (and monitor or cancel) jobs to the cluster and chooses where to run them. 
+Slurm is the management software used on Super Computing Wales. It lets you submit (and monitor or cancel) jobs to the cluster and chooses where to run them. 
 
 Other clusters might run different job management software such as LSF, Sun Grid Engine or Condor, although they all operate along similar principles.
 
@@ -123,11 +104,10 @@ long         up   infinite     38  alloc bwc[003-009,013-015,017-021,023-030,037
 
 # Exercises
 
-> ## Logging into HPC Wales
-> 1. Login to login.hpcwales.co.uk using your SSH client. Your username is usually firstname.surname and has been emailed to you. 
-> 2. On your first login you will have to change your password. The new password must contain some letters, some numbers and at least one punctuation character. 
-> 2. Run the `hpcwhosts` and pick a system to login to.
-> 3. Login to that host by running `ssh <hostname>`
+> ## Logging into Super Computing Wales
+> 1. In your web browser go to https://my.supercomputing.wales and login with your university username and password. 
+> 2. Click on "Reset SCW Password" and choose a new password for logging into the HPC. Your username is displayed in the "Account summary" box on the main page. Its usually a/b/c/s. and your normal university login.
+> 3. Login to sunbird.swansea.ac.uk or hawklogin.cf.ac.uk using your SSH client.
 > 4. Run the `sinfo` command to see how busy things are.
 > 5. Try `sinfo --long`, what extra information does this give?
 {: .challenge}

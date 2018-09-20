@@ -45,13 +45,9 @@ New filesystems will be delivered on Super Computing Wales. Swansea home directo
 
 # Accessing your filestore
 
-## Where is my filestore located?
-
-Both scratch and home filestore is on a per site basis. There are file servers in Bangor, Cardiff and Swansea each serving home and scratch directories to all the compute nodes. When you login to a cluster your home directory will be the home directory for that site and you won't have direct access to your files created at a different site. 
-
 ## How much quota do I have left on my home directory?
 
-Login to a head node (e.g. cwl001, sssl001 or csl001) and run the ```myquota``` command. This will tell you how much space is left in your home directory. Note that this does not work on the Bangor system.
+Login to a head node (e.g. sunbird.swansea.ac.uk or hawklogin.cf.ac.uk) and run the ```myquota``` command. This will tell you how much space is left in your home directory. 
 
 ~~~
 $ myquota
@@ -77,52 +73,36 @@ $ df -h /scratch
 {: .bash}
 
 ~~~
-Filesystem            Size  Used Avail Use% Mounted on
-mds001.hpcwales.local@tcp:mds002.hpcwales.local@tcp:/scratch
-                      170T  149T   19T  90% /scratch
+Filesystem                                Size  Used Avail Use% Mounted on
+172.2.1.51@o2ib:172.2.1.52@o2ib:/scratch  692T   57T  635T   9% /scratch
 ~~~
 {: .output}
 
-## Copying data from your PC to HPCW/SCW
+## Copying data from your PC to SCW
 
-You can copy files to/from your HPCW/SCW home and scratch drives using the secure copy protocol (SCP) or secure file transfer protocol (SFTP) and connecting to the host ```scp.hpcwales.co.uk``` or ```sftp.hpcwales.co.uk```. You will find your home and scratch directories in the following locations:
-
-|Directory|Description|
-|-------|-------|
-|/hpcw/cf/firstname.surname/|Cardiff Home Directory|
-|/hpcw/sw/firstname.surname/|Swansea Home Directory|
-|/hpcw/ba/firstname.surname/|Bangor Home Directory|
-|/hpcw/cf-scratch/firstname.surname|Cardiff Scratch|
-|/hpcw/sw-scratch/firstname.surname|Swansea Scratch|
-|/hpcw/ba-scratch/firstname.surname|Bangor Scratch|
-
+You can copy files to/from your SCW home and scratch drives using the secure copy protocol (SCP) or secure file transfer protocol (SFTP) and connecting to Sunbird or Hawk. 
 
 ### Copying data using the command line
 
-Use the ```sftp``` command and connect to the system. This takes the argument of the username followed by an @ symbol and then the hostname (scp.hpcwales.co.uk). Optionally you can specify what directory to start in by putting a ```:``` symbol after this and adding the directory name. The command below will start in ```/hpcw/ba/jane.doe/```, if you don't specify the directory then the Cardiff directory is used. 
+Use the ```sftp``` command and connect to the system. This takes the argument of the username followed by an @ symbol and then the hostname. Optionally you can specify what directory to start in by putting a ```:``` symbol after this and adding the directory name. The command below will start in ```/home/s.jane.doe/data```, if no directory is specified then sftp defaults to your home directory. 
 
 ~~~
-sftp jane.doe@scp.hpcwales.co.uk:/hpcw/ba/jane.doe/
+sftp s.jane.doe@sunbird.swansea.ac.uk:/home/s.jane.doe/data
 ~~~
 {: .bash}
 
 
 ~~~
-    Welcome to HPC Wales & Supercomputing Wales
-
- This system is for authorised users, if you do not
-have authorised access please disconnect immediately.
-
-Password: 
-Connected to scp.hpcwales.co.uk.
-Changing to: /hpcw/cf/jane.doe/
+s.jane.doe@sunbird.swansea.ac.uk's password: 
+Connected to sunbird.swansea.ac.uk.
+Changing to: /home/s.jane.doe/data
 sftp> ls
 ~~~
 {: .output}
 
 
 The ```sftp``` and ```scp``` commands should be available on all Linux and Mac systems. On Windows systems they can be made available if you install the Linux Subsystem for Windows (Windows 10 only), the Github command line (CHECK ME).
-Aberystwyth University Windows desktops already have it installed in ......
+Aberystwyth University Windows desktops already have these commands installed. 
 
 
 ### Copying data using Filezilla
@@ -133,7 +113,7 @@ Open filezilla and click on file menu and choose ```Site Manager```.
 
 ![Transferring files using FileZilla](../fig/filezilla1.png)
 
-A new site will appear under "My Sites". Name this site "HPC Wales" by clicking on Rename. Then enter "scp.hpcwales.co.uk" as the Host, your username as the user name and choose "Ask for password" as the logon type. Then click Connect. You should now be prompted for your password, go ahead and enter your HPC Wales password and click Ok. 
+A new site will appear under "My Sites". Name this site "Super Computing Wales" by clicking on Rename. Then enter "sunbird.swansea.ac.uk" or "hawklogin.cf.ac.uk" as the Host, your username as the user name and choose "Ask for password" as the logon type. Then click Connect. You should now be prompted for your password, go ahead and enter your HPC Wales password and click Ok. 
 
 ![Transferring files using FileZilla](../fig/filezilla2.png)
 
@@ -146,7 +126,7 @@ Files can be transferred either by dragging and dropping them from one side to t
 ![Transferring files using FileZilla](../fig/filezilla4.png)
 ![Transferring files using FileZilla](../fig/filezilla5.png)
 
-You can change directory on the remote host by typing a path into the "Remote site:" box. For example type in ```/hpcw/sw/user.name``` (where user.name is your username) to access your Swansea home directory. 
+You can change directory on the remote host by typing a path into the "Remote site:" box. For example type in ```/scratch/user.name``` (where user.name is your username) to access your scratch directory. 
 
 ![Transferring files using FileZilla](../fig/filezilla6.png)
 
@@ -155,25 +135,22 @@ You can change directory on the remote host by typing a path into the "Remote si
 # Exercises
 
 > ## Using the `df` command. 
-> 1. Login to Cardiff head node (`ssh cwl001` or `ssh cwl002` or `ssh cwl003`)
+> 1. Login to a head node
 > 2. Run the command `df -h`.
 > 3. How much space does /scratch have left? 
-> 4. Logout from the Cardiff cluster by typing `exit` and login to the Swansea head node (ssl001, ssl002 or ssl003).
-> 5. Run `df -h` again, how much space to /scratch in Swansea have left? 
-> 6. If you had to run a large job requiring 10TB of scratch space, where would you run it?
+> 4. If you had to run a large job requiring 10TB of scratch space, would there be enough space for it?
 {: .challenge}
 
 > ## Using the `myquota` command.
-> 1. Login to a system of your choice (try cwl001 or ssl001, bwl00X doesn't use quotas)
+> 1. Login to a head node.
 > 2. Run the `myquota` command. 
 > 3. How much space have you used and how much do you have left? 
 > 4. If you had a job that resulted in 60GB of files would you have enough space to store them?
-> 5. Try a different system and compare the amount of free space. 
 {: .challenge}
 
 > ## Copying files.
-> 1. Login to the Bangor system, by typing `ssh bwl001`.
+> 1. Login to a head node.
 > 2. Create a file called hello.txt by using the nano text editor (or the editor of your choice) and typing `nano hello.txt`. Enter some text into the file and press Ctrl+X to save it. 
-> 3. Use either Filezilla or SCP/SFTP to copy the file to your computer. The file will be in /hpcw/ba/user.name/hello.txt. 
-> 4. Create a file on your computer using a text editor. Copy that file to your Bangor home directory using Filezilla or SCP/SFTP and examine its conents with nano on the Bangor system. 
+> 3. Use either Filezilla or SCP/SFTP to copy the file to your computer. 
+> 4. Create a file on your computer using a text editor. Copy that file to your SCW home directory using Filezilla or SCP/SFTP and examine its conents with nano on the head node. 
 {: .challenge}
