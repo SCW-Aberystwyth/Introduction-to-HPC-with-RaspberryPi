@@ -60,12 +60,53 @@ First lets create a job submission script and call it `parallel.sh`.
 #SBATCH -t 00:00:05               #Max wall time for entire job
 ###
 
+module load hpcw
 module load parallel
 
 # Define srun arguments:
 srun="srun -n1 -N1 --exclusive" 
 # --exclusive     ensures srun uses distinct CPUs for each job step
 # -N1 -n1         allocates a single core to each task
+
+ls *.txt | parallel ./process.sh
+
+replace {} with the file name
+
+ls | parallel 'wc -l {} > {}.wc'
+
+echo "1\n2\n3\n" | parallel echo "hello world {}"
+
+same as
+
+parallel echo "hello {1}" ::: 1 2 3
+
+gives
+
+hello world 1
+hello world 2
+hello world 3
+
+parallel echo "hello {1} {2}" ::: 1 2 3 ::: a b c
+
+hello world 1 a
+hello world 1 b
+.
+.
+hello world 3 c
+
+
+parallel echo "hello {1} {2}" ::: 1 2 3 :::+ a b c
+
+hello world 1 a
+hello world 2 b
+hello world 3 c
+
+
+
+
+
+
+
 
 # Define parallel arguments:
 parallel="parallel -N 1 --delay .2 -j $SLURM_NTASKS --joblog parallel_joblog --resume"
