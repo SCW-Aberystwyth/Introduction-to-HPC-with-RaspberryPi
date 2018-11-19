@@ -105,7 +105,7 @@ The outputted data is part of the contents from sklearn.
 ## How to install other software yourself
 
 *For Perl & Python modules or R packages*, we encourage you to set up directories in your
-home and/or lab folders for installing your own copies locally. 
+home and/or lab folders for installing your own copies locally. Instructions on how to install these are available from the [How To](https://portal.supercomputing.wales/index.php/index/how-to-guides-archive/) pages on the Super Computing Wales portal.
 
 ## Requesting additional software 
 
