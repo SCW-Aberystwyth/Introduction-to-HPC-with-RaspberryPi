@@ -231,23 +231,13 @@ parallel.sh:
 `$parallel "$srun /bin/bash ./runtask.sh arg1:{1}" ::: {1..32}`
 
 
-task.sh, the script which will actually be run
+runtask.sh, the script which will actually be run
 
 `#!/bin/bash`
 
-`# this script echoes some useful output so we can see what parallel and srun are doing`
-
 `sleepsecs=$[($RANDOM % 10) + 10]s`
 
-`# $1 is arg1:{1} from parallel, it will be a number between 0 and 32`
-
-`# $PARALLEL_SEQ is a special variable from parallel. It the actual sequence number of the job regardless of the arguments given`
-
-`# We output the sleep time, hostname, and date for more info&gt;`
-
 `echo task $1 seq:$PARALLEL_SEQ sleep:$sleepsecs host:$(hostname) date:$(date)`
-
-`# sleep a random amount of time`
 
 `sleep $sleepsecs`
 
