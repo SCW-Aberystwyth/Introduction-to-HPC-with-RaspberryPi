@@ -10,7 +10,7 @@ objectives:
  - "Understand the difference between home and scratch directories"
  - "Understand how to copy files between your computer and your SCW home/scratch directories"
 keypoints:
- - "Scratch and home are per site, no common storage between sites."
+ - "Scratch and home are per site."
  - "Scratch is faster and has no quotas, its not backed up. home is slower, smaller but backed up"
 ---
 
@@ -22,23 +22,20 @@ Storage on most compute systems is not what and where you think they are! Physic
 
 There are multiple storage/filesystems options available for you to do your work. The most common are:
 * home: where you land when you first login. 50 GB per user. Slower access, backed up. Used to store your work long term. 
+* project: shared between all users of a project. Same filesystem as home. 
 * scratch: temporary working space. Faster access, not backed up. No quota, but old files might get deleted. DON'T STORE RESULTS HERE!
 
 Here's a synopsis of filesystems on HPC Wales:
 
 |Name|Path|Default Quota|Disk Size|Backed Up|Access Speed|
 |------|---|----|-----|---|-----|
-|Bangor Home|/home/user.name|N/A|8TB|Yes|~250 Mbyte/sec|
-|Bangor Scratch|/scratch/user.name|N/A|1TB|No|~280 MByte/sec|
-|Cardiff Home|/home/user.name|50GB|195TB|Yes|~350 Mbyte/sec|
-|Cardiff Scratch|/scratch/user.name|N/A|170TB|No|~800 Mbyte/sec|
-|Cardiff Group|/space0[0-9]/HPCWXXX|Negotiable|195TB (same disk as home)|Yes|~350 Mbyte/sec|
-|Swansea Home|50GB|/home/user.name|N/A|195TB|Yes|~350 Mbyte/sec|
-|Swansea Grooup|/space0[0-9]/HPCWXXX|Negotiable|N/A|195TB (same disk as home)|No|~350 Mbyte/sec|
-|Swansea Scratch|/scratch/user.name|N/A|336TB|No|336TB|~800 Mbyte/sec|
+|Home|/home/user.name|N/A|420TB|Only in Cardiff|~XX Mbyte/sec|
+|Group|/home/scwXXXX|Negotiable|420TB (same disk as home)|Only in Cardiff|~XX Mbyte/sec|
+|Scratch|/scratch/user.name|N/A|1TB|No|~1000 MByte/sec|
 
 
-New filesystems will be delivered on Super Computing Wales. Swansea home directories on SCW WILL NOT BE BACKED UP!!!!
+
+Swansea home directories are not backed up!!!!
 
 **Important!! Ensure that you don't store anything longer than necessary on scratch, this can negatively affect other people’s jobs on the system.**
 
@@ -61,6 +58,8 @@ cfsfs001-s03:/nfsshare/exports/space03
                    192M  51200M  53248M            2529    500k    525k    
 ~~~
 {: .output}
+
+## Group Filestore
     
 
 ## How much scratch have I used?
