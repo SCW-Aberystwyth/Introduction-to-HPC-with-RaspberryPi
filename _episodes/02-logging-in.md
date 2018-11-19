@@ -17,7 +17,7 @@ keypoints:
 
 # Logging in 
 
-Your username is your institutional ID prefixed by 'a' for Aberystwyth users, 'b' for Bangor users, 'c' for Cardiff users and 's' for Swansea users.
+Your username is your institutional ID prefixed by 'a' for Aberystwyth users, 'b' for Bangor users, 'c' for Cardiff users and 's' for Swansea users. External collaborators will have a username beginning with a 'x'. 
 
 Aberystwyth and Swansea users should login to the Swansea Sunbird system by typing:
 
@@ -39,32 +39,27 @@ $ ssh username@hawklogin.cf.ac.uk
 Windows PuTTY users should enter hawklogin.cf.ac.uk in the hostname box. 
 
 
-## Change your password
-
-If you haven't already changed your password from the one that was emailed to you, do so now by running the ```passwd``` command. Passwords need to contain some numbers, letters and punctuation characters. If you forget your password email support@hpcwales.co.uk to reset it.
-
-
 ## What's available?
 
 ### Super Computing Wales
 
 These figures may still be subject to some change and might have been sourced from out of date documents. 
 
-|Partition|Number of Nodes|Cores per node|Architecture|RAM|Other|
+|Partition|Number of Nodes|Cores per node|RAM|Other|
 |-------|----|----|------|----|------|
-|Swansea Compute|122|40|Skylake|376GB||
-|Swansea GPU|4|40|Skylake|376GB|Nvidia V100 (5120 core, 16GB RAM)|
-|Swansea Data Lake|?|?||?|?|?|Installed with Swansea system|
+|Swansea Compute|122|40|376GB||
+|Swansea GPU|4|40|376GB|Nvidia V100 (5120 core, 16GB RAM)|
+|Swansea Data Lake|1|72||1500GB|Installed with Swansea system, not available for general use yet. Intended for Hadoop and Elastic Stack users.|
 
 
-|Cluster|Number of Nodes|Cores per node|Architecture|RAM|Other|
+|Cluster|Number of Nodes|Cores per node|RAM|Other|
 |-------|----|----|------|----|------|
-|Cardiff Compute|136|40|Sylake|196GB||
-|Cardiff HTC|26|40|Sylake|196GB||
-|Cardiff High Memory|26|40|Sylake|376GB||
-|Cardiff GPU|13|40|Skylake|376GB|2x Nvidia P100 (3584 core, 16GB RAM)|
-|Cardiff Dev|2|40|Skylake|
-|Cardiff Data Lake|2|22|Skylake|512GB|Will be installed later|
+|Cardiff Compute|136|40|196GB||
+|Cardiff HTC|26|40|196GB||
+|Cardiff High Memory|26|40|376GB||
+|Cardiff GPU|13|40|376GB|2x Nvidia P100 (3584 core, 16GB RAM)|
+|Cardiff Dev|2|40|196GB||
+|Cardiff Data Lake|2|?|Skylake|?|Will be installed later. Intended for Hadoop and Elastic Stack users.|
 
 Aberystwyth users are expected to use the Swansea system and will need to make a case for why they would need to use the Cardiff system. Bangor users are expected to use Cardiff.
 
