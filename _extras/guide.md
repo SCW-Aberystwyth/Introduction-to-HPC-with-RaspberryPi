@@ -35,9 +35,7 @@ application process
 
 # Logging in
 
-`ssh username@login.hpcwales.co.uk`
-
-`hpcwhosts`
+`ssh username@sunbird.swansea.ac.uk` or `ssh username@hawklogin.cf.ac.uk`
 
 `sinfo`
 
@@ -45,22 +43,22 @@ application process
 
 ## Exercises
 
+* Setup account
 * Logging in
-* Run hpcwhosts
-* Login to a host
+* Run sinfo 
 
 
 # Moving Data
-`sftp sftp.hpcwales.co.uk` 
+`sftp username@sunbird.swansea.ac.uk` or `sftp  username@hawklogin.cf.ac.uk`
 Show filezilla
 
-Home dirs are in `/hpcw/cf`, `/hpcw/sw` and `/hpcw/ba`
+Scratch dirs in /scratch/username
 
 ## Exercises
 
 * run df -h
 * run myquota
-* Copy a file to bangor
+* copy a file
 
 # Running Jobs
 
@@ -155,7 +153,7 @@ Talk about mem, time, nodes and core allocations.
 
 `python3` - command not found
 `module avail`
-`module load python/3.5.1`
+`module load python/3.7.0`
 
 ## python modules
 
@@ -283,9 +281,7 @@ python line_profiler is one of these
 
 install with 
 
-`module load python/3.5.1`
-
-`module load http-proxy`
+`module load python/3.7.0`
 
 `pip3 install --user line_profiler`
 
@@ -442,11 +438,9 @@ MPI libraries available for lots of languages including C/C++, Fortran and Pytho
 
 Install mpi4py
 
-`module load http-proxy`
-
 `module load mpi`
 
-`module load python/3.5.1`
+`module load python/3.7.0`
 
 `pip3 install --user mpi4py`
 
