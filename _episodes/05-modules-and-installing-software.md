@@ -22,7 +22,7 @@ instead, it is loaded into your environment incrementally using a module system.
 The module command controls this. 
 You can get a list of available software with the `module avail` command. This should return a long list of available software.
 
-One common piece of software that isn't installed on HPCW (without a module) is Python version 3. If we attempt to run `python3` from the command line it will respond with an error:
+One common piece of software that isn't installed on SCW (without a module) is Python version 3. If we attempt to run `python3` from the command line it will respond with an error:
 
 ~~~
 [s.jane.doe@sl1 ~]$ python3
@@ -49,6 +49,13 @@ Type "help", "copyright", "credits" or "license" for more information.
 [s.jane.doe@sl1 ~]$
 ~~~
 {: .bash}
+
+> ## Legacy HPC Wales and Raven Modules 
+> All of the old modules which were available on HPC Wales and the old Cardiff Raven system 
+> are available by running either `module load hpcw` or `module load raven` (Raven modules are only available on Hawk).
+> Please note that much of this software is outdated and may by suboptimal as its not compiled
+> to take advantage of the newer CPU architectures on Super Computing Wales.
+{: .callout}
 
 
 ## Installing Python modules
