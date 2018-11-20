@@ -15,6 +15,7 @@ keypoints:
 
 # Optimising for Parallel Processing
 
+
 ## Running a job on multiple cores
 
 By default most programs will only run one job per node, but all SCW/HPCW nodes have multiple CPU cores and are capable of running multiple processes at once without (much) loss of performance. 
@@ -44,11 +45,70 @@ When command3 finishes the job will end as backgrounded jobs won't keep the job 
 
 This method has its limits if we want to run multiple tasks after the first ones have completed. Its possible, but scaling it will be harder.
 
-### GNU Parallel
+
+## GNU Parallel
 
 GNU Parallel is a utility specially designed to run multiple parallel jobs. It can execute a set number of tasks at a time and when they are complete run more tasks.
 
 GNU Parallel can be loaded a module called "parallel". Its syntax is a bit complex, but its very powerful. 
+
+
+### A simple GNU Parallel example
+
+For this example we'll just run on a quick test on the head node. First we have to load the module for parallel. This is only available via the legacy HPC Wales modules which have to be activated by loading the module called "hpcw". 
+
+`module load hpcw`
+`module load parallel`
+
+
+The command below will run ls to list all the files in the current directory and it will send the list of files to parallel. Parallel will in turn run the echo command on each input it was given. The `{1}` means to use the first argument (and in this case its the only one) as the parameter to the echo command.
+
+`ls | parallel echo {1}`
+
+As a short hand we could have also run the command
+
+`ls | parallel echo` 
+
+and it would produce the same output.
+
+An alternate syntax for the same command is:
+
+`parallel echo {1} ::: $(ls)`
+
+Here we specify what command to run first and the put the data to process second, after the `:::`. 
+
+
+### A more complex example
+
+As an example we're going to use the example data from the Software Carpentry [Unix Shell lesson](http://swcarpentry.github.io/shell-novice/). This features some data from a researcher named Nelle who is studying the North Pacfici Gyre. She has 1520 data files, each of which measure the relative abundnace of 300 different proteins. Each file is named NENE followed by a 5 digit number identifying the sample and finally an A or a B to identify which of two machines analysed the sample. 
+
+#### Downloading the Data
+
+First we need to download Nelle's data from the Software Carpentry website. This can be downloaded with the wget command, the files then need to be extracted from the zip archive with the unzip command. 
+
+`wget http://swcarpentry.github.io/shell-novice/data/data-shell.zip`
+`unzip data-shell.zip`
+
+Nelle needs to run a program called `goostats` on each file to process it. During the Unix Shell lesson this data was processed in series by the following set of commands:
+
+`# Calculate stats for data files.`
+`for datafile in $(ls NENE*[AB].txt)`
+`do`
+`    echo $datafile`
+`    bash goostats $datafile stats-$datafile`
+`done`
+
+The `ls NENE*[AB].txt` command lists all the files which start with "NENE" and end either A.txt or B.txt. The for loop will work through the list of files produced by ls one by one and runs goostats on each one. 
+
+Lets convert this process to run in parallel by using GNU Parallel instead. By running
+
+`ls NENE*[AB].txt | parallel goostats {1} stats-{1}` 
+
+We'll run the same program in parallel. GNU parallel will automatically run on every core on the system, if there are more files to process than there are cores it will run a task on each core and then move on to the next once those finish. If we run the time command before both the serial and parallel versions of this process we should see the parallel version runs several times faster. 
+
+
+ 
+### Running Parallel under Slurm
 
 First lets create a job submission script and call it `parallel.sh`.
 
@@ -60,6 +120,8 @@ First lets create a job submission script and call it `parallel.sh`.
 #SBATCH -t 00:00:05               #Max wall time for entire job
 ###
 
+#parallel is only available as a legacy HPC Wales module
+#running module load hpcw makes all the legacy modules available to us
 module load hpcw
 module load parallel
 
@@ -67,46 +129,6 @@ module load parallel
 srun="srun -n1 -N1 --exclusive" 
 # --exclusive     ensures srun uses distinct CPUs for each job step
 # -N1 -n1         allocates a single core to each task
-
-ls *.txt | parallel ./process.sh
-
-replace {} with the file name
-
-ls | parallel 'wc -l {} > {}.wc'
-
-echo "1\n2\n3\n" | parallel echo "hello world {}"
-
-same as
-
-parallel echo "hello {1}" ::: 1 2 3
-
-gives
-
-hello world 1
-hello world 2
-hello world 3
-
-parallel echo "hello {1} {2}" ::: 1 2 3 ::: a b c
-
-hello world 1 a
-hello world 1 b
-.
-.
-hello world 3 c
-
-
-parallel echo "hello {1} {2}" ::: 1 2 3 :::+ a b c
-
-hello world 1 a
-hello world 2 b
-hello world 3 c
-
-
-
-
-
-
-
 
 # Define parallel arguments:
 parallel="parallel -N 1 --delay .2 -j $SLURM_NTASKS --joblog parallel_joblog --resume"
@@ -237,3 +259,44 @@ Seq     Host    Starttime       JobRuntime      Send    Receive Exitval Signal  
 ~~~
 {: .output}
 
+
+### More complex command handling with Parallel
+
+~~~
+parallel echo "hello {1} {2}" ::: 1 2 3 ::: a b c
+
+hello world 1 a
+hello world 1 b
+.
+.
+hello world 3 c
+
+
+parallel echo "hello {1} {2}" ::: 1 2 3 :::+ a b c
+
+hello world 1 a
+hello world 2 b
+hello world 3 c
+
+
+parallel spades.py "{1} {2}" ::: file1_r1.gz file2_r1.gz :::+ file1_r2.gz file2_r2.gz 
+
+
+echo -n "parallel srun -n1 -N1 singularity exec spades.py \"{1} {2}\" :::" > script.sh
+
+for name in $(ls *r1.gz) ; do
+
+    echo -n $name" " >> script.sh
+done
+
+echo -n ":::+ "
+
+for name in $(ls *r2.gz) ; do
+
+    echo -n $name  >> script.sh
+done
+
+echo
+
+~~~
+{: .bash}
