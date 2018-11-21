@@ -458,7 +458,7 @@ hostname.err.3739591.scs0018
 ~~~
 {: .bash}
 
-Its possible for programs to get hold of their array number from the `$SLURM_ARRAY_JOB_ID` environment variable. If we add the command `echo $SLURM_ARRAY_JOB_ID` to our batch script then it will be possible to see this in the output file. 
+Its possible for programs to get hold of their array number from the `$SLURM_ARRAY_TASK_ID` environment variable. If we add the command `echo $SLURM_ARRAY_TASK_ID` to our batch script then it will be possible to see this in the output file. 
 
 
 ## Choosing the proper resources for your job
