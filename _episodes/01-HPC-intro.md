@@ -70,9 +70,9 @@ Each university is employing research software engineers who will work with rese
 
 ### How to get access?
 
-Apply for an account via the "My Super Computing Wales" webpage at [My SCW](https://my.supercomputing.wales)
+Apply for an account via the "My Super Computing Wales" webpage at [My SCW](https://my.supercomputing.wales). You can sign into this webpage using your normal university username and password. You will then be able to set or change your Super Computing Wales password from this page.
 
-To login to the system you will have to apply for a project as well as a user account. Everyone on this course should have been added to a training project, this project is time limited. If you would like to use SCW for your research then you will have to apply for your own project or join an existing one.
+To use the system you will have to apply for a project as well as a user account. Everyone on this course should have been added to a training project, this project is time limited. If you would like to use SCW for your research then you will have to apply for your own project or join an existing one.
 
 #### Project Application Process
 
