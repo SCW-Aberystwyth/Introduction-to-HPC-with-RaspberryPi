@@ -21,21 +21,26 @@ keypoints:
 Storage on most compute systems is not what and where you think they are! Physical disks are bundled together into a virtual volume; this virtual volume may represent one filesystem, or may be divided up, or partitioned, into multiple filesystems. And your directories then reside within one of these fileystems. Filesystems are accessed over the network through mount points.
 
 There are multiple storage/filesystems options available for you to do your work. The most common are:
-* home: where you land when you first login. 50 GB per user. Slower access, backed up. Used to store your work long term. 
+* home: where you land when you first login. 50 GB per user. Slower access, backed up (Cardiff only). Used to store your work long term. 
 * project: shared between all users of a project. Same filesystem as home. 
 * scratch: temporary working space. Faster access, not backed up. No quota, but old files might get deleted. DON'T STORE RESULTS HERE!
 
-Here's a synopsis of filesystems on HPC Wales:
+Here's a synopsis of filesystems on Hawk in Cardiff:
 
-|Name|Path|Default Quota|Disk Size|Backed Up|Access Speed|
+|Name|Path|Default Quota|Disk Size|Backed Up|
 |------|---|----|-----|---|-----|
-|Home|/home/user.name|N/A|420TB|Only in Cardiff|~XX Mbyte/sec|
-|Group|/home/scwXXXX|Negotiable|420TB (same disk as home)|Only in Cardiff|~XX Mbyte/sec|
-|Scratch|/scratch/user.name|N/A|1TB|No|~1000 MByte/sec|
+|Home|/home/user.name|50GB|420TB|Only in Cardiff|
+|Group|/home/scwXXXX|Negotiable|420TB (same disk as home)|Only in Cardiff|
+|Scratch|/scratch/user.name|N/A|692TB|No|
 
+and on Sunbird in Swansea:
 
+|Name|Path|Default Quota|Disk Size|Backed Up|
+|------|---|----|-----|---|-----|
+|Home|/home/user.name|100GB|231TB|No|
+|Group|/home/scwXXXX|Negotiable|231TB (same disk as home)|No|
+|Scratch|/scratch/user.name|N/A|808TB|No|
 
-Swansea home directories are not backed up!!!!
 
 **Important!! Ensure that you don't store anything longer than necessary on scratch, this can negatively affect other people’s jobs on the system.**
 
@@ -52,10 +57,9 @@ $ myquota
 {: .bash}
 
 ~~~
-Disk quotas for group colin.sauze (gid 16782669): 
-     Filesystem  blocks   quota   limit   grace   files   quota   limit   grace
-cfsfs001-s03:/nfsshare/exports/space03
-                   192M  51200M  53248M            2529    500k    525k    
+Disk quotas for grp a.cos (gid 5000124):
+     Filesystem    used   quota   limit   grace   files   quota   limit   grace
+          /home  19.09G    100G    105G       -   36866  100000  105000       -
 ~~~
 {: .output}
 
@@ -106,13 +110,13 @@ Aberystwyth University Windows desktops already have these commands installed.
 
 ### Copying data using Filezilla
 
-Filezilla is a graphical SCP/SFTP client available for Windows, Mac and Linux. You can download it from https://filezilla-project.org/download.php?type=client
+Filezilla is a graphical SCP/SFTP client available for Windows, Mac and Linux. You can download it from [Filezilla download](https://filezilla-project.org/download.php?type=client)
 
-Open filezilla and click on file menu and choose ```Site Manager```. 
+Open filezilla and type ```sftp://sunbird.swansea.ac.uk``` or ```sftp://hawklogin.cf.ac.uk``` into the host box. Enter your username and password in the username/password boxes.
 
 ![Transferring files using FileZilla](../fig/filezilla1.png)
 
-A new site will appear under "My Sites". Name this site "Super Computing Wales" by clicking on Rename. Then enter "sunbird.swansea.ac.uk" or "hawklogin.cf.ac.uk" as the Host, your username as the user name and choose "Ask for password" as the logon type. Then click Connect. You should now be prompted for your password, go ahead and enter your HPC Wales password and click Ok. 
+Click Quickconnect and a connection will be started. The first time you connect you will be asked to verify the host key, tick the "Always trust this host, add key to the cache" box to stop this message appearing again in future.
 
 ![Transferring files using FileZilla](../fig/filezilla2.png)
 
