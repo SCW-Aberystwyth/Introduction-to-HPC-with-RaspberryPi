@@ -9,8 +9,9 @@ objectives:
  - "Understand how to login to SCW"
  - "Understand the difference between the login node and each cluster's head node."
 keypoints:
- - "ssh login.hpcwales.co.uk for the login node, from there connect to the cluster of your choice"
- - "hpcwhosts command shows a list of clusters"
+ - "ssh sunbird.swansea.ac.uk or hawklogin.cf.ac.uk to login to the system"
+ - "sinfo shows partitions and how busy they are."
+ - "slurmtop shows another view of how busy the system is."
 ---
 
 
