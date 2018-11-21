@@ -9,7 +9,7 @@ permalink: /guide/
 
  * introduce everyone
  * get attendees to introduce themselves
- * etherpad link http://board.net/p/scwaber-2018-05-24
+ * etherpad link http://board.net/p/scwaber-2018-11-21
 
  
 # HPC background
@@ -170,6 +170,10 @@ Talk about mem, time, nodes and core allocations.
 
 * run a python script
 
+# HPC Best Practice
+
+See webpage
+
 # Optimising for Parallel Processing
 
 crude way:
@@ -206,13 +210,44 @@ What if command4 needs to run after command1/2/3.
 GNU parallel is a powerful program designed to run multiple jobs on a single node.
 module called parallel contains it.
 
+parallel can read input from a pipe and apply a command to each line of input
+
+`ls | parallel echo {1}`
+
+`ls | parallel echo` 
+
+alternate syntax for same thing
+
+`parallel echo {1} ::: $(ls)`
+
+${1} means first argument, separate each argument with another :::
+
+`parallel echo {1} {2} ::: 1 2 3 ::: a b c`
+
+
+Use parallel on Nelle's pipeline from Unix Shell lesson.
+
+`wget http://swcarpentry.github.io/shell-novice/data/data-shell.zip`
+`unzip data-shell.zip`
+`cd data-shell/north-pacific-gyre/2012-07-03/`
+
+We used to process this with a for loop in series.
+Switch to parallel 
+
+`ls NENE*[AB].txt | parallel goostats {1} stats-{1}` 
+
+
+
+
 parallel.sh:
 
 `#!/bin/bash --login`
 
 `###`
 
-`#SBATCH -n 12                     #Number of processors in our pool`
+`#SBATCH --ntasks 4                     #Number of processors we will use`
+
+`#SBATCH --nodes 1                      #request everything runs on the same node`
 
 `#SBATCH -o output.%J              #Job output`
 
@@ -220,30 +255,22 @@ parallel.sh:
 
 `###`
 
+`module load hpcw`
+
 `module load parallel`
 
-`srun="srun -n1 -N1 --exclusive" `
+`srun="srun -n1 -N1" `
 
-`parallel="parallel -N 1 --delay .2 -j $SLURM_NTASKS --joblog parallel_joblog --resume"`
+`parallel="parallel -j $SLURM_NTASKS --joblog parallel_joblog"`
 
-`$parallel "$srun /bin/bash ./runtask.sh arg1:{1}" ::: {1..32}`
+`ls NENE*[AB].txt | $parallel "$srun bash ./goostats {1} stats-{1}"`
 
-
-runtask.sh, the script which will actually be run
-
-`#!/bin/bash`
-
-`sleepsecs=$[($RANDOM % 10) + 10]s`
-
-`echo task $1 seq:$PARALLEL_SEQ sleep:$sleepsecs host:$(hostname) date:$(date)`
-
-`sleep $sleepsecs`
 
 submit it:
 
 `sbatch parallel.sh`
 
-sacct will show 32 subjobs. 
+sacct will show 15 subjobs. 
 
 parallel_joblog shows how long each took to run.
 
