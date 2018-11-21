@@ -60,6 +60,11 @@ For this example we'll just run on a quick test on the head node. First we have 
 `module load hpcw`
 `module load parallel`
 
+~~~
+#### Citing Software
+Each time you run GNU parallel it will remind that you academic tradition requires you to cite the software you used. You can stop this message by running `parallel --citation` once and parallel will then remember not to show this message anymore. Running this will also show you the Bibtex code for citing parallel in your papers. 
+~~~
+{: .callout}
 
 The command below will run ls to list all the files in the current directory and it will send the list of files to parallel. Parallel will in turn run the echo command on each input it was given. The `{1}` means to use the first argument (and in this case its the only one) as the parameter to the echo command.
 
@@ -89,6 +94,10 @@ First we need to download Nelle's data from the Software Carpentry website. This
 `wget http://swcarpentry.github.io/shell-novice/data/data-shell.zip`
 `unzip data-shell.zip`
 
+The data we'll be using is now extracted into the directory data-shell/north-pacific-gyre/2012-07-03
+
+`cd data-shell/north-pacific-gyre/2012-07-03/`
+
 Nelle needs to run a program called `goostats` on each file to process it. During the Unix Shell lesson this data was processed in series by the following set of commands:
 
 `# Calculate stats for data files.`
@@ -115,7 +124,8 @@ First lets create a job submission script and call it `parallel.sh`.
 ~~~
 #!/bin/bash --login
 ###
-#SBATCH -n 12                     #Number of processors in our pool
+#SBATCH --ntasks 4                     #Number of processors we will use
+#SBATCH --nodes 1                      #request everything runs on the same node
 #SBATCH -o output.%J              #Job output
 #SBATCH -t 00:00:05               #Max wall time for entire job
 ###
@@ -126,50 +136,16 @@ module load hpcw
 module load parallel
 
 # Define srun arguments:
-srun="srun -n1 -N1 --exclusive" 
-# --exclusive     ensures srun uses distinct CPUs for each job step
+srun="srun -n1 -N1" 
 # -N1 -n1         allocates a single core to each task
 
 # Define parallel arguments:
-parallel="parallel -N 1 --delay .2 -j $SLURM_NTASKS --joblog parallel_joblog --resume"
-# -N 1              is number of arguments to pass to each job
-# --delay .2        prevents overloading the controlling node on short jobs
+parallel="parallel -j $SLURM_NTASKS --joblog parallel_joblog"
 # -j $SLURM_NTASKS  is the number of concurrent tasks parallel runs, so number of CPUs allocated
 # --joblog name     parallel's log file of tasks it has run
-# --resume          parallel can use a joblog and this to continue an interrupted run (job resubmitted)
 
 # Run the tasks:
-$parallel "$srun /bin/bash ./runtask.sh arg1:{1}" ::: {1..32}
-# in this case, we are running a script named runtask, and passing it a single argument
-# {1} is the first argument
-# parallel uses ::: to separate options. Here {1..32} is a shell expansion defining the values for
-#    the first argument, but could be any shell command
-#
-# so parallel will run the runtask script for the numbers 1 through 32, with a max of 12 running 
-#    at any one time
-#
-# as an example, the first job will be run like this:
-#    srun -N1 -n1 --exclusive ./runtask arg1:1
-~~~
-{: .bash}
-
-
-Now lets define a sciprt called `runtask.sh`, this is the script we want parallel to actually run. All it does is wait a random amount of time and output some information about the job on screen. 
-
-~~~
-#!/bin/bash
-
-# this script echoes some useful output so we can see what parallel and srun are doing
-
-sleepsecs=$[($RANDOM % 10) + 10]s
-
-# $1 is arg1:{1} from parallel, it will be a number between 0 and 32
-# $PARALLEL_SEQ is a special variable from parallel. It the actual sequence number of the job regardless of the arguments given
-# We output the sleep time, hostname, and date for more info&gt;
-echo task $1 seq:$PARALLEL_SEQ sleep:$sleepsecs host:$(hostname) date:$(date)
-
-# sleep a random amount of time
-sleep $sleepsecs
+ls NENE*[AB].txt | $parallel "$srun bash ./goostats {1} stats-{1}"
 ~~~
 {: .bash}
 
@@ -181,42 +157,26 @@ sbatch parallel.sh
 ~~~
 {: .bash}
 
-This will take a minute or so to run, it will vary depending on the random numbers. If we watch the output of `sacct` we should see 32 subjobs being created.
+This will take a minute or so to run. If we watch the output of `sacct` we should see 15 subjobs being created.
 
 ~~~
-8324120.bat+      batch              hpcw0318         12  COMPLETED      0:0 
-8324120.0          bash              hpcw0318          1  COMPLETED      0:0 
-8324120.1          bash              hpcw0318          1  COMPLETED      0:0 
-8324120.2          bash              hpcw0318          1  COMPLETED      0:0 
-8324120.3          bash              hpcw0318          1  COMPLETED      0:0 
-8324120.4          bash              hpcw0318          1  COMPLETED      0:0 
-8324120.5          bash              hpcw0318          1  COMPLETED      0:0 
-8324120.6          bash              hpcw0318          1  COMPLETED      0:0 
-8324120.7          bash              hpcw0318          1  COMPLETED      0:0 
-8324120.8          bash              hpcw0318          1  COMPLETED      0:0 
-8324120.9          bash              hpcw0318          1  COMPLETED      0:0 
-8324120.10         bash              hpcw0318          1  COMPLETED      0:0 
-8324120.11         bash              hpcw0318          1  COMPLETED      0:0 
-8324120.12         bash              hpcw0318          1  COMPLETED      0:0 
-8324120.13         bash              hpcw0318          1  COMPLETED      0:0 
-8324120.14         bash              hpcw0318          1  COMPLETED      0:0 
-8324120.15         bash              hpcw0318          1  COMPLETED      0:0 
-8324120.16         bash              hpcw0318          1  COMPLETED      0:0 
-8324120.17         bash              hpcw0318          1  COMPLETED      0:0 
-8324120.18         bash              hpcw0318          1  COMPLETED      0:0 
-8324120.19         bash              hpcw0318          1  COMPLETED      0:0 
-8324120.20         bash              hpcw0318          1  COMPLETED      0:0 
-8324120.21         bash              hpcw0318          1  COMPLETED      0:0 
-8324120.22         bash              hpcw0318          1  COMPLETED      0:0 
-8324120.23         bash              hpcw0318          1  COMPLETED      0:0 
-8324120.24         bash              hpcw0318          1  COMPLETED      0:0 
-8324120.25         bash              hpcw0318          1  COMPLETED      0:0 
-8324120.26         bash              hpcw0318          1  COMPLETED      0:0 
-8324120.27         bash              hpcw0318          1  COMPLETED      0:0 
-8324120.28         bash              hpcw0318          1  COMPLETED      0:0 
-8324120.29         bash              hpcw0318          1  COMPLETED      0:0 
-8324120.30         bash              hpcw0318          1  COMPLETED      0:0 
-8324120.31         bash              hpcw0318          1  COMPLETED      0:0 
+35590.batch       batch               scw1000          4  COMPLETED      0:0 
+35590.extern     extern               scw1000          4  COMPLETED      0:0 
+35590.0            bash               scw1000          1  COMPLETED      0:0 
+35590.1            bash               scw1000          1  COMPLETED      0:0 
+35590.2            bash               scw1000          1  COMPLETED      0:0 
+35590.3            bash               scw1000          1  COMPLETED      0:0 
+35590.4            bash               scw1000          1  COMPLETED      0:0 
+35590.5            bash               scw1000          1  COMPLETED      0:0 
+35590.6            bash               scw1000          1  COMPLETED      0:0 
+35590.7            bash               scw1000          1  COMPLETED      0:0 
+35590.8            bash               scw1000          1  COMPLETED      0:0 
+35590.9            bash               scw1000          1  COMPLETED      0:0 
+35590.10           bash               scw1000          1  COMPLETED      0:0 
+35590.11           bash               scw1000          1  COMPLETED      0:0 
+35590.12           bash               scw1000          1  COMPLETED      0:0 
+35590.13           bash               scw1000          1  COMPLETED      0:0 
+35590.14           bash               scw1000          1  COMPLETED      0:0 
 ~~~
 {: .output}
 
@@ -224,79 +184,52 @@ The file `parallel_joblog` will contain a list of when each job ran and how long
 
 ~~~
 Seq     Host    Starttime       JobRuntime      Send    Receive Exitval Signal  Command
-1       :       1512606492.971      10.213      0       73      0       0       srun -n1 -N1 --exclusive /bin/bash ./runtask arg1:1
-12      :       1512606495.364      10.102      0       75      0       0       srun -n1 -N1 --exclusive /bin/bash ./runtask arg1:12
-10      :       1512606494.912      12.105      0       75      0       0       srun -n1 -N1 --exclusive /bin/bash ./runtask arg1:10
-9       :       1512606494.707      13.099      0       73      0       0       srun -n1 -N1 --exclusive /bin/bash ./runtask arg1:9
-4       :       1512606493.604      15.101      0       73      0       0       srun -n1 -N1 --exclusive /bin/bash ./runtask arg1:4
-6       :       1512606494.041      15.101      0       73      0       0       srun -n1 -N1 --exclusive /bin/bash ./runtask arg1:6
-5       :       1512606493.815      17.105      0       73      0       0       srun -n1 -N1 --exclusive /bin/bash ./runtask arg1:5
-2       :       1512606493.178      19.098      0       73      0       0       srun -n1 -N1 --exclusive /bin/bash ./runtask arg1:2
-7       :       1512606494.282      18.109      0       73      0       0       srun -n1 -N1 --exclusive /bin/bash ./runtask arg1:7
-3       :       1512606493.392      19.105      0       73      0       0       srun -n1 -N1 --exclusive /bin/bash ./runtask arg1:3
-8       :       1512606494.497      18.105      0       73      0       0       srun -n1 -N1 --exclusive /bin/bash ./runtask arg1:8
-11      :       1512606495.151      19.109      0       75      0       0       srun -n1 -N1 --exclusive /bin/bash ./runtask arg1:11
-13      :       1512606503.189      12.106      0       75      0       0       srun -n1 -N1 --exclusive /bin/bash ./runtask arg1:13
-15      :       1512606507.021      10.107      0       75      0       0       srun -n1 -N1 --exclusive /bin/bash ./runtask arg1:15
-17      :       1512606508.710      11.105      0       75      0       0       srun -n1 -N1 --exclusive /bin/bash ./runtask arg1:17
-14      :       1512606505.471      15.111      0       75      0       0       srun -n1 -N1 --exclusive /bin/bash ./runtask arg1:14
-21      :       1512606512.498      12.109      0       75      0       0       srun -n1 -N1 --exclusive /bin/bash ./runtask arg1:21
-22      :       1512606512.713      12.103      0       75      0       0       srun -n1 -N1 --exclusive /bin/bash ./runtask arg1:22
-19      :       1512606510.925      14.108      0       75      0       0       srun -n1 -N1 --exclusive /bin/bash ./runtask arg1:19
-16      :       1512606507.811      18.111      0       75      0       0       srun -n1 -N1 --exclusive /bin/bash ./runtask arg1:16
-23      :       1512606512.941      15.105      0       75      0       0       srun -n1 -N1 --exclusive /bin/bash ./runtask arg1:23
-18      :       1512606509.147      19.108      0       75      0       0       srun -n1 -N1 --exclusive /bin/bash ./runtask arg1:18
-24      :       1512606514.263      15.111      0       75      0       0       srun -n1 -N1 --exclusive /bin/bash ./runtask arg1:24
-20      :       1512606512.280      17.105      0       75      0       0       srun -n1 -N1 --exclusive /bin/bash ./runtask arg1:20
-25      :       1512606515.299      15.106      0       75      0       0       srun -n1 -N1 --exclusive /bin/bash ./runtask arg1:25
-27      :       1512606519.820      14.111      0       75      0       0       srun -n1 -N1 --exclusive /bin/bash ./runtask arg1:27
-28      :       1512606520.587      14.109      0       75      0       0       srun -n1 -N1 --exclusive /bin/bash ./runtask arg1:28
-26      :       1512606517.132      18.102      0       75      0       0       srun -n1 -N1 --exclusive /bin/bash ./runtask arg1:26
-30      :       1512606524.821      13.109      0       75      0       0       srun -n1 -N1 --exclusive /bin/bash ./runtask arg1:30
-32      :       1512606525.927      15.106      0       75      0       0       srun -n1 -N1 --exclusive /bin/bash ./runtask arg1:32
-29      :       1512606524.611      18.110      0       75      0       0       srun -n1 -N1 --exclusive /bin/bash ./runtask arg1:29
-31      :       1512606525.037      19.107      0       75      0       0       srun -n1 -N1 --exclusive /bin/bash ./runtask arg1:31
+1       :       1542803199.833       2.205      0       0       0       0       srun -n1 -N1 bash ./goostats NENE01729A.txt stats-NENE01729A.txt
+2       :       1542803199.835       2.250      0       0       0       0       srun -n1 -N1 bash ./goostats NENE01729B.txt stats-NENE01729B.txt
+3       :       1542803199.837       2.251      0       0       0       0       srun -n1 -N1 bash ./goostats NENE01736A.txt stats-NENE01736A.txt
+4       :       1542803199.839       2.282      0       0       0       0       srun -n1 -N1 bash ./goostats NENE01751A.txt stats-NENE01751A.txt
+5       :       1542803202.040       2.213      0       0       0       0       srun -n1 -N1 bash ./goostats NENE01751B.txt stats-NENE01751B.txt
+6       :       1542803202.088       2.207      0       0       0       0       srun -n1 -N1 bash ./goostats NENE01812A.txt stats-NENE01812A.txt
+7       :       1542803202.091       2.207      0       0       0       0       srun -n1 -N1 bash ./goostats NENE01843A.txt stats-NENE01843A.txt
+8       :       1542803202.124       2.208      0       0       0       0       srun -n1 -N1 bash ./goostats NENE01843B.txt stats-NENE01843B.txt
+9       :       1542803204.257       2.210      0       0       0       0       srun -n1 -N1 bash ./goostats NENE01978A.txt stats-NENE01978A.txt
+10      :       1542803204.297       2.173      0       0       0       0       srun -n1 -N1 bash ./goostats NENE01978B.txt stats-NENE01978B.txt
+11      :       1542803204.300       2.223      0       0       0       0       srun -n1 -N1 bash ./goostats NENE02018B.txt stats-NENE02018B.txt
+12      :       1542803204.336       2.230      0       0       0       0       srun -n1 -N1 bash ./goostats NENE02040A.txt stats-NENE02040A.txt
+13      :       1542803206.470       2.216      0       0       0       0       srun -n1 -N1 bash ./goostats NENE02040B.txt stats-NENE02040B.txt
+14      :       1542803206.472       2.276      0       0       0       0       srun -n1 -N1 bash ./goostats NENE02043A.txt stats-NENE02043A.txt
+15      :       1542803206.526       2.270      0       0       0       0       srun -n1 -N1 bash ./goostats NENE02043B.txt stats-NENE02043B.txt
 ~~~
 {: .output}
 
 
 ### More complex command handling with Parallel
 
+We can run parallel with multiple arguments. For example `parallel echo "hello {1} {2}" ::: 1 2 3 ::: a b c`
+
+Which runs each possible combination of the first and second arguments to give:
+
 ~~~
-parallel echo "hello {1} {2}" ::: 1 2 3 ::: a b c
+hello 1 a
+hello 1 b
+hello 1 c
+hello 2 a
+hello 2 b
+hello 2 c
+hello 3 a
+hello 3 b
+hello 3 c
+~~~
+{: .output}
 
-hello world 1 a
-hello world 1 b
-.
-.
-hello world 3 c
+If we only want to run each argument as a pair, so there are only three outputs adding the `+` symbol to the end of the second `:::` will achieve this:
 
-
+~~~
 parallel echo "hello {1} {2}" ::: 1 2 3 :::+ a b c
 
 hello world 1 a
 hello world 2 b
 hello world 3 c
-
-
-parallel spades.py "{1} {2}" ::: file1_r1.gz file2_r1.gz :::+ file1_r2.gz file2_r2.gz 
-
-
-echo -n "parallel srun -n1 -N1 singularity exec spades.py \"{1} {2}\" :::" > script.sh
-
-for name in $(ls *r1.gz) ; do
-
-    echo -n $name" " >> script.sh
-done
-
-echo -n ":::+ "
-
-for name in $(ls *r2.gz) ; do
-
-    echo -n $name  >> script.sh
-done
-
-echo
-
 ~~~
-{: .bash}
+~{: .output}
+
