@@ -245,7 +245,6 @@ Edit the script to have the command `/bin/sleep 70` before the `hostname` comman
 #maximum memory of 10 megabytes
 #SBATCH --mem-per-cpu=10
 #SBATCH --ntasks=1
-#SBATCH --ntasks-per-node=1
 #SBATCH --nodes=1
 ###
 
