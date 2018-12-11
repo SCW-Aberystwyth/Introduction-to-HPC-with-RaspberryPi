@@ -145,11 +145,11 @@ Commercial software will require the appropriate licenses.
 > #!/bin/bash --login
 > ###
 > #job name
-> #SBATCH --job-name=hostname
+> #SBATCH --job-name=plotgraph
 > #job stdout file
-> #SBATCH --output=hostname.out.%J
+> #SBATCH --output=plotgraph.out.%J
 > #job stderr file
-> #SBATCH --error=hostname.err.%J
+> #SBATCH --error=plotgraph.err.%J
 > #maximum job time in D-HH:MM
 > #SBATCH --time=0-00:01
 > #number of tasks you are requesting 
