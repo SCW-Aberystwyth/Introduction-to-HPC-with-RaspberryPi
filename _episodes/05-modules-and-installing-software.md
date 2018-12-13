@@ -137,7 +137,7 @@ Commercial software will require the appropriate licenses.
 > plt.plot(range(10))
 > plt.savefig('temp.png')
 > ~~~
-> {: python}
+> {: .python}
 > 
 > plot.sh script used in the exercises.
 > 
