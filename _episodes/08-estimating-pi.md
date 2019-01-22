@@ -60,6 +60,7 @@ For generating pseudo-random numbers, we sample the uniform probability distribu
 Lola finishes writing the pi estimation and comes up with a [small python script]({{ page.root }}/code/serial_numpi.py), that she can launch from the command line:
 
 ~~~
+$ module load hpcw python/3.5.1
 $ python3 ./serial_numpi.py 1000000000
 ~~~
 {: .bash}
@@ -76,10 +77,9 @@ She must admit that the application takes quite long to finish. Yet another reas
 
 Before venturing out and trying to accelerate a program, it is utterly important to find the hot spots of it by means of measurements. For the sake of this tutorial, we use the [line_profiler](https://github.com/rkern/line_profiler) of python. Your language of choice most likely has similar utilities.
 
-to install the profiler, please issue the following commands. These load the python module, enabling the pip3 command and then install the module using pip3.
+to install the profiler, please issue the following commands. These load the python module, enabling the pip3 command and then install the module using pip3. Note that we have to use the legacy Python 3.5.1 which is part of the old HPC Wales modules, this is because the newer versions of Python were compiled with Intel's optimised C compiler but this isn't compatible with the line profiler. 
 
 ~~~
-$ module load python/3.7.0
 $ pip3 install --user line_profiler
 ~~~
 {: .bash }

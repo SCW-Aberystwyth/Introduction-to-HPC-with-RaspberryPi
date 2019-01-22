@@ -38,7 +38,7 @@ $ cat call_hostname.sh
 #SBATCH --output=mpi_hostname.out.%J.%N
 #SBATCH --error=mpi_hostname.err.%J.%N
 ###
-
+module load mpi
 mpirun hostname
 ~~~
 {: .bash}
@@ -291,6 +291,7 @@ wget https://supercomputingwales.github.io/SCW-tutorial/code/print_hostname.py
 #SBATCH --error=mpi_numpi.err.%J.%N
 ###
 
+module load hpcw
 module load python/3.5.1
 module load mpi
 mpirun python3 mpi_numpi.py 1000000000                           
