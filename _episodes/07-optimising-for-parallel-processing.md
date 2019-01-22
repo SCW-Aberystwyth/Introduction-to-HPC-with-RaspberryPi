@@ -31,6 +31,8 @@ A crude way to achieve this is to have our job submission script just run multip
 #SBATCH --error=test.err.%J
 #SBATCH --time=0-00:01
 #SBATCH --ntasks=3
+#SBATCH --account=scwXXXX
+#SBATCH --reservation=scwXXXX_Y
 ###
 
 command1 &
@@ -128,6 +130,8 @@ First lets create a job submission script and call it `parallel.sh`.
 #SBATCH --nodes 1                      #request everything runs on the same node
 #SBATCH -o output.%J              #Job output
 #SBATCH -t 00:00:05               #Max wall time for entire job
+#SBATCH --account=scwXXXX
+#SBATCH --reservation=scwXXXX_Y
 ###
 
 #parallel is only available as a legacy HPC Wales module
