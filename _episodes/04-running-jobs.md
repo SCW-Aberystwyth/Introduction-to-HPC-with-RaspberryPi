@@ -35,7 +35,8 @@ If you want to experiment with some code and test it you should run it this way.
 ** Don't run jobs on the login nodes **
 
 
-To get an interactive session, you first need to issue a `salloc` command to reserve some resources. We can optionally specify an account and reservation ID, the account tells the system which project your job will be accounted against. A reservation is where some compute nodes have been reserved for a particular project at a particular time. To ensure nodes are available for this course we may have obtained a reservation. Your instructor will tell you which acccount and reservation to use here. If you don't specify them then your default project will be used and you will have to wait for a compute node to be available like any normal user will.
+To get an interactive session, you first need to issue a `salloc` command to reserve some resources. 
+
 
 ~~~
 salloc -n 1 --account=scwXXXX --reservation=scwXXXX_Y 
@@ -50,6 +51,12 @@ salloc: Waiting for resource configuration
 salloc: Nodes scs0018 are ready for job
 ~~~
 {: .output}
+
+~~~
+### Acccounts and Reservations
+We can optionally specify an account and reservation ID to Slurm. The account ID tells the system which project your job will be accounted against, if you are a member of multiple projects some might have different priorities and limitations. A reservation is where some compute nodes have been reserved for a particular project at a particular time. To ensure nodes are available for this course we may have obtained a reservation. Your instructor will tell you which acccount and reservation to use here. The account can be specified either through the --account option to salloc (and the sbatch command which we'll use soon) and the reservation through the --reservation option. Alternatively these can be specified in the SALLOC_ACCOUNT, SBATCH_ACCOUNT, SALLOC_RESERVATION and SBATCH_RESERVATION environment variables. 
+~~~
+{: .callout}
 
 We have now allocated ourselves a host to run a program on. The `-n 1` tells slurm how many copies of the task we will be running. The `--ntasks-per-node=1` tells Slurm that we will just be running one task for every node we are allocated. We could increase either of these numbers if we want to run multiple copies of a task and if we want to run more than one copy per node. 
 
