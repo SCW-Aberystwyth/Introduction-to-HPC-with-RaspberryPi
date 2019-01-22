@@ -85,7 +85,7 @@ Filesystem                                Size  Used Avail Use% Mounted on
 
 You can copy files to/from your SCW home and scratch drives using the secure copy protocol (SCP) or secure file transfer protocol (SFTP) and connecting to Sunbird or Hawk. 
 
-### Copying data using the command line
+### Copying data using SFTP
 
 Use the ```sftp``` command and connect to the system. This takes the argument of the username followed by an @ symbol and then the hostname. Optionally you can specify what directory to start in by putting a ```:``` symbol after this and adding the directory name. The command below will start in ```/home/s.jane.doe/data```, if no directory is specified then sftp defaults to your home directory. 
 
@@ -104,8 +104,23 @@ sftp> ls
 {: .output}
 
 
-The ```sftp``` and ```scp``` commands should be available on all Linux and Mac systems. On Windows systems they can be made available if you install the Linux Subsystem for Windows (Windows 10 only), the Github command line (CHECK ME).
+The ```sftp``` and ```scp``` commands should be available on all Linux and Mac systems. Windows 10 systems with the April 2018 update (Spring 2018 Creators Edition) should also include it. For older versions On Windows systems they can be made available if you install the Linux Subsystem for Windows (Windows 10 only) or through [Git for Windows](https://gitforwindows.org).
 Aberystwyth University Windows desktops already have these commands installed. 
+
+#### SFTP commands
+SFTP uses many of the same commands as the Unix command line and the older FTP system which it has replaced. Most commnads by default run on the remote system, putting an `!` in front of the command runs it on the local system. Some common commands are shown below.
+~~~
+ls - lists files on the remote system
+!ls - lists files on the local system
+pwd - reports the current directory on the local system
+!pwd - reports the current directory on the remote system
+get - gets a file from the remote system
+put - sends a file to the remote system
+rm - delete a file on the remote system
+cd - change directory on the remote system
+lcd - change directory on the local system
+~~~
+{:. callout}
 
 
 ### Copying data using Filezilla
