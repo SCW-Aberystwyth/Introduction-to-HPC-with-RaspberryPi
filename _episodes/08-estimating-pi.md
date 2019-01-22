@@ -76,11 +76,10 @@ She must admit that the application takes quite long to finish. Yet another reas
 
 Before venturing out and trying to accelerate a program, it is utterly important to find the hot spots of it by means of measurements. For the sake of this tutorial, we use the [line_profiler](https://github.com/rkern/line_profiler) of python. Your language of choice most likely has similar utilities.
 
-to install the profiler, please issue the following commands. The first two commands load the python module, enabling the pip3 command and load the http-proxy module enabling internet access.
+to install the profiler, please issue the following commands. These load the python module, enabling the pip3 command and then install the module using pip3.
 
 ~~~
-$ module load python/3.5.1
-$ module load http-proxy
+$ module load python/3.7.0
 $ pip3 install --user line_profiler
 ~~~
 {: .bash }
