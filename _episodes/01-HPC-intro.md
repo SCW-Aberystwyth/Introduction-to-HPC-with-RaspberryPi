@@ -8,7 +8,7 @@ questions:
 keypoints: 
  - "A cluster is a group of computers connected together to act as one."
  - "Clusters are formed of nodes, each usually has several processors and 10s or hundreds of gigabytes of RAM."
- - "HPCW/SCW have clusters for researchers at Welsh universities to use"
+ - "SCW have clusters for researchers at Welsh universities to use"
 objectives: 
  - "Understand what a cluster is"
  - "Understand the background to the HPC Wales and Super Computing Wales projects"
