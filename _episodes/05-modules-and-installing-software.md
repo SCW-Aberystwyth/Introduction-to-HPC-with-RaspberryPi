@@ -157,6 +157,8 @@ Commercial software will require the appropriate licenses.
 > #memory per process in MB 
 > #SBATCH --mem=2
 > #SBATCH --nodes=1
+> #SBATCH --account=scwXXXX
+> #SBATCH --reservation=scwXXXX_Y
 > ###
 > module load python/3.7.0
 > python3 plot.py

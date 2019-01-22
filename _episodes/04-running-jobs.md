@@ -35,10 +35,10 @@ If you want to experiment with some code and test it you should run it this way.
 ** Don't run jobs on the login nodes **
 
 
-To get an interactive session, you first need to issue a `salloc` command to reserve some resources. 
+To get an interactive session, you first need to issue a `salloc` command to reserve some resources. We can optionally specify an account and reservation ID, the account tells the system which project your job will be accounted against. A reservation is where some compute nodes have been reserved for a particular project at a particular time. To ensure nodes are available for this course we may have obtained a reservation. Your instructor will tell you which acccount and reservation to use here. If you don't specify them then your default project will be used and you will have to wait for a compute node to be available like any normal user will.
 
 ~~~
-salloc -n 1
+salloc -n 1 --account=scwXXXX --reservation=scwXXXX_Y 
 ~~~
 {: .bash}
 
@@ -51,7 +51,11 @@ salloc: Nodes scs0018 are ready for job
 ~~~
 {: .output}
 
-We have now allocated ourselves a host to run a program on. The `-n 1` tells slurm how many copies of the task we will be running. The `--ntasks-per-node=1` tells slurm that we will just be running one task for every node we are allocated. We could increase either of these numbers if we want to run multiple copies of a task and if we want to run more than one copy per node. 
+We have now allocated ourselves a host to run a program on. The `-n 1` tells slurm how many copies of the task we will be running. The `--ntasks-per-node=1` tells Slurm that we will just be running one task for every node we are allocated. We could increase either of these numbers if we want to run multiple copies of a task and if we want to run more than one copy per node. 
+
+The `--account` option tells Slurm which project to account your usage against, if you are only a member of one project then this will default to that project. If you're a member of multiple projects then it will default to the first one. The accounting information is used to measure what resources a project has consumed and to prioritise its use, so its important to choose the right project. 
+
+To ensure nodes are available for this training workshop a reservation may have been made to prevent anyone else using a few nodes. In order to make use of these you must use the `--reservation` option too, if you don't then you'll have to wait in the same queue as everyone else. 
 
 To actually run a command we now need to issue the `srun` command. This also takes a `-n` parameter to tell Slurm how many copies of the job to run and it takes the name of the program to run. To run a job interactively we need another argument `--pty`. 
 
@@ -157,6 +161,8 @@ nano batchjob.sh
 #maximum memory of 10 megabytes
 #SBATCH --mem-per-cpu=10
 #SBATCH --ntasks=1
+#SBATCH --account=scwXXXX
+#SBATCH --reservation=scwXXXX_Y
 ###
 
 /bin/hostname
@@ -246,6 +252,8 @@ Edit the script to have the command `/bin/sleep 70` before the `hostname` comman
 #SBATCH --mem-per-cpu=10
 #SBATCH --ntasks=1
 #SBATCH --nodes=1
+#SBATCH --account=scwXXXX
+#SBATCH --reservation=scwXXXX_Y
 ###
 
 /bin/sleep 70
@@ -409,6 +417,8 @@ This will allow multiple copies of the command to run. In the example below two 
 #SBATCH --mem-per-cpu=10
 #SBATCH --ntasks=2
 #SBATCH --nodes=2
+#SBATCH --account=scwXXXX
+#SBATCH --reservation=scwXXXX_Y
 ###
 
 srun /bin/hostname
