@@ -287,18 +287,18 @@ So this is a prime candidate for acceleration.
 > > 
 > > Line #      Hits         Time  Per Hit   % Time  Line Contents
 > > ==============================================================
-> >     38                                           @profile
-> >     39                                           def main():
-> >     40                                           
-> >     41         1        63994  63994.0     19.2      text = load_text()
-> >     42         1            5      5.0      0.0      nchars = len(text)
-> >     43         1       270108 270108.0     80.8      nwords = word_count(text)
-> >     44         1           53     53.0      0.0      print("%i characters and %i words found in standard python lib" % (nchars, nwords))
-> >     45                                           
-> >     46         1            2      2.0      0.0      if len(text):
-> >     47         1            6      6.0      0.0          sys.exit(0)
-> >     48                                               else:
-> >     49                                                   sys.exit(1)
+> > 37                                           @profile
+> > 38                                           def main():
+> > 39                                           
+> > 40         1      71541.0  71541.0     25.0      text = load_text()
+> > 41         1          3.0      3.0      0.0      nchars = len(text)
+> > 42         1     215017.0 215017.0     75.0      nwords = word_count(text)
+> > 43         1         47.0     47.0      0.0      print("%i characters and %i words found in standard python lib" % (nchars, nwords))
+> > 44                                           
+> > 45         1          1.0      1.0      0.0      if len(text):
+> > 46         1          3.0      3.0      0.0          sys.exit(0)
+> > 47                                               else:
+> > 48                                                   sys.exit(1)
 > > ~~~~
 > > The `word_count` function takes the longest time. Inside it, `re.split` hogs runtime the most.
 > {: .solution}
