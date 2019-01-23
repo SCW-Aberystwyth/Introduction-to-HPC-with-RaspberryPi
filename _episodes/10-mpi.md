@@ -37,6 +37,8 @@ $ cat call_hostname.sh
 #SBATCH --job-name=mpi_hostname
 #SBATCH --output=mpi_hostname.out.%J.%N
 #SBATCH --error=mpi_hostname.err.%J.%N
+#SBATCH --account=SCWXXXX
+#SBATCH --reservation=SCWXXXX_Y
 ###
 module load mpi
 mpirun hostname
@@ -112,6 +114,8 @@ Now we can run the program by putting the following into py_mpi_hostname.sh
 #SBATCH --job-name=py_mpi_hostname
 #SBATCH --output=py_mpi_hostname.out.%J.%N
 #SBATCH --error=py_mpi_hostname.err.%J.%N
+#SBATCH --account=SCWXXXX
+#SBATCH --reservation=SCWXXXX_Y
 ###
 
 module load mpi
@@ -158,9 +162,12 @@ Again, the unordered output is visible. Now, the relation between the rank and t
 > > ## Solution
 > > ~~~
 > > #!/bin/sh
-> > ###                                                                                                                                                                                      > > #SBATCH --job-name=mpi_date
+> > ###
+> > #SBATCH --job-name=mpi_date
 > > #SBATCH --output=mpi_date.out.%J.%N
 > > #SBATCH --error=mpi_date.err.%J.%N
+> > #SBATCH --account=SCWXXXX
+> > #SBATCH --reservation=SCWXXXX_Y
 > > ###
 > > module load mpi
 > > mpirun date +%M:%S.%N
@@ -171,7 +178,7 @@ Again, the unordered output is visible. Now, the relation between the rank and t
 
 > ## Upgrade `print_hostname.py` and print the time-of-day as well
 >
-> Download the [`print_hostname.py`]({{ page.root }}/code/print_hostname.py) script if you haven't already (wget https://supercomputingwales.github.io/SCW-tutorial/code/print_hostname.py)
+> Download the [`print_hostname.py`]({{ page.root }}/code/print_hostname.py) script if you haven't already (`wget https://supercomputingwales.github.io/SCW-tutorial/code/print_hostname.py`)
 > Open the `print_hostname.py` script with your editor and use the python3 `datetime` module to print the time of day next to the host name and rank number.
 > 
 > > ## Solution
@@ -274,6 +281,7 @@ if rank == 0:
 And that's it. Now, Lola can submit her first MPI job. Download the [full code]({{ page.root }}/code/mpi_numpi.py) to try it yourself.
 
 You can download it on the HPC with the command:
+
 ~~~
 wget https://supercomputingwales.github.io/SCW-tutorial/code/print_hostname.py
 ~~~
@@ -289,6 +297,8 @@ wget https://supercomputingwales.github.io/SCW-tutorial/code/print_hostname.py
 #SBATCH --output=mpi_numpi.out.%J.%N
 #job stderr file
 #SBATCH --error=mpi_numpi.err.%J.%N
+#SBATCH --account=SCWXXXX
+#SBATCH --reservation=SCWXXXX_Y
 ###
 
 module load hpcw
