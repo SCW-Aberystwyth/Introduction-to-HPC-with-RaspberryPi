@@ -276,6 +276,14 @@ sacct will show 15 subjobs.
 
 parallel_joblog shows how long each took to run.
 
+More complex example, run hello with every combination of 1/2/3 and a/b/c (1a,1b,1c,2a....)
+
+`parallel echo "hello {1} {2}" ::: 1 2 3 ::: a b c`
+
+Treat arguments as pairs (e.g. 1a, 2b, 3c)
+
+`parallel echo "hello {1} {2}" ::: 1 2 3 :::+ a b c`
+
 ## Summary
 
 * GNU Parallel lets a single Slurm job start multiple subprocesses
