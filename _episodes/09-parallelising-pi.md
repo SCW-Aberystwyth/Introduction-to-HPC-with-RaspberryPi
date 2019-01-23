@@ -226,6 +226,7 @@ This behavior is often referred to as _data parallelism_.
 > Verify your answer using profiling and computing the theoretical speed-up possible.
 >
 > Hint: download it by doing the following:
+>
 > ~~~
 > wget https://supercomputingwales.github.io/SCW-tutorial/code/volume_pylibs.py
 > ~~~
@@ -365,7 +366,9 @@ That means, our parallel implementation does already a good job, but only achiev
 > Hyperthreading is an extension found in some CPUs where some parts of the CPU core are duplicated. These appear to most programs as extra cores and can cause core counts to be reported as double what they really are. 
 > The performance boost of Hyperthreading varies between a small performance reduction and 15-30%. When performing identical simple tasks on every CPU as in our example there is unlikely to be any performance gain.
 > On Linux systems the `lscpu` command will display information about the CPU including the number of threads, cores and CPUs. The line "Thread(s) per core" will be 1 if there's no Hyperthreading and 2 or more if there is.
+>
 > System with Hyperthreading:
+>
 > ~~~
 > $ lscpu
 > Architecture:          x86_64                                                                                                                                                              
@@ -394,7 +397,9 @@ That means, our parallel implementation does already a good job, but only achiev
 > NUMA node0 CPU(s):     0-3
 > ~~~
 > {: .bash}
+>
 > System without Hyperthreading:
+>
 > ~~~
 > $ lscpu
 > Architecture:          x86_64

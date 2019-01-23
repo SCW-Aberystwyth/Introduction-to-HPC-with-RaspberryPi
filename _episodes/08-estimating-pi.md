@@ -268,16 +268,17 @@ So this is a prime candidate for acceleration.
 >
 > Download [this python script]({{ page.root }}/code/count_pylibs.py) to your current directory. Run it by executing:
 > 
-> ~~~~~
+> ~~~
 > $ python3 count_pylibs.py
 > 4231827 characters and 418812 words found in standard python libs
-> ~~~~~
+> ~~~
 > {: .bash}
 > 
 > Use the `line_profile` module to find the hot spot in this program! 
+>
 > > ## Solution
 > > 
-> > ~~~~~
+> > ~~~~
 > > Timer unit: 1e-06 s
 > > 
 > > Total time: 0.334168 s
@@ -298,7 +299,7 @@ So this is a prime candidate for acceleration.
 > >     47         1            6      6.0      0.0          sys.exit(0)
 > >     48                                               else:
 > >     49                                                   sys.exit(1)
-> > ~~~~~
+> > ~~~~
 > > The `word_count` function takes the longest time. Inside it, `re.split` hogs runtime the most.
 > {: .solution}
 {: .challenge}
@@ -306,8 +307,11 @@ So this is a prime candidate for acceleration.
 > ## Faster is always better, right?
 > 
 > Pair up and discuss the implementation of count_pylibs_annotated.py from the previous exercise. Discuss and answer the following points: 
+>
 > 1. Find other ways to implement the word count without parallelizing the code! 
+>
 > 2. For every alternative implementation found in 1., check the output of the program. Did the number of words change? Could such a check be automated?
+>
 > 3. Compare the runtimes that you achieved throughout this exercise. Was your time worth it?
 >
 > > ## Solution
