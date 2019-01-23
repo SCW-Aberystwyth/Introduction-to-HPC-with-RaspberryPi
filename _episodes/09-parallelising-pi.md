@@ -298,7 +298,7 @@ One thing we must be cautious of when writing parallel code is what happens when
 
 ![Partitioning `x` and `y` and results of reach partition]({{ page.root }}/fig/partition_data_parallel_estimate_pi_with_results.svg)
 
-The last step required before calculating pi is to collect the individual results from the `partitions` and _reduce_ it to one `total_count` of those random number pairs that were inside of the circle. Here the `sum` function loops over `partitions` and does exactly that. So let's run our [parallel implementation](/code/pymp_numpi.py) and see what it gives:
+The last step required before calculating pi is to collect the individual results from the `partitions` and _reduce_ it to one `total_count` of those random number pairs that were inside of the circle. Here the `sum` function loops over `partitions` and does exactly that. So let's run our [parallel implementation]({{ page.root }}/code/pymp_numpi.py) and see what it gives:
 
 ~~~
 $ module load hpcw
