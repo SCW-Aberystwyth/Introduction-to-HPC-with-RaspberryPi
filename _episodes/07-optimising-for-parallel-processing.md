@@ -18,7 +18,7 @@ keypoints:
 
 ## Running a job on multiple cores
 
-By default most programs will only run one job per node, but all SCW/HPCW nodes have multiple CPU cores and are capable of running multiple processes at once without (much) loss of performance. 
+By default most programs will only run one job per node, but all SCW nodes have multiple CPU cores and are capable of running multiple processes at once without (much) loss of performance. 
 
 A crude way to achieve this is to have our job submission script just run multiple processes and background each one with the `&` operator.
 
@@ -82,38 +82,45 @@ An alternate syntax for the same command is:
 Here we specify what command to run first and the put the data to process second, after the `:::`. 
 
 
-### A more complex example
-
-As an example we're going to use the example data from the Software Carpentry [Unix Shell lesson](http://swcarpentry.github.io/shell-novice/). This features some data from a researcher named Nelle who is studying the North Pacfici Gyre. She has 1520 data files, each of which measure the relative abundnace of 300 different proteins. Each file is named NENE followed by a 5 digit number identifying the sample and finally an A or a B to identify which of two machines analysed the sample. 
-
-#### Downloading the Data
-
-First we need to download Nelle's data from the Software Carpentry website. This can be downloaded with the wget command, the files then need to be extracted from the zip archive with the unzip command. 
-
-`wget http://swcarpentry.github.io/shell-novice/data/data-shell.zip`
-`unzip data-shell.zip`
-
-The data we'll be using is now extracted into the directory data-shell/north-pacific-gyre/2012-07-03
-
-`cd data-shell/north-pacific-gyre/2012-07-03/`
-
-Nelle needs to run a program called `goostats` on each file to process it. During the Unix Shell lesson this data was processed in series by the following set of commands:
-
-`# Calculate stats for data files.`
-`for datafile in $(ls NENE*[AB].txt)`
-`do`
-`    echo $datafile`
-`    bash goostats $datafile stats-$datafile`
-`done`
-
-The `ls NENE*[AB].txt` command lists all the files which start with "NENE" and end either A.txt or B.txt. The for loop will work through the list of files produced by ls one by one and runs goostats on each one. 
-
-Lets convert this process to run in parallel by using GNU Parallel instead. By running
-
-`ls NENE*[AB].txt | parallel goostats {1} stats-{1}` 
-
-We'll run the same program in parallel. GNU parallel will automatically run on every core on the system, if there are more files to process than there are cores it will run a task on each core and then move on to the next once those finish. If we run the time command before both the serial and parallel versions of this process we should see the parallel version runs several times faster. 
-
+> ## Excercise: parallelising Nelle's pipeline
+> Nelle is a researcher who featuerd in the Software Carpentry [Unix Shell lesson](http://swcarpentry.github.io/shell-novice/). She is studying the North Pacfici Gyre and has 1520 data files, each of which measure the  abundnace of 300 different proteins. Each file is named NENE followed by a 5 digit number identifying the sample and finally an A or a B to identify which of two machines analysed the sample. 
+>
+> First we need to download Nelle's data from the Software Carpentry website. This can be downloaded with the wget command, the files then need to be extracted from the zip archive with the unzip command. 
+> 
+> ~~~
+> wget http://swcarpentry.github.io/shell-novice/data/data-shell.zip
+> unzip data-shell.zip
+> ~~~
+> {: .bash}
+> 
+> The data we'll be using is now extracted into the directory data-shell/north-pacific-gyre/2012-07-03
+> 
+> `cd data-shell/north-pacific-gyre/2012-07-03/`
+>
+> Nelle needs to run a program called `goostats` on each file to process it. During the Unix Shell lesson this data was processed in series by the following set of commands:
+> 
+> ~~~
+> # Calculate stats for data files.
+> for datafile in $(ls NENE*[AB].txt)
+> do
+>     echo $datafile
+>     bash goostats $datafile stats-$datafile
+> done
+> ~~~
+> {: .bash}
+>
+> The `ls NENE*[AB].txt` command lists all the files which start with "NENE" and end either A.txt or B.txt. The for loop will work through the list of files produced by ls one by one and runs goostats on each one. 
+>
+> Convert this process to run in parallel by using GNU Parallel instead. 
+>
+> > ## Solution
+> > `parallel bash goostats {1} stats-{1} ::: $(ls NENE*[AB].txt)`
+> >
+> > or
+> >
+> > `ls NENE*[AB].txt | parallel bash goostats {1} stats-{1}`
+> {: .solution}
+{: .challenge}
 
  
 ### Running Parallel under Slurm
@@ -126,7 +133,7 @@ First lets create a job submission script and call it `parallel.sh`.
 #SBATCH --ntasks 4                     #Number of processors we will use
 #SBATCH --nodes 1                      #request everything runs on the same node
 #SBATCH -o output.%J              #Job output
-#SBATCH -t 00:00:05               #Max wall time for entire job
+#SBATCH -t 00:01:00               #Max wall time for entire job
 #SBATCH --account=scwXXXX
 #SBATCH --reservation=scwXXXX_Y
 ###
