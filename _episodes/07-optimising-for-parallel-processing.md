@@ -59,13 +59,10 @@ GNU Parallel can be loaded a module called "parallel". Its syntax is a bit compl
 
 For this example we'll just run on a quick test on the head node. First we have to load the module for parallel. This is only available via the legacy HPC Wales modules which have to be activated by loading the module called "hpcw". 
 
-`module load hpcw`
-`module load parallel`
+`module load hpcw parallel`
 
-~~~
-#### Citing Software
-Each time you run GNU parallel it will remind that you academic tradition requires you to cite the software you used. You can stop this message by running `parallel --citation` once and parallel will then remember not to show this message anymore. Running this will also show you the Bibtex code for citing parallel in your papers. 
-~~~
+> ## Citing Software
+> Each time you run GNU parallel it will remind that you academic tradition requires you to cite the software you used. You can stop this message by running `parallel --citation` once and parallel will then remember not to show this message anymore. Running this will also show you the Bibtex code for citing parallel in your papers. 
 {: .callout}
 
 The command below will run ls to list all the files in the current directory and it will send the list of files to parallel. Parallel will in turn run the echo command on each input it was given. The `{1}` means to use the first argument (and in this case its the only one) as the parameter to the echo command.
@@ -235,5 +232,5 @@ hello world 1 a
 hello world 2 b
 hello world 3 c
 ~~~
-~{: .output}
+{: .output}
 
