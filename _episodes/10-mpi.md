@@ -37,8 +37,8 @@ $ cat call_hostname.sh
 #SBATCH --job-name=mpi_hostname
 #SBATCH --output=mpi_hostname.out.%J.%N
 #SBATCH --error=mpi_hostname.err.%J.%N
-#SBATCH --account=SCWXXXX
-#SBATCH --reservation=SCWXXXX_Y
+#SBATCH --account=scwXXXX
+#SBATCH --reservation=scwXXXX_Y
 ###
 module load mpi
 mpirun hostname
@@ -114,8 +114,8 @@ Now we can run the program by putting the following into py_mpi_hostname.sh
 #SBATCH --job-name=py_mpi_hostname
 #SBATCH --output=py_mpi_hostname.out.%J.%N
 #SBATCH --error=py_mpi_hostname.err.%J.%N
-#SBATCH --account=SCWXXXX
-#SBATCH --reservation=SCWXXXX_Y
+#SBATCH --account=scwXXXX
+#SBATCH --reservation=scwXXXX_Y
 ###
 
 module load mpi
@@ -166,8 +166,8 @@ Again, the unordered output is visible. Now, the relation between the rank and t
 > > #SBATCH --job-name=mpi_date
 > > #SBATCH --output=mpi_date.out.%J.%N
 > > #SBATCH --error=mpi_date.err.%J.%N
-> > #SBATCH --account=SCWXXXX
-> > #SBATCH --reservation=SCWXXXX_Y
+> > #SBATCH --account=scwXXXX
+> > #SBATCH --reservation=scwXXXX_Y
 > > ###
 > > module load mpi
 > > mpirun date +%M:%S.%N
@@ -283,7 +283,7 @@ And that's it. Now, Lola can submit her first MPI job. Download the [full code](
 You can download it on the HPC with the command:
 
 ~~~
-wget https://supercomputingwales.github.io/SCW-tutorial/code/print_hostname.py
+wget https://supercomputingwales.github.io/SCW-tutorial/code/mpi_numpi.py
 ~~~
 {:. bash}
 
@@ -297,8 +297,8 @@ wget https://supercomputingwales.github.io/SCW-tutorial/code/print_hostname.py
 #SBATCH --output=mpi_numpi.out.%J.%N
 #job stderr file
 #SBATCH --error=mpi_numpi.err.%J.%N
-#SBATCH --account=SCWXXXX
-#SBATCH --reservation=SCWXXXX_Y
+#SBATCH --account=scwXXXX
+#SBATCH --reservation=scwXXXX_Y
 ###
 
 module load hpcw
