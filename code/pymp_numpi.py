@@ -4,7 +4,7 @@ import sys
 import numpy as np
 
 import pymp
-
+import math
 #needed to get core core
 from multiprocessing import cpu_count
 
@@ -26,7 +26,7 @@ def inside_circle(total_count):
 def estimate_pi(total_count,core_count):
 
     #count is a shared variable that all threads will store their results in
-    count = pymp.shared.array((core_count,), dtype='float32')
+    count = pymp.shared.array((core_count,), dtype='int32')
     
     #start of pymp parallel section, request a thread for each core 
     with pymp.Parallel(core_count) as p:

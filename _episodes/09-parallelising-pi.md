@@ -271,11 +271,11 @@ import numpy as np
 
 def estimate_pi(total_count,core_count):
 
-    count = pymp.shared.array((core_count,), dtype='float32')
+    count = pymp.shared.array((core_count,), dtype='int32')
 
     with pymp.Parallel(core_count) as p:
         for i in p.range(0,core_count):
-            local_count = inside_circle(total_count/core_count)
+            local_count = inside_circle(int(total_count/core_count))
 
             with p.lock:
                 count[i] = local_count
