@@ -4,21 +4,20 @@ author: "Colin Sauze"
 teaching: 10
 exercises: 0
 questions:
- - "What is Super Computing Wales and how do I get access to it?"
+ - "What does a High Performance Computing system consist of?"
 keypoints: 
  - "A cluster is a group of computers connected together to act as one."
  - "Clusters are formed of nodes, each usually has several processors and 10s or hundreds of gigabytes of RAM."
- - "SCW have clusters for researchers at Welsh universities to use"
+ - "The Raspberry Pi is a simple single board computer with between one and four processor cores and half and four gigabytes of RAM."
 objectives: 
  - "Understand what a cluster is"
- - "Understand the background to the HPC Wales and Super Computing Wales projects"
 ---
 
 
 # Prior Knowledge/Pre-requesites 
 
 * Basic use of the Linux command line, as covered in the Software Carpentry Introduction to the Unix Shell Lesson.
-* An account on Super Computing Wales.
+* A laptop with WiFi access and an SSH client.
 
 # Cluster basics
 
@@ -46,42 +45,20 @@ The user accesses the compute cluster through one or more login nodes, and submi
 
 ## Nodes and Cores
 
-Each individual computer in a cluster is commonly referred to as a "node". Inside each node will be several processor chips that do the actual computation. Until around the mid 2000s most desktop/laptop computers had only a single processor, but since then most are multi-core meaning they effectively have multiple processors but all on one physical chip. A typical node in a cluster will have anything from 8 to 40 cores in total often across several physical processor chips. 
+Each individual computer in a cluster is commonly referred to as a "node". Inside each node will be several processor chips that do the actual computation. Until around the mid 2000s most desktop/laptop computers had only a single processor, but since then most are multi-core meaning they effectively have multiple processors but all on one physical chip. A typical node in a cluster will have anything from 8 to 80 cores in total often across several physical processor chips. 
 
-## HPC Wales and Super Computing Wales
+# Raspberry Pi
 
-### HPC Wales
+The Raspberry Pi is a low cost single board computer about the size of a credit card. The original version featured just a single core processor equivalent to a desktop computer from the late 1990s and 512 megabytes of RAM. The latest feature quad core processors and up to four gigabytes of RAM, its more equivalent to a desktop from the late 2000s. 
 
-HPC Wales ran from 2010 to 2015 and provided clusters in Aberystwyth, Bangor, Cardiff, Glamorgan and Swansea. The final systems are being shutdown in late 2018, all users should now use Super Computing Wales.
+## Why build a cluster out Raspberry Pis?
 
-### SCW
-
-Super Computing Wales (SCW) is a new project to replace HPC Wales involving Aberystwyth, Bangor, Cardiff and Swansea universities. It started in 2015 and runs until 2020. It includes new systems in Cardiff (known as Hawk) and Swansea (known as Sunbird). 
-
-## Super Computing Wales Research Software Engineers
-
-Each university is employing research software engineers who will work with researchers to:
-
-* Convert existing software to run on the HPC system
-* Optimise code to run more efficiently on HPC systems
-* Write new software
-* Help with training, on-boarding and project development
+* Its cheap
+* It means we can teach without impacting on the real system
+* Its much easier to run into and under resource limits
+* We can see the real hardware instead of using something in a distant data centre
 
 
-### How to get access?
 
-Apply for an account via the "My Super Computing Wales" webpage at [My SCW](https://my.supercomputing.wales). You can sign into this webpage using your normal university username and password. You will then be able to set or change your Super Computing Wales password from this page.
 
-To use the system you will have to apply for a project as well as a user account. Everyone on this course should have been added to a training project, this project is time limited. If you would like to use SCW for your research then you will have to apply for your own project or join an existing one.
-
-#### Project Application Process
-
-The project form is used to assess whether SCW has enough resources for what you want. PhD students and RAs need to get your supervisor/PI to approve their projects. Projects are assessed by SCW staff who are looking for two key targets:
-
-  * Grant income that can be attributed to Super Computing Wales.
-  * Science Outputs (e.g. journal papers)
-
-At this stage you do NOT need to pay any money to SCW, simply attribute that the grant funding required access to the system. Funding which attributes other projects funded by the Welsh European Funding Office (WEFO) cannot be counted towards SCW. 
-
-If you are writing a grant application and intend to use SCW please mention it in the grant and let us know. There are project targets to bring in approx £8 million of funding, Aberystwyth's target is around £800k. This should be easily achievable, but bringing in far more will help us get follow on funding for SCW. 
 
