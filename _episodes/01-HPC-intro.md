@@ -1,5 +1,5 @@
 ---
-title: "SCW Introduction"
+title: "Introduction to High Performance Computing"
 author: "Colin Sauze"
 teaching: 10
 exercises: 0
