@@ -20,39 +20,21 @@ keypoints:
 ## What is a filesystem?
 Storage on most compute systems is not what and where you think they are! Physical disks are bundled together into a virtual volume; this virtual volume may represent one filesystem, or may be divided up, or partitioned, into multiple filesystems. And your directories then reside within one of these fileystems. Filesystems are accessed over the network through mount points.
 
-There are multiple storage/filesystems options available for you to do your work. The most common are:
-* home: where you land when you first login. 50 GB per user. Slower access, backed up (Cardiff only). Used to store your work long term. 
-* project: shared between all users of a project. Same filesystem as home. 
+Most HPC systems will offer you several different filesystems, the most common are:
+* home: where you land when you first login. Usually backed up and limited in size. On Super Computing Wales we give between 50 and 100GB.
+* project: shared between all users of a project. 
 * scratch: temporary working space. Faster access, not backed up. No quota, but old files might get deleted. DON'T STORE RESULTS HERE!
 
-Here's a synopsis of filesystems on Hawk in Cardiff:
-
-|Name|Path|Default Quota|Disk Size|Backed Up|
-|------|---|----|-----|---|-----|
-|Home|/home/user.name|50GB|420TB|Only in Cardiff|
-|Group|/home/scwXXXX|Negotiable|420TB (same disk as home)|Only in Cardiff|
-|Scratch|/scratch/user.name|N/A|692TB|No|
-
-and on Sunbird in Swansea:
-
-|Name|Path|Default Quota|Disk Size|Backed Up|
-|------|---|----|-----|---|-----|
-|Home|/home/user.name|100GB|231TB|No|
-|Group|/home/scwXXXX|Negotiable|231TB (same disk as home)|No|
-|Scratch|/scratch/user.name|N/A|808TB|No|
-
-
 **Important!! Ensure that you don't store anything longer than necessary on scratch, this can negatively affect other people’s jobs on the system.**
-
 
 # Accessing your filestore
 
 ## How much quota do I have left on my home directory?
 
-Login to a head node (e.g. sunbird.swansea.ac.uk or hawklogin.cf.ac.uk) and run the ```myquota``` command. This will tell you how much space is left in your home directory. 
+Login to a head node and run the ```quota``` command. This will tell you how much space is left in your home directory. 
 
 ~~~
-$ myquota
+$ quota
 ~~~
 {: .bash}
 
@@ -63,34 +45,17 @@ Disk quotas for grp a.cos (gid 5000124):
 ~~~
 {: .output}
 
-## Group Filestore
-    
 
-## How much scratch have I used?
+## Copying data to your PC
 
-The ```df``` command tells you how much disk space is left. The ```-h``` argument makes the output easier to read, it gives human readable units like M, G and T for Megabyte, Gigabyte and Terrabyte instead of just giving output in bytes. By default df will give us the free space on all the drives on a system, but we can just ask for the scratch drive by adding ```/scratch``` as an argument after the ```-h```. 
-
-~~~
-$ df -h /scratch
-~~~
-{: .bash}
-
-~~~
-Filesystem                                Size  Used Avail Use% Mounted on
-172.2.1.51@o2ib:172.2.1.52@o2ib:/scratch  692T   57T  635T   9% /scratch
-~~~
-{: .output}
-
-## Copying data from your PC to SCW
-
-You can copy files to/from your SCW home and scratch drives using the secure copy protocol (SCP) or secure file transfer protocol (SFTP) and connecting to Sunbird or Hawk. 
+You can copy files to/from the cluster using the secure copy protocol (SCP) or secure file transfer protocol (SFTP). 
 
 ### Copying data using SFTP
 
 Use the ```sftp``` command and connect to the system. This takes the argument of the username followed by an @ symbol and then the hostname. Optionally you can specify what directory to start in by putting a ```:``` symbol after this and adding the directory name. The command below will start in ```/home/s.jane.doe/data```, if no directory is specified then sftp defaults to your home directory. 
 
 ~~~
-sftp s.jane.doe@sunbird.swansea.ac.uk:/home/s.jane.doe/data
+sftp s.jane.doe@sunbird.swansea.ac.uk:/home/jane.doe/data
 ~~~
 {: .bash}
 
@@ -152,16 +117,9 @@ You can change directory on the remote host by typing a path into the "Remote si
 
 # Exercises
 
-> ## Using the `df` command. 
-> 1. Login to a head node
-> 2. Run the command `df -h`.
-> 3. How much space does /scratch have left? 
-> 4. If you had to run a large job requiring 10TB of scratch space, would there be enough space for it?
-{: .challenge}
-
-> ## Using the `myquota` command.
-> 1. Login to a head node.
-> 2. Run the `myquota` command. 
+> ## Using the `quota` command.
+> 1. Login to the head node.
+> 2. Run the `quota` command. 
 > 3. How much space have you used and how much do you have left? 
 > 4. If you had a job that resulted in 60GB of files would you have enough space to store them?
 {: .challenge}
