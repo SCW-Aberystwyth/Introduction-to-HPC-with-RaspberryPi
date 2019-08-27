@@ -49,6 +49,7 @@ Each individual computer in a cluster is commonly referred to as a "node". Insid
 
 # Raspberry Pi
 
+![Picture of a Raspberry Pi](../fig/raspberry_pi.jpg)
 The Raspberry Pi is a low cost single board computer about the size of a credit card. The original version featured just a single core processor equivalent to a desktop computer from the late 1990s and 512 megabytes of RAM. The latest feature quad core processors and up to four gigabytes of RAM, its more equivalent to a desktop from the late 2000s. 
 
 For this workshop we'll be using a cluster built from 11 Raspberry Pi computers. 10 of them act as "worker" nodes for doing the actual computation and one acts as a master co-ordinating them and providing disk space to the rest. We'll refer to this master system as a "login node" or "head node".
