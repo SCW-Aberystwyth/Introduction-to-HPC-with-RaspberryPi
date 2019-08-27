@@ -245,9 +245,3 @@ She collects the results into a spreadsheet and graphs them.
 
 ![Performance vs Core Count MPI]({{ page.root }}/fig/mpi.svg)
 
-> ## Why isn't the graph smooth
-> The MPI graph shown above doesn't a smooth curve as we might expect. Why might this be the case?
-> > ## Solution
-> > Some of the jobs will have run on the same nodes, others will have run across multiple nodes where data access is much slower.
-> {: .solution}
-{: .challenge}
