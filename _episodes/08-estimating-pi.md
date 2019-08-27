@@ -264,57 +264,5 @@ Line #      Hits         Time  Per Hit   % Time  Line Contents
 So generating the random numbers appears to be the bottleneck as it accounts for 37+36=73% of the total runtime time. 
 So this is a prime candidate for acceleration.
 
-> ## Word count
->
-> Download [this python script]({{ page.root }}/code/count_pylibs.py) to your current directory. Run it by executing:
-> 
-> ~~~
-> $ python3 count_pylibs.py
-> 4231827 characters and 418812 words found in standard python libs
-> ~~~
-> {: .bash}
-> 
-> Use the `line_profile` module to find the hot spot in this program! 
->
-> > ## Solution
-> > 
-> > ~~~~
-> > Timer unit: 1e-06 s
-> > 
-> > Total time: 0.334168 s
-> > File: ./count_pylibs_annotated.py
-> > Function: main at line 38
-> > 
-> > Line #      Hits         Time  Per Hit   % Time  Line Contents
-> > ==============================================================
-> > 37                                           @profile
-> > 38                                           def main():
-> > 39                                           
-> > 40         1      71541.0  71541.0     25.0      text = load_text()
-> > 41         1          3.0      3.0      0.0      nchars = len(text)
-> > 42         1     215017.0 215017.0     75.0      nwords = word_count(text)
-> > 43         1         47.0     47.0      0.0      print("%i characters and %i words found in standard python lib" % (nchars, nwords))
-> > 44                                           
-> > 45         1          1.0      1.0      0.0      if len(text):
-> > 46         1          3.0      3.0      0.0          sys.exit(0)
-> > 47                                               else:
-> > 48                                                   sys.exit(1)
-> > ~~~~
-> > The `word_count` function takes the longest time. Inside it, `re.split` hogs runtime the most.
-> {: .solution}
-{: .challenge}
 
-> ## Faster is always better, right?
-> 
-> Pair up and discuss the implementation of count_pylibs_annotated.py from the previous exercise. Discuss and answer the following points: 
->
-> 1. Find other ways to implement the word count without parallelizing the code! 
->
-> 2. For every alternative implementation found in 1., check the output of the program. Did the number of words change? Could such a check be automated?
->
-> 3. Compare the runtimes that you achieved throughout this exercise. Was your time worth it?
->
-> > ## Solution
-> One could use the 'count' method of strings and just count the words by using the number of spaces and add 1. Based on the assumption that our input text consists of sentences only, this can provide an estimate of the words. In this case, this is far from accurate as source code contains tabs, newlines etc to distinguish words. However, the `count` method improves runtime by more than one order of magniture in comparison to the `re.split` approach. Take away: Real life is a balance. But above all, your code should produce the correct result. 
-> {: .solution}
-{: .challenge}
+
