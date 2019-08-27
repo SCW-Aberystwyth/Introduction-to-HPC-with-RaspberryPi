@@ -63,7 +63,26 @@ The compute nodes in this cluster are the original version of the Raspberry Pi w
 * Its much easier to encounter resource limits and understand the impact of doing so
 * We can see the real hardware instead of using something in a distant data centre
 
+## Connecting up the equipment
+
+* Network Switch
+* Network cables
+* Master Raspberry Pi
+* Screen, keyboard and mouse for Master Pi
+* 10x worker Raspberry Pi's
+* Power supplies for the Raspberry Pi's
+* USB caddy and hard disk
+* Laptop (for internet access)
 
 
-
-
+1. Connect a network cable and power to each worker Pi. 
+2. Connect the other end of the cable to the switch. To ease fault finding make the port number on the switch match the Pi.
+3. Connect a network cable to the master Raspberry Pi and to the network switch.
+4. Connect power to each Raspberry Pi, configure it so that the 6 way adapter turns on Pi3 to Pi6. One 4 way adapter should turn on the remaining 4 worker nodes. The other 4 way should turn on everything else.
+5. Connect the screen, keyboard and mouse to the master Pi.
+6. Connect a network cable and power to the laptop. Connect the other end of the network cable to the last port on the switch.
+7. Turn on the laptop and get it on the WiFi. Internet access is needed to set the clock on the Raspberry Pi, if the clock is wrong it can cause problems to some of the software. 
+8. Turn on the 4 way with the master Pi, screen, hard disk. Wait for it to start up.
+9. Turn on the first 6 worker nodes.
+10. Turn on the remaining worker nodes.
+11. Enable access to the worker nodes with the cluster_up.sh script.
