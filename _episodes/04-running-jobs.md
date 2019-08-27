@@ -10,13 +10,11 @@ objectives:
  - "Understand how to submit a batch job using Slurm"
  - "Understand how to set the parameters for your Slurm job"
  - "Understand the concept of job arrays"
- - "Know how to get email alerts from Slurm"
 keypoints:
  - "Interactive jobs let you test out the behaviour of a command, but aren't pratical for running lots of jobs"
  - "Batch jobs are suited for submitting a job to run without user interaction."
  - "Job arrays are useful to submit lots of jobs."
  - "Slurm lets you set parameters about how many processors or nodes are allocated, how much memory or how long the job can run."
- - "Slurm can email you when a job starts or finishes."
 ---
 
 
@@ -39,7 +37,7 @@ To get an interactive session, you first need to issue a `salloc` command to res
 
 
 ~~~
-salloc -n 1 --account=scwXXXX --reservation=scwXXXX_Y 
+salloc -n 1 
 ~~~
 {: .bash}
 
@@ -54,9 +52,6 @@ salloc: Nodes scs0018 are ready for job
 
 >
 
-> ## Acccounts and Reservations
-> We can optionally specify an account and reservation ID to Slurm. The account ID tells the system which  project your job will be accounted against, if you are a member of multiple projects some > might have > different priorities and limitations. A reservation is where some compute nodes have been reserved for a particular project at a particular time. To ensure nodes are available for this course we may have obtained a reservation. Your instructor will tell you which acccount and reservation to use here. The account can be specified either through the --account option to salloc (and the sbatch command which we'll use soon) and the reservation through the --reservation option. Alternatively these can be specified in the SALLOC_ACCOUNT, SBATCH_ACCOUNT, SALLOC_RESERVATION and SBATCH_RESERVATION environment variables. 
-{: .callout}
 
 We have now allocated ourselves a host to run a program on. The `-n 1` tells slurm how many copies of the task we will be running. The `--ntasks-per-node=1` tells Slurm that we will just be running one task for every node we are allocated. We could increase either of these numbers if we want to run multiple copies of a task and if we want to run more than one copy per node. 
 
@@ -165,11 +160,7 @@ nano batchjob.sh
 #SBATCH --error=hostname.err.%J
 #maximum job time in D-HH:MM
 #SBATCH --time=0-00:01
-#maximum memory of 10 megabytes
-#SBATCH --mem-per-cpu=10
 #SBATCH --ntasks=1
-#SBATCH --account=scwXXXX
-#SBATCH --reservation=scwXXXX_Y
 ###
 
 /bin/hostname
@@ -255,12 +246,8 @@ Edit the script to have the command `/bin/sleep 70` before the `hostname` comman
 #SBATCH --error=hostname.err.%J
 #maximum job time in D-HH:MM
 #SBATCH --time=0-00:01
-#maximum memory of 10 megabytes
-#SBATCH --mem-per-cpu=10
 #SBATCH --ntasks=1
 #SBATCH --nodes=1
-#SBATCH --account=scwXXXX
-#SBATCH --reservation=scwXXXX_Y
 ###
 
 /bin/sleep 70
@@ -367,40 +354,12 @@ Now (within 60 seconds) lets cancel the job.
 This will cancel the job, `squeue` will now show no record of it and there won't be a `.out` or `.err` file for it. 
 
 
-### Listing jobs that have run
-
-The `sacct` command lists all the jobs you have run. By default this shows the Job ID, the Job Name, partition, Account, number of CPUs used, the state of the job and how long it ran for.
-
-~~~
-[s.jane.doe@sl1 ~]$  sacct
-~~~
-{: .bash}
-
-
-~~~
-       JobID    JobName  Partition    Account  AllocCPUS      State ExitCode 
------------- ---------- ---------- ---------- ---------- ---------- -------- 
-21713              bash    compute    scw1000          1  COMPLETED      0:0 
-21713.extern     extern               scw1000          1  COMPLETED      0:0 
-21713.0            bash               scw1000          1  COMPLETED      0:0 
-21714              bash    compute    scw1000          1  COMPLETED      0:0 
-21714.extern     extern               scw1000          1  COMPLETED      0:0 
-21714.0            bash               scw1000          1  COMPLETED      0:0 
-21716          hostname    compute    scw1000          1  COMPLETED      0:0 
-21716.batch       batch               scw1000          1  COMPLETED      0:0 
-21716.extern     extern               scw1000          1  COMPLETED      0:0 
-~~~
-{: .output}
-
-In the output above the account is the project you are associated with. scw1000 is the RSE project. You'll probably see a different project account here.
-
-
 > ## Using the `sbatch` command. 
-> 1. Write a submission script to run the hostname command on one node, with one core using one megabyte of RAM and a maximum run time of one minute. Have it save its output to hostname.out.%J and errors to hostname.err.%J.
+> 1. Write a submission script to run the hostname command on one node, with one core and a maximum run time of one minute. Have it save its output to hostname.out.%J and errors to hostname.err.%J.
 > 2. Run your script using `sbatch`
 > 3. Examine the output file, which host did it run on?
 > 4. Try running it again, did your command run on the same host? 
-> 5. Now add the command `/bin/sleep 70` before the line running hostname in the script. Run the job again and examine the output of `squeue` as it runs. How many seconds does the job run for before it ends? Hint: the command `watch -n 1 squeue` will run squeue every second and show you the output. Press CTRL+C to stop it. 
+> 5. Now add the command `/bin/sleep 120` before the line running hostname in the script. Run the job again and examine the output of `squeue` as it runs. How many seconds does the job run for before it ends? Hint: the command `watch -n 1 squeue` will run squeue every second and show you the output. Press CTRL+C to stop it. 
 > 6. What is in the .err file, why did you script exit? Hint: if it wasn't due to the time expiring try altering another parameter so it is due a time expiration. 
 {: .challenge}
 
@@ -420,12 +379,8 @@ This will allow multiple copies of the command to run. In the example below two 
 #SBATCH --error=hostname.err.%J
 #maximum job time in D-HH:MM
 #SBATCH --time=0-00:01
-#maximum memory of 10 megabytes
-#SBATCH --mem-per-cpu=10
 #SBATCH --ntasks=2
 #SBATCH --nodes=2
-#SBATCH --account=scwXXXX
-#SBATCH --reservation=scwXXXX_Y
 ###
 
 srun /bin/hostname
@@ -478,6 +433,24 @@ hostname.err.3739591.scs0018
 Its possible for programs to get hold of their array number from the `$SLURM_ARRAY_TASK_ID` environment variable. If we add the command `echo $SLURM_ARRAY_TASK_ID` to our batch script then it will be possible to see this in the output file. 
 
 
+> ## Using job arrays
+> 1. Add the following to the end of your job script
+> `echo $SLURM_ARRAY_TASK_ID`
+> 2. Submit the script with the `sbatch --array=0-1` command. 
+> 3. When the job completes look at the outut file. What does the last line contain?
+> 4. Try resubmitting with different array numbers, for example `10-11`. Be careful not to create too many jobs.
+> 5. What use is it for a job to know its array number? What might it do with that information?
+> 6. Try looking at the variables `$SLURM_JOB_ID` and `$SLURM_ARRAY_JOB_ID` what do these contain?
+>
+> > ## Solution
+> > 3. The last line of the output files should contain 0 and 1
+> > 4. If you set the array IDs to 10 and 11 thne the output should contain 10 and 11.
+> > 5. Its useful to act as a parameter for partitioning datasets that each job will process a subpart of.
+> > 6. The job ID and the parent ID of the array job. The parent ID is usually one less than ID of the first array job. 
+> {: .solution}
+{: .challenge}
+
+
 ## Choosing the proper resources for your job
 
 When you submit a job, you are requesting resources from the scheduler to run your job. These are:
@@ -496,105 +469,7 @@ Another way to think of 'reserving' a compute node for you job is like making a 
 Never use a piece of software for the first time without looking to see what command-line options are available and what default parameters are being used
 	-- acgt.me · by Keith Bradnam
 	
-### Time
-This is determined by test runs that you do on your code during an interactive session.
-Or, if you submit a batch job, over-ask first, check the amount of time actually needed,
-then reduce time on later runs. **SCW has a limit of three days maximum to run a job**
 
-**Please!** Due to scheduler overhead, bundle commands for minimum of 10 minutes / job
-
-### Memory:
-We recommend that you check the software docs for memory requirements. But often times these are not stated, so we can take another approach. On HPCW, each job is allowed, on average, 3 GB RAM/core allocated. So, try 3 GB and do a trial run via `srun` or `sbatch`. If you're job was killed, look at your log files or `sacct`. If it shows a memory error, you went over. Ask for more and try again.
-
-Once the job has finished, ask the scheduler how much RAM was used by using the `sacct` command to get post-run job info:
-
-~~~
-sacct -j JOBID --format=JobID,JobName,ReqMem,MaxRSS,Elapsed # RAM requested/used!!
-~~~
-{: .bash}
-
-The `ReqMem` field is how much you asked for and `MaxRSS` is how much was actually used. Now go back and adjust your RAM request in your sbatch command or submission script.
-
-
-### Number of Cores
-You can tell Slurm how many cores you expect your software to use with the `-n` or `--ntasks` arguments. **Setting this to more than one doesn't cause multiple copies of your job to run**. 
-This is determined by your software, how anxious you are to get the work done, and how well your code scales. **NOTE! Throwing more cores at a job does not make it run faster!** This is a common mistake and will waste compute time and prevent other users from running jobs. Ensure your software can use multiple cores: Inspect the parameters for your software and look for options such as 'threads', 'processes', 'cpus'; this will often indicate that it has been parallelized. Then run test jobs to see how well it performs with multiple cores, inching slowing from 1 to 2, 4, 8, etc, assessing the decrease in time for the job run as you increase cores. Programs often do not scale well -- it's important to understand this so you can choose the appropriate number.
-
-### Number of Nodes
-For most software, this choice is simple: 1. There are *very* few software packages capable of running across multiple nodes. If they are capable, they will probably mention the use of technology called 'MPI' or 'openMPI'. Please talk to your local SCW staff about how to run this. If you wish to set this use the `--nodes` or `-N` options to sbatch. 
-
-### Partitions (Queues)
-
-Partitions, or queues, are a grouping of computers to run a certain profile of jobs. This could be maximum run time, # of cores used, amount of max RAM, etc. On HPCW each unique configuration of systems has its own partition. Earlier on we used the `sinfo` command to list the state of the cluster, one of the parameters this showed was the name of the parititons.
-
-Here is the output of `sinfo` on Sunbird in Swansea.
-
-~~~
-PARTITION AVAIL  TIMELIMIT  NODES  STATE NODELIST
-compute*     up 3-00:00:00      1   fail scs0042
-compute*     up 3-00:00:00      1 drain* scs0004
-compute*     up 3-00:00:00      2    mix scs[0018,0065]
-compute*     up 3-00:00:00     84  alloc scs[0001-0003,0005-0017,0020-0035,0043-0046,0049-0064,0066-0072,0097-0114,0116-0122]
-compute*     up 3-00:00:00     34   idle scs[0019,0036-0041,0047-0048,0073-0096,0115]
-gpu          up 2-00:00:00      4   idle scs[2001-2004]
-~~~
-{: .output}
-
-The partition name is listed in the first column. The `*` next to the work partition denotes that it is the default. We can see that in total it contains 162 nodes. Each of these has 36GB of RAM and 12 Westmere cores. The `Large` partition only contains four nodes but each of these have 128GB of RAM and the older Nehalem processors. Finally the `vlarge` partition only contains one node, but this has 512GB of RAM and a Nehalem processor. 
-
-We can specify which partition a job runs in with the `-p` or `--partition` arguments to `sbatch`. So for example the following command will run our batch job on the work partition. 
-
-~~~
-sbatch -p work batchjob.sh
-~~~
-{: .bash}
-
-We could also add the following line to the batch submission script.
-
-~~~
-#SBATCH -p work
-~~~
-{:  .bash}
-
-
-### Email Alerts from Slurm
-
-You can receive email alerts when your job begins and ends by adding the following to your Slurm script. Set `--mail-type` to `END` if you just want to be alerted about jobs completing. 
-
-~~~
-#SBATCH --mail-user=abc1@aber.ac.uk
-#SBATCH --mail-type=ALL
-~~~
-{: .bash}
-
-
-
-# Exercises
-
-> ## Getting email output from `sbatch` 
-> 1. Add the following lines to your script from the previous exercise: 
-> `#SBATCH --mail-user=abc1@aber.ac.uk` (change to your own email address)
-> `#SBATCH --mail-type=ALL`
-> 2. Submit the script with the `sbatch` command. You should get an email when the job starts and finishes.
-{: .challenge}
-
-
-> ## Using job arrays
-> 1. Add the following to the end of your job script
-> `echo $SLURM_ARRAY_TASK_ID`
-> 2. Submit the script with the `sbatch --array=0-1` command. 
-> 3. When the job completes look at the outut file. What does the last line contain?
-> 4. Try resubmitting with different array numbers, for example `10-11`. Be careful not to create too many jobs.
-> 5. What use is it for a job to know its array number? What might it do with that information?
-> 6. Try looking at the variables `$SLURM_JOB_ID` and `$SLURM_ARRAY_JOB_ID` what do these contain?
->
-> > ## Solution
-> > 3. The last line of the output files should contain 0 and 1
-> > 4. If you set the array IDs to 10 and 11 thne the output should contain 10 and 11.
-> > 5. Its useful to act as a parameter for partitioning datasets that each job will process a subpart of.
-> > 6. The job ID and the parent ID of the array job. The parent ID is usually one less than ID of the first array job. 
-> {: .solution}
-{: .challenge}
 
 # More information about Slurm 
 
