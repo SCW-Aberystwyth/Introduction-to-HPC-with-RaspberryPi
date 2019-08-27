@@ -1,14 +1,6 @@
-Introducing to HPC for users of the Super Computing Wales system. 
+Introducing to HPC with a Raspberry Pi Cluster.
 
 Maintainers:
  * Colin Sauze
 
-This lesson has been (heavily) adapted from the Data Carpentry Cloud Genomics lesson and in particular the Harvard University Faculty of Arts & Sciences Research Computing HPC version of it (https://github.com/fasrc/DataC-HPC-genomics). 
-
-Original contributors:
-* [Chris Fields](http://www.bioperl.org/wiki/User:Cjfields)
-* [Bob Freeman] (http://twitter.com/devbioinfoguy)
-* Adina Howe
-* Andréa Matsunaga
-* [Stephen Turner](https://twitter.com/genetics_blog)
-* Jason Williams
+This lesson is based on a subset of the Introduction to HPC for Super Computing Wales (https://github.com/SuperComputingWales/SCW-Intro).

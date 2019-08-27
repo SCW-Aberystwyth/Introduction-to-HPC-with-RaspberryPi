@@ -3,9 +3,7 @@ layout: lesson
 root: .
 ---
 
-# Introduction to Super Computing Wales
-
-This lesson introduces using the Super Computing Wales HPC system. 
+This lesson introduces using the High Performance Computing with a Raspberry Pi cluster.
 
 > ## Prerequisites
 >

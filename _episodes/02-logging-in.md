@@ -35,7 +35,7 @@ This will connect you to the login node.
 
 ### Slurm
 
-Slurm is the management software used on Super Computing Wales. It lets you submit (and monitor or cancel) jobs to the cluster and chooses where to run them. 
+Slurm is the management software used on many real HPC systems including Super Computing Wales. It lets you submit (and monitor or cancel) jobs to the cluster and chooses where to run them. All the commands you are using in this workshop should work on any HPC system running Slurm.
 
 Other clusters might run different job management software such as LSF, Sun Grid Engine or Condor, although they all operate along similar principles.
 
