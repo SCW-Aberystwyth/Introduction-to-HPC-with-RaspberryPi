@@ -35,14 +35,15 @@ Most HPC systems will offer you several different filesystems, the most common a
 Login to the head node and run the ```quota``` command. This will tell you how much space is left in your home directory. 
 
 ~~~
-$ quota
+$ quota -vs
 ~~~
 {: .bash}
 
 ~~~
-Disk quotas for grp colin (gid 5000124):
-     Filesystem    used   quota   limit   grace   files   quota   limit   grace
-          /home  19.09M    100M    105M       -   368  1000  1050       -
+Disk quotas for user pi (uid 1000): 
+     Filesystem   space   quota   limit   grace   files   quota   limit   grace
+     /dev/loop0    159M    300M    350M            5439*   3000    3500   7days
+
 ~~~
 {: .output}
 
@@ -120,7 +121,7 @@ You can change directory on the remote host by typing a path into the "Remote si
 
 > ## Using the `quota` command.
 > 1. Login to the head node.
-> 2. Run the `quota` command. 
+> 2. Run the `quota -vs` command. 
 > 3. How much space have you used and how much do you have left? 
 > 4. If you had a job that resulted in 60GB of files would you have enough space to store them?
 {: .challenge}
