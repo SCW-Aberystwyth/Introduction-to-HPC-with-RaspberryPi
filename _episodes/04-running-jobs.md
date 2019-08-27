@@ -355,6 +355,7 @@ This will cancel the job, `squeue` will now show no record of it and there won't
 > 4. Try running it again, did your command run on the same node? 
 > 5. Now add the command `/bin/sleep 120` before the line running hostname in the script. Run the job again and examine the output of `squeue` as it runs. How many seconds does the job run for before it ends? Hint: the command `watch -n 1 squeue` will run squeue every second and show you the output. Press CTRL+C to stop it. 
 > 6. What is in the .err file, why did you script exit? Hint: if it wasn't due to the time expiring try altering another parameter so it is due a time expiration. 
+>
 > > ## Solution
 > > 4. It might have run on a different node, but this shouldn't be a problem they are all identical.
 > > 5. The job should run for about 90 seconds. Slurm gives jobs 30 seconds to cleanup before it forces them to stop. 
