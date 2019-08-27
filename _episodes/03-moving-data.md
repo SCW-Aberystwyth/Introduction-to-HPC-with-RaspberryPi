@@ -8,10 +8,11 @@ questions:
  - "What is the difference between scratch and home filestore?"
 objectives: 
  - "Understand the difference between home and scratch directories"
- - "Understand how to copy files between your computer and your SCW home/scratch directories"
+ - "Understand how to copy files between your computer and the cluster"
 keypoints:
- - "Scratch and home are per site."
- - "Scratch is faster and has no quotas, its not backed up. home is slower, smaller but backed up"
+ - "The SCP and SFTP protocols can copy files to a cluster."
+ - "Most real clusters have large disks."
+ - "Most real clusters have a backed up space limited home and a larger scratch drive for temporary data."
 ---
 
 
@@ -31,7 +32,7 @@ Most HPC systems will offer you several different filesystems, the most common a
 
 ## How much quota do I have left on my home directory?
 
-Login to a head node and run the ```quota``` command. This will tell you how much space is left in your home directory. 
+Login to the head node and run the ```quota``` command. This will tell you how much space is left in your home directory. 
 
 ~~~
 $ quota
@@ -39,9 +40,9 @@ $ quota
 {: .bash}
 
 ~~~
-Disk quotas for grp a.cos (gid 5000124):
+Disk quotas for grp colin (gid 5000124):
      Filesystem    used   quota   limit   grace   files   quota   limit   grace
-          /home  19.09G    100G    105G       -   36866  100000  105000       -
+          /home  19.09M    100M    105M       -   368  1000  1050       -
 ~~~
 {: .output}
 
@@ -52,18 +53,18 @@ You can copy files to/from the cluster using the secure copy protocol (SCP) or s
 
 ### Copying data using SFTP
 
-Use the ```sftp``` command and connect to the system. This takes the argument of the username followed by an @ symbol and then the hostname. Optionally you can specify what directory to start in by putting a ```:``` symbol after this and adding the directory name. The command below will start in ```/home/s.jane.doe/data```, if no directory is specified then sftp defaults to your home directory. 
+Use the ```sftp``` command and connect to the system. This takes the argument of the username followed by an @ symbol and then the hostname. Optionally you can specify what directory to start in by putting a ```:``` symbol after this and adding the directory name. The command below will start in ```/home/jane/data```, if no directory is specified then sftp defaults to your home directory. 
 
 ~~~
-sftp s.jane.doe@sunbird.swansea.ac.uk:/home/jane.doe/data
+sftp jane@10.0.0.10:/home/jane/data
 ~~~
 {: .bash}
 
 
 ~~~
-s.jane.doe@sunbird.swansea.ac.uk's password: 
-Connected to sunbird.swansea.ac.uk.
-Changing to: /home/s.jane.doe/data
+jane@10.0.0.10's password: 
+Connected to 10.0.0.10.
+Changing to: /home/jane/data
 sftp> ls
 ~~~
 {: .output}
@@ -92,7 +93,7 @@ lcd - change directory on the local system
 
 Filezilla is a graphical SCP/SFTP client available for Windows, Mac and Linux. You can download it from [Filezilla download](https://filezilla-project.org/download.php?type=client)
 
-Open filezilla and type ```sftp://sunbird.swansea.ac.uk``` or ```sftp://hawklogin.cf.ac.uk``` into the host box. Enter your username and password in the username/password boxes.
+Open filezilla and type ```sftp://10.0.0.10``` into the host box. Enter your username and password in the username/password boxes.
 
 ![Transferring files using FileZilla](../fig/filezilla1.png)
 
@@ -125,8 +126,8 @@ You can change directory on the remote host by typing a path into the "Remote si
 {: .challenge}
 
 > ## Copying files.
-> 1. Login to a head node.
+> 1. Login to the head node.
 > 2. Create a file called hello.txt by using the nano text editor (or the editor of your choice) and typing `nano hello.txt`. Enter some text into the file and press Ctrl+X to save it. 
 > 3. Use either Filezilla or SCP/SFTP to copy the file to your computer. 
-> 4. Create a file on your computer using a text editor. Copy that file to your SCW home directory using Filezilla or SCP/SFTP and examine its conents with nano on the head node. 
+> 4. Create a file on your computer using a text editor. Copy that file to your cluster home directory using Filezilla or SCP/SFTP and examine its conents with nano on the head node. 
 {: .challenge}

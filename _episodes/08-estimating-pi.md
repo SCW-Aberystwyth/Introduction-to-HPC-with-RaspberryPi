@@ -14,7 +14,7 @@ keypoints:
 - "The estimation of pi with the Monte Carlo method is a compute bound problem because pseudo-random numbers are just algorithms."
 ---
 
-Lola is told that her predecessors all worked on the same project. A high performance calculation that is able to produce a high precision estimate of Pi. Even though calculating Pi can be considered a solved problem, this piece of code is used at the institute to benchmark new hardware. So far, the institute has only acquired larger single machines for each lab to act as work horse per group. But currently, need for distributed computations has arisen and hence a distributed code is needed, that yields both simplicity, efficiency and scalability. 
+Lola Lazy is told that her predecessors all worked on the same project. A high performance calculation that is able to produce a high precision estimate of Pi. Even though calculating Pi can be considered a solved problem, this piece of code is used at the institute to benchmark new hardware. So far, the institute has only acquired larger single machines for each lab to act as work horse per group. But currently, need for distributed computations has arisen and hence a distributed code is needed, that yields both simplicity, efficiency and scalability. 
 
 The algorithm was pioneered by _Georges-Louis Leclerc de Buffon_ in _1733_. 
 
@@ -33,7 +33,7 @@ The implementation of this algorithm using `total_count` random number pairs in 
 ~~~
 import numpy
 
-np.random.seed(2017)
+np.random.seed(2000)
 
 def inside_circle(total_count):
     
@@ -57,27 +57,32 @@ def estimate_pi(total_count):
 
 For generating pseudo-random numbers, we sample the uniform probability distribution in the default floating point interval from `0` to `1`. The `sqrt` step is not required directly, but Lola includes it here for clarity. `numpy.where` is used obtain the list of indices that correspond to radii which are equal or smaller than `1.0`. At last, this list of indices is used to filter-out the numbers in the `radii` array and obtain its length, which is the number Lola are after.
 
-Lola finishes writing the pi estimation and comes up with a [small python script]({{ page.root }}/code/serial_numpi.py), that she can launch from the command line:
+Lola finishes writing the pi estimation and comes up with a [small python script]({{ page.root }}/code/serial_numpi.py). You can download this to your account by running:
 
 ~~~
-$ module load hpcw python/3.5.1
-$ python3 ./serial_numpi.py 1000000000
+$ wget {{ page.root }}/code/serial_numpi.py
+~~~
+
+Then launch it from the command line:
+
+~~~
+$ python3 serial_numpi.py 10000000
 ~~~
 {: .bash}
 
 ~~~
-[serial version] required memory 11444.092 MB
-[serial version] pi is 3.141557 from 1000000000 samples
+[serial version] required memory 114.441 MB
+[serial version] pi is 3.141582 from 10000000 samples
 ~~~
 {: .output}
 
-She must admit that the application takes quite long to finish. Yet another reason to use a cluster or any other remote resource for these kind of applications that take quite a long time. But not everyone has a cluster at his or her disposal. So she decides to parallelize this algorithm first so that it can exploit the number cores that each machine on the cluster or even her laptop has to offer.
+Although this doesn't take long to complete the answer isn't very accurate. Lola suspects that using more samples in the code will improve accuracy, but she already used 114 MB of memory and the Raspberry Pi only has 512MB or 1024GB. She think that 150,000,000 samples would give a better answer but estimates this will need over 2GB of memory. So she decides to parallelize this algorithm first so that it can exploit multiple cores (and their attached memory) that the cluster has to offer. 
 
 ## Premature Optimisation is the root of all evil!
 
 Before venturing out and trying to accelerate a program, it is utterly important to find the hot spots of it by means of measurements. For the sake of this tutorial, we use the [line_profiler](https://github.com/rkern/line_profiler) of python. Your language of choice most likely has similar utilities.
 
-to install the profiler, please issue the following commands. These load the python module, enabling the pip3 command and then install the module using pip3. Note that we have to use the legacy Python 3.5.1 which is part of the old HPC Wales modules, this is because the newer versions of Python were compiled with Intel's optimised C compiler but this isn't compatible with the line profiler. 
+to install the profiler, please issue the following commands. These load the python module, enabling the pip3 command and then install the module using pip3. 
 
 ~~~
 $ pip3 install --user line_profiler
@@ -104,48 +109,29 @@ Note that on systems where pip can install to system directories the kernprof (o
 > - R: [profvis](https://github.com/rstudio/profvis)
 {: .callout }
 
-Next, you have to annotate your code in order to indicate to the profiler what you want to profile. For this, we add the `@profile` annotation to a function definition of our choice. If we don't do this, the profiler will do nothing. So let's refactor our code a little bit:
+Next, you have to annotate your code in order to indicate to the profiler what you want to profile. For this, we add the `@profile` annotation to a function definition of our choice. If we don't do this, the profiler will do nothing.
+
+Lets annotate the main function by changing:
 
 ~~~
 def main():
-
-    parser = argparse.ArgumentParser(description='Estimate Pi using a Monte Carlo method.')
-    parser.add_argument('n_samples', metavar='N', type=int, nargs=1,
-                        default=10000,
-                        help='number of times to draw a random number')
-
-    args = parser.parse_args()
-
-    n_samples = args.n_samples[0]
-    my_pi = estimate_pi(n_samples)
-    sizeof = np.dtype(np.float32).itemsize
-
-    print("[serial version] required memory %.3f MB" % (n_samples*sizeof*3/(1024*1024)))
-    print("[serial version] pi is %f from %i samples" % (my_pi,n_samples))
-
-    sys.exit(0)
-
-
-if __name__=='__main__':
-    main()
 ~~~
 
-With this trick, we can make sure that we profile the entire application. Note, that this is a necessity when using `line_profiler`. We can now carry on, and annotate the main function.
+to 
 
 ~~~
-...
 @profile
 def main():
-  ...
 ~~~
 
-Let's save this to `serial_numpi_annotated.py`. After this is done, the profiler is run with a reduced input parameter that does take only about 2-3 seconds:
+With this trick, we can make sure that we profile the entire application. Note, that this is a necessity when using `line_profiler`. Let's save this to `serial_numpi_annotated.py`. Now lets run the program with the profiler:
 
 ~~~
-$ ~/.local/bin/kernprof -l ./serial_numpi.py 50000000
-[serial version] required memory 572.205 MB
-[serial version] pi is 3.141728 from 50000000 samples
-Wrote profile results to serial_numpi_annotated.py.lprof
+$ ~/.local/bin/kernprof -l ./serial_numpi.py 10000000
+[serial version] required memory 114.441 MB
+[serial version] pi is 3.141582 from 10000000 samples
+Wrote profile results to serial_numpi.py.lprof
+
 ~~~
 {: .bash }
 
@@ -193,9 +179,9 @@ def main():
 And run the same cycle of record and report:
 
 ~~~
-$ kernprof-3 -l ./serial_numpi_annotated.py 50000000
-[serial version] required memory 572.205 MB
-[serial version] pi is 3.141728 from 50000000 samples
+$ kernprof-3 -l ./serial_numpi_annotated.py 10000000
+[serial version] required memory 114.441 MB
+[serial version] pi is 3.141728 from 10000000 samples
 Wrote profile results to serial_numpi_annotated.py.lprof
 $ python3 -m line_profiler serial_numpi_profiled.py.lprof
 Timer unit: 1e-06 s
@@ -206,11 +192,12 @@ Function: estimate_pi at line 19
 
 Line #      Hits         Time  Per Hit   % Time  Line Contents
 ==============================================================
-    19                                           @profile
-    20                                           def estimate_pi(total_count):
-    21                                           
-    22         1      2073595 2073595.0    100.0      count = inside_circle(total_count)
-    23         1            5      5.0      0.0      return (4.0 * count / total_count)
+    20                                           @profile
+    21                                           def estimate_pi(total_count):
+    22                                           
+    23         1    3122882.0 3122882.0    100.0      count = inside_circle(total_count)
+    24         1         43.0     43.0      0.0      return (4.0 * count / float(total_count))
+
 ~~~
 {: .output }
 
@@ -234,9 +221,9 @@ def inside_circle(total_count):
 And run the profiler again:
 
 ~~~
-$ kernprof-3 -l ./serial_numpi_annotated.py 50000000
-[serial version] required memory 572.205 MB
-[serial version] pi is 3.141728 from 50000000 samples
+$ kernprof-3 -l ./serial_numpi_annotated.py 10000000
+[serial version] required memory 114.441 MB
+[serial version] pi is 3.141728 from 10000000 samples
 Wrote profile results to serial_numpi_annotated.py.lprof
 $ python3 -m line_profiler serial_numpi_profiled.py.lprof
 Timer unit: 1e-06 s

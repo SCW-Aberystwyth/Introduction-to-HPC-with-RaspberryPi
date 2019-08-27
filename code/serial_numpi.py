@@ -22,7 +22,7 @@ def estimate_pi(total_count):
     count = inside_circle(total_count)
     return (4.0 * count / float(total_count))
 
-if __name__=='__main__':
+def main():
 
     parser = argparse.ArgumentParser(description='Estimate Pi using a Monte Carlo method.')
     parser.add_argument('n_samples', metavar='N', type=int, nargs=1,
@@ -39,3 +39,7 @@ if __name__=='__main__':
     print("[serial version] pi is %f from %i samples" % (my_pi,n_samples))
 
     sys.exit(0)
+
+
+if __name__=='__main__':
+    main()

@@ -51,11 +51,15 @@ Each individual computer in a cluster is commonly referred to as a "node". Insid
 
 The Raspberry Pi is a low cost single board computer about the size of a credit card. The original version featured just a single core processor equivalent to a desktop computer from the late 1990s and 512 megabytes of RAM. The latest feature quad core processors and up to four gigabytes of RAM, its more equivalent to a desktop from the late 2000s. 
 
+For this workshop we'll be using a cluster built from 11 Raspberry Pi computers. 10 of them act as "worker" nodes for doing the actual computation and one acts as a master co-ordinating them and providing disk space to the rest. We'll refer to this master system as a "login node" or "head node".
+
+The compute nodes in this cluster are the original version of the Raspberry Pi with only a single core and 512 MB of RAM. The login node is a Raspberry Pi model 3 with four cores and 1024 MB of RAM.
+
 ## Why build a cluster out Raspberry Pis?
 
 * Its cheap
 * It means we can teach without impacting on the real system
-* Its much easier to run into and under resource limits
+* Its much easier to encounter resource limits and understand the impact of doing so
 * We can see the real hardware instead of using something in a distant data centre
 
 
