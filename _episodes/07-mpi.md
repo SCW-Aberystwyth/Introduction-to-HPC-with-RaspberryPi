@@ -66,7 +66,7 @@ As the figure above shows, 1 instances of `hostname` were called on each of the 
 Before we can run Mpi4py programs we need to install the module through pip3. Installing the pip module also requires the mpi module to be loaded. The following commands will install mpi4py. 
 
 ~~~
-$ wget {{ page.root }}/code/print_hostname.py
+$ wget https://scw-aberystwyth.github.io/Introduction-to-HPC-with-RaspberryPi/code/print_hostname.py
 $ pip3 install --user mpi4py
 ~~~
 {: .bash}
@@ -201,7 +201,7 @@ And that's it. Now, Lola can submit her first MPI job. Download the [full code](
 You can download it on the cluster with the command:
 
 ~~~
-wget {{ page.root }}/code/mpi_numpi.py
+wget https://scw-aberystwyth.github.io/Introduction-to-HPC-with-RaspberryPi/code/mpi_numpi.py
 ~~~
 {:. bash}
 

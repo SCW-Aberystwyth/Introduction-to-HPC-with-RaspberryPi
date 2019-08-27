@@ -60,7 +60,7 @@ For generating pseudo-random numbers, we sample the uniform probability distribu
 Lola finishes writing the pi estimation and comes up with a [small python script]({{ page.root }}/code/serial_numpi.py). You can download this to your account by running:
 
 ~~~
-$ wget {{ page.root }}/code/serial_numpi.py
+$ wget https://scw-aberystwyth.github.io/Introduction-to-HPC-with-RaspberryPi/code/serial_numpi.py
 ~~~
 
 Then launch it from the command line:
