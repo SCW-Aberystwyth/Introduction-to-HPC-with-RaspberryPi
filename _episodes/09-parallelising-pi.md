@@ -23,9 +23,9 @@ keypoints:
 Having the profiling data, our estimate of pi is a valuable resource.
 
 ~~~~~
-$ ~/.local/bin/kernprof -l ./serial_numpi.py 50000000
-[serial version] required memory 572.205 MB
-[serial version] pi is 3.141728 from 50000000 samples
+$ ~/.local/bin/kernprof -l ./serial_numpi.py 10000000
+[serial version] required memory 114.441 MB
+[serial version] pi is 3.141728 from 10000000 samples
 Wrote profile results to serial_numpi_annotated.py.lprof
 $ python3 -m line_profiler serial_numpi_profiled.py.lprof
 Timer unit: 1e-06 s
@@ -215,28 +215,6 @@ This behavior is often referred to as _data parallelism_.
 > {: .solution}
 {: .challenge}
 
-> ## Always go parallel! Right?
->
-> Profile this [python application]({{ page.root }}/code/volume_pylibs.py) which computes how much disk space your python standard library consumes.
-> The algorithm works in 2 steps:
-> 1. create list of absolute paths of all `.py` files in your python's system folder
-> 2. loop over all paths from 1. and sum up the space on disk each file consumes
->
-> Is this a task worth parallelizing? Make a guess!
-> Verify your answer using profiling and computing the theoretical speed-up possible.
->
-> Hint: download it by doing the following:
->
-> ~~~
-> wget https://supercomputingwales.github.io/SCW-tutorial/code/volume_pylibs.py
-> ~~~
-> {: .bash}
-> > ## Solution 
-> > Around 95% of the time is spend running the statement std_files = glob.glob(path_of_ospy+"/*.py") 
-> > Almost all in a single call to a single function, so this can't be parallelised
-> {: .solution}
-{: .challenge}
-
 
 So the bottom line(s) of Amdahl's law are:
 
@@ -262,172 +240,6 @@ So the bottom line(s) of Amdahl's law are:
 Keeping this in mind, Lola decides to split up the work for multiple cores requires Lola to split up the number of total samples by the number of cores available and calling `inside_circle` on each of these partitions:
 
 ![Partitioning `x` and `y`]({{ page.root }}/fig/partition_data_parallel_estimate_pi.svg)
-
-The number of partitions has to be limited by the number of CPU cores available. With this in mind, the `estimate_pi` method can be converted to run in parallel. The `estimate_pi` function takes an argument `core_count` which tells it how many CPU cores and partitions to use. 
-
-
-~~~
-import numpy as np
-
-def estimate_pi(total_count,core_count):
-
-    count = pymp.shared.array((core_count,), dtype='int32')
-
-    with pymp.Parallel(core_count) as p:
-        for i in p.range(0,core_count):
-            local_count = inside_circle(int(total_count/core_count))
-
-            with p.lock:
-                count[i] = local_count
-
-    return (4.0 * sum(count) / total_count)
-~~~
-{: .python}
-
-PyMP is a Python module based on a popular program called OpenMP that's available in many languages (but not Python). OpenMP and PyMP let you create parallel loops where all or a number of the iterations of the loop are run at once. Another way to build parallel code is to split a program into multiple concurrent threads, but this normally requires more extra code than OpenMP/PyMP does. 
-
-Install the `pymp` module by running the command:
-
-~~~
-$ pip3 install --user pymp-pypi
-~~~
-{: .bash}
-
-One thing we must be cautious of when writing parallel code is what happens when two (or more) threads try to update the same variable at the same time. OpenMP and PyMP let us specify that a variable is private and each thread will get its own copy or shared where there is only one copy. The access to a shared variable can be locked so that any thread wanting to use it has to wait for the others to finish. In the above example we create a shared variable called `count` which is an array with an element for each thread. The access to this locked so that one one thread can write to it at a time. Each thread has its own private variable called `local_count`, this is so that we spend the minimum amount of time in the locked section. 
-
-
-![Partitioning `x` and `y` and results of reach partition]({{ page.root }}/fig/partition_data_parallel_estimate_pi_with_results.svg)
-
-The last step required before calculating pi is to collect the individual results from the `partitions` and _reduce_ it to one `total_count` of those random number pairs that were inside of the circle. Here the `sum` function loops over `partitions` and does exactly that. So let's run our [parallel implementation]({{ page.root }}/code/pymp_numpi.py) and see what it gives:
-
-~~~
-$ module load hpcw
-$ module load python/3.5.1
-$ wget https://supercomputingwales.github.io/SCW-tutorial/code/pymp_numpi.py
-$ python3 ./pymp_numpi.py 1000000000
-~~~
-{: .bash}
-
-~~~
-[pymp version] [using 8 cores ] pi is 3.141840 from 1000000000 samples
-~~~
-{: .output}
-
-The good news is, the parallel implementation is correct. It estimates Pi to equally bad precision than our serial implementation. The question remains, did we gain anything? For this, Lola tries to the `time` system utility that can be found on all *nix installations and most certainly on compute clusters.
-
-~~~
-$ time python3 ./serial_numpi.py 1000000000
-
-~~~
-{: .bash}
-
-~~~
-[serial version] required memory 11444.092 MB
-[serial version] pi is 3.141557 from 1000000000 samples
-
-real    4m16.287s
-user    0m48.782s
-sys     3m28.885s
-
-~~~
-{: .output}
-
-~~~
-$ time python3 ./pymp_numpi.py 1000000000
-~~~
-{: .bash}
-
-~~~
-[pymp version] [using 8 cores ] pi is 3.141840 from 1000000000 samples
-
-real    0m56.505s
-user    0m5.252s
-sys     6m56.126s
-~~~
-{: .output}
-
-If the snipped from above is compared to the snippets earlier, you can see that `time` has been put before any other command executed at the prompt and 3 lines have been added to the output of our program. `time` reports 3 times and they are all different:
-
-  - `real` that denotes the time that has passed during our program as if you would have used a stop watch
-  - `user` this is accumulated amount of CPU seconds (so seconds that the CPU was active) spent in code by the user (you)
-  - `sys`  this is accumulated amount of CPU seconds that the CPU spent while executing system code that was necessary to run your program (memory management, display drivers if needed, interactions with the disk, etc.)
-    
-So from the above, Lola wants to compare the `real` time spent by her serial implementation (`4m16`) and compare it to the `real` time spent by her parallel implementation (`0m56.505s`). Apparently, her parallel program was `4.57` times faster than the serial implementation. 
-
-We can compare this to the maximum speed-up that is achievable: `S = 1/(1 - 0.99 + 0.99/8) = 7.48`
-That means, our parallel implementation does already a good job, but only achieves `100*4.57/7.48 = 61.1%` runtime improvement of what is possible. As achieving maximum speed-up is hardly ever possible, Lola leaves that as a good end of the day and leaves for home.
-
-> ## Adding up times
-> The output of the `time` command is very much bound to how a operating system works. In an ideal world, `user` and `sys` of serial programs should add up to `real`. Typically they never do. The reason is, that the operating systems used in HPC and on laptops or workstations are set up in a way, that the operating system decides which process receives time on the CPU (aka to perform computations). Once a process runs, it may however happen, that the system decides to intervene and have some other binary have a tiny slice of a CPU second while your application is executed. This is where the mismatch for `user+sys` and `real` comes from.
-> Note also how the `user` time of the parallel program is a lot larger than the time that was actually consumed. This is because, `time` reports accumulated timings i.e. it adds up CPU seconds that were consumed in parallel.
-{: .callout}
-
-> ## Hyperthreading
-> Hyperthreading is an extension found in some CPUs where some parts of the CPU core are duplicated. These appear to most programs as extra cores and can cause core counts to be reported as double what they really are. 
-> The performance boost of Hyperthreading varies between a small performance reduction and 15-30%. When performing identical simple tasks on every CPU as in our example there is unlikely to be any performance gain.
-> On Linux systems the `lscpu` command will display information about the CPU including the number of threads, cores and CPUs. The line "Thread(s) per core" will be 1 if there's no Hyperthreading and 2 or more if there is.
->
-> System with Hyperthreading:
->
-> ~~~
-> $ lscpu
-> Architecture:          x86_64                                                                                                                                                              
-> CPU op-mode(s):        32-bit, 64-bit                                                                                                                                                      
-> Byte Order:            Little Endian                                                                                                                                                       
-> CPU(s):                4                                                                                                                                                                   
-> On-line CPU(s) list:   0-3                                                                                                                                                                 
-> Thread(s) per core:    2                                                                                                                                                                   
-> Core(s) per socket:    2                                                                                                                                                                   
-> Socket(s):             1                                                                                                                                                                   
-> NUMA node(s):          1                                                                                                                                                                   
-> Vendor ID:             GenuineIntel                                                                                                                                                        
-> CPU family:            6                                                                                                                                                                   
-> Model:                 142                                                                                                                                                                 
-> Model name:            Intel(R) Core(TM) i7-7500U CPU @ 2.70GHz                                                                                                                            
-> Stepping:              9                                                                                                                                                                   
-> CPU MHz:               3499.999                                                                                                                                                            
-> CPU max MHz:           3500.0000
-> CPU min MHz:           400.0000
-> BogoMIPS:              5808.00
-> Virtualisation:        VT-x
-> L1d cache:             32K
-> L1i cache:             32K
-> L2 cache:              256K
-> L3 cache:              4096K
-> NUMA node0 CPU(s):     0-3
-> ~~~
-> {: .bash}
->
-> System without Hyperthreading:
->
-> ~~~
-> $ lscpu
-> Architecture:          x86_64
-> CPU op-mode(s):        32-bit, 64-bit
-> Byte Order:            Little Endian
-> CPU(s):                16
-> On-line CPU(s) list:   0-15
-> Thread(s) per core:    1
-> Core(s) per socket:    8
-> Socket(s):             2
-> NUMA node(s):          2
-> Vendor ID:             GenuineIntel
-> CPU family:            6
-> Model:                 45
-> Stepping:              7
-> CPU MHz:               1200.000
-> BogoMIPS:              5199.26
-> Virtualization:        VT-x
-> L1d cache:             32K
-> L1i cache:             32K
-> L2 cache:              256K
-> L3 cache:              20480K
-> NUMA node0 CPU(s):     0-7
-> NUMA node1 CPU(s):     8-15
-> ~~~
-> {: .bash}
-{: .callout}
-
 
 
 > ## Parallel for real 1
@@ -463,4 +275,6 @@ That means, our parallel implementation does already a good job, but only achiev
 > > 4. not parallel, you only have one consumer (you), rendering the movie in 2 windows in parallel does not help
 > {: .solution}
 {: .challenge}
+
+
 
