@@ -427,6 +427,7 @@ hostname.out.278
 hostname.err.276
 hostname.err.277
 hostname.err.278
+~~~
 {: .bash}
 
 Its possible for programs to get hold of their array number from the `$SLURM_ARRAY_TASK_ID` environment variable. If we add the command `echo $SLURM_ARRAY_TASK_ID` to our batch script then it will be possible to see this in the output file. 
